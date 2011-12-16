@@ -1,14 +1,6 @@
 #ifndef SCENARIO_H_
 #define SCENARIO_H_
 
-//PERL_BUFF: Defines the size of the output buffer used by zlib.
-//Note: This must be limited for deflation or AOK can't read the compressed file.
-#define PERL_BUFF 0x2000
-
-#include "Trigger.h"
-#include "my_util.h"
-#include "LuaTrig.h"
-
 class Scenario
 {
 public:

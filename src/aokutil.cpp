@@ -1,7 +1,9 @@
-#include "my_util.h"
-#include <ctype.h>
+#include "../include/aokutil.h"
 
-#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
+
 
 char *stringtolower(char *s)
 {
@@ -10,15 +12,6 @@ char *stringtolower(char *s)
 		*(s2+i)=(char)tolower(*(s+i));
 	*(s2+strlen(s))='\0';
 	return s2;
-}
-
-int my_util::fsize(const char *path) 
-{
-	FILE *f=fopen(path, "rb");
-	fseek(f, 0, SEEK_END);
-	long size = ftell(f); 
-	fclose(f);
-	return size;
 }
 		
 
@@ -31,7 +24,7 @@ AOKRES::AOKRES(long n, const char *l)
 	num=n;
 }
 
-const struct AOKRES my_util::resources[] =
+const struct AOKRES aokutil::resources[] =
 {
 	AOKRES(0, "Food"),
 	AOKRES(1, "Wood"),
@@ -49,7 +42,7 @@ const struct AOKRES my_util::resources[] =
 	AOKRES(44, "Kill Ratio"),
 };
 
-int my_util::get_res_id(char *s)
+int aokutil::get_res_id(char *s)
 {
 	char *s2=stringtolower(s);
 	int i;
@@ -60,7 +53,7 @@ int my_util::get_res_id(char *s)
 	return -1;
 }
 
-bool my_util::is_res_id(int res)
+bool aokutil::is_res_id(int res)
 {
 	for (int i=0; i<14; i++)
 		if (resources[i].num==res)
@@ -68,7 +61,7 @@ bool my_util::is_res_id(int res)
 	return false;
 }
 
-const char *my_util::get_res_str(int id)
+const char *aokutil::get_res_str(int id)
 {
 	for (int i=0; i<14; i++)
 		if (id==resources[i].num)
@@ -81,7 +74,7 @@ const char *my_util::get_res_str(int id)
 
 
 
-const struct AOKRES my_util::unit_types[] =
+const struct AOKRES aokutil::unit_types[] =
 {
 	AOKRES(-1, "None"),
 	AOKRES(1, "Other"),
@@ -90,7 +83,7 @@ const struct AOKRES my_util::unit_types[] =
 	AOKRES(4, "Military"),
 };
 
-int my_util::get_utype(char *s)
+int aokutil::get_utype(char *s)
 {
 	char *s2=stringtolower(s);
 	for (int i=0; i<5; i++) {
@@ -100,7 +93,7 @@ int my_util::get_utype(char *s)
 	return -2;
 }
 
-bool my_util::is_utype(int type)
+bool aokutil::is_utype(int type)
 {
 	for (int i=0; i<5; i++) 
 		if (unit_types[i].num==type)
@@ -108,7 +101,7 @@ bool my_util::is_utype(int type)
 	return false;
 }
 
-const char *my_util::get_utype_str(int id)
+const char *aokutil::get_utype_str(int id)
 {
 	for (int i=0; i<5; i++)
 		if (id==unit_types[i].num)
@@ -122,14 +115,14 @@ const char *my_util::get_utype_str(int id)
 
 
 
-const struct AOKRES my_util::diplomacy[] =
+const struct AOKRES aokutil::diplomacy[] =
 {
 	AOKRES(0, "Ally"),
 	AOKRES(1, "Neutral"),
 	AOKRES(2, "Enemy"),
 };
 
-int my_util::get_diplomacy(char *s)
+int aokutil::get_diplomacy(char *s)
 {
 	char *s2=stringtolower(s);
 	for (int i=0; i<3; i++)
@@ -139,7 +132,7 @@ int my_util::get_diplomacy(char *s)
 	return -1;
 }
 
-bool my_util::is_diplomacy(int d)
+bool aokutil::is_diplomacy(int d)
 {
 	for (int i=0; i<3; i++) 
 		if (diplomacy[i].num==d)
@@ -147,7 +140,7 @@ bool my_util::is_diplomacy(int d)
 	return false;
 }
 
-const char *my_util::get_diplomacy_str(int id)
+const char *aokutil::get_diplomacy_str(int id)
 {
 	for (int i=0; i<3; i++)
 		if (id==diplomacy[i].num)
@@ -161,7 +154,7 @@ const char *my_util::get_diplomacy_str(int id)
 
 
 
-const struct AOKRES my_util::unit_groups[] =
+const struct AOKRES aokutil::unit_groups[] =
 {
 	AOKRES(0x00, "Archer"),
 	AOKRES(0x01, "Artifact"),
@@ -219,7 +212,7 @@ const struct AOKRES my_util::unit_groups[] =
 	AOKRES(0x3D, "Horse")
 };
 
-int my_util::get_ugroup(char *s)
+int aokutil::get_ugroup(char *s)
 {
 	char *s2=stringtolower(s);
 	for (int i=0; i<54; i++)
@@ -229,7 +222,7 @@ int my_util::get_ugroup(char *s)
 	return -1;
 }
 
-const char *my_util::get_ugroup_str(int id)
+const char *aokutil::get_ugroup_str(int id)
 {
 	for (int i=0; i<54; i++)
 		if (id==unit_groups[i].num)

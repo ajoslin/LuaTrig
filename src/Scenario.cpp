@@ -1,4 +1,7 @@
-#include "Scenario.h"
+#include "../include/Scenario.h"
+#include "../include/fileutil.h"
+#include "../include/Trigger.h"
+#include "../include/LuaTrig.h"
 
 Scenario::~Scenario()
 {
@@ -23,7 +26,7 @@ bool Scenario::open(const char *path)
 	if (scx==NULL)
 		return false;
 
-	long scx_filesize = my_util::fsize(path);
+	long scx_filesize = fsize(path);
 
 	long bytes_read = 0;
 
@@ -106,10 +109,10 @@ bool Scenario::read(bool save_triggers = false)
 
 	scenario_end = skiptoscenarioend("scndata.hex");
 
-	long fsize=my_util::fsize("scndata.hex");
+	long filesize=fsize("scndata.hex");
 	printf("trigger start=%d, trigger end=%d\n", trigger_start, trigger_end);
 	printf("scenario_end=%d\n", scenario_end);
-	printf("scndata.hex size: %d, size without triggers: %d\n", fsize, fsize-trigger_skip-4*numtriggers-4);
+	printf("scndata.hex size: %d, size without triggers: %d\n", filesize, filesize-trigger_skip-4*numtriggers-4);
 
 	if (save_triggers)
 		cleanup();
@@ -173,7 +176,7 @@ bool Scenario::write(const char *base_scx_path, const char *new_scx_path)
 	fclose(newdata);
 	
 
-	printf("out.hex size: %d\n", my_util::fsize("out.hex"));
+	printf("out.hex size: %d\n", fsize("out.hex"));
 
 	system("scn_compress out.hex compressed_out.hex");
 
@@ -182,7 +185,7 @@ bool Scenario::write(const char *base_scx_path, const char *new_scx_path)
 
 	//Write header to new scx
 	FILE *header=fopen("header.hex", "rb");
-	long headerlen=my_util::fsize("header.hex");
+	long headerlen=fsize("header.hex");
 	for (long i=0; i<headerlen; i++) 
 		fputc(fgetc(header), scx);
 	fclose(header);
@@ -191,7 +194,7 @@ bool Scenario::write(const char *base_scx_path, const char *new_scx_path)
 
 	//write compressed data to scx
 	FILE *comprdata = fopen("compressed_out.hex", "rb");
-	long compressedlen = my_util::fsize("compressed_out.hex");
+	long compressedlen = fsize("compressed_out.hex");
 	for (long i=0; i<compressedlen; i++)
 		fputc(fgetc(comprdata), scx);
 	fclose(comprdata);
@@ -210,7 +213,7 @@ bool Scenario::write(const char *base_scx_path, const char *new_scx_path)
 int Scenario::skiptotriggers(const char *path)
 {
 
-	long scx_filesize=my_util::fsize(path);
+	long scx_filesize=fsize(path);
 
 	FILE *scx = fopen(path, "rb");
 

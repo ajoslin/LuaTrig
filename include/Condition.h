@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string>
 using namespace std;
-#include "my_util.h"
+#include "../include/aokutil.h"
 
 #define MAX_CONDITION CONDITION_DifficultyLevel
 #define NUM_CONDS	20
@@ -58,7 +58,7 @@ public:
 	void writetoscx(FILE *out);
 	void writetolua(FILE *out, const char *trigvar, const char* condvar);
 
-	const string getName() const;
+	const std::string getName() const;
 
 	bool check() const;
 	bool valid_property(ConditionProperty) const;

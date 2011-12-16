@@ -1,11 +1,10 @@
 #ifndef EFFECT_H_
 #define EFFECT_H_
 
-#include <string.h>
+#include <stdio.h>
 #include <string>
 using namespace std;
-#include <stdio.h>
-#include "my_util.h"
+#include "../include/aokutil.h"
 
 #define MAX_EFFECT EFFECT_StopUnit
 #define NUM_EFFECTS	30
@@ -110,8 +109,8 @@ public:
 	long unit_const;
 	long unknown;
 
-	string text;
-	string sound;
+	std::string text;
+	std::string sound;
 
 	static const char* types[NUM_EFFECTS];
 };

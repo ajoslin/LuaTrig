@@ -1,9 +1,9 @@
-#include "LuaUtil.h"
-#include "LuaTrig.h"
+#include "../include/Luaaokutil.h"
+#include "../include/LuaTrig.h"
 #include <lua.hpp>
 
  
-Trigger *LuaUtil::getudata_trigger(lua_State *L, int index=1)
+Trigger *Luaaokutil::getudata_trigger(lua_State *L, int index=1)
 {
 	void *userdata = luaL_checkudata(L, index, TRIGGER_METATABLE);
 	luaL_argcheck(L, userdata!=NULL, index, "'Trigger' expected");
@@ -12,7 +12,7 @@ Trigger *LuaUtil::getudata_trigger(lua_State *L, int index=1)
 	return LuaTrig::instance()->get_trigger(*trigid);
 }
 
-Condition *LuaUtil::getudata_condition(lua_State *L, int index)
+Condition *Luaaokutil::getudata_condition(lua_State *L, int index)
 {
 	void *userdata = luaL_checkudata(L, index, CONDITION_METATABLE);
 	luaL_argcheck(L, userdata!=NULL, index, "'Condition' expected");
@@ -28,7 +28,7 @@ Condition *LuaUtil::getudata_condition(lua_State *L, int index)
 
 }
 
-Effect *LuaUtil::getudata_effect(lua_State *L, int index)
+Effect *Luaaokutil::getudata_effect(lua_State *L, int index)
 {
 	void *userdata = luaL_checkudata(L, index, CONDITION_METATABLE);
 	luaL_argcheck(L, userdata!=NULL, index, "'Effect' expected");

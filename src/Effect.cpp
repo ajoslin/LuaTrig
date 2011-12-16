@@ -1,5 +1,7 @@
-
-#include "Effect.h"
+#include "../include/Effect.h"
+#include "../include/fileutil.h"
+#include <stdio.h>
+#include <string.h>
 
 Effect::Effect()
 {
@@ -134,11 +136,11 @@ void Effect::writetolua(FILE *out, const char *trigvar, const char* effectvar)
 	//resource
 	if (resource!=-1) 
 		fprintf(out, "\t\t%s:resource(\"%s\") --could also be written resource(%d)\n",
-			effectvar, my_util::get_res_str(resource), resource);
+			effectvar, aokutil::get_res_str(resource), resource);
 	//diplomacy
 	if (diplomacy!=-1)
 		fprintf(out, "\t\t%s:diplomacy(\"%s\") --could also be written diplomacy(%d)\n",
-			effectvar, my_util::get_diplomacy_str(diplomacy), diplomacy);
+			effectvar, aokutil::get_diplomacy_str(diplomacy), diplomacy);
 	//unit location
 	if (uid_location!=-1)
 		fprintf(out, "\t\t%s:unit_location(%d)\n", effectvar, uid_location);
@@ -182,11 +184,11 @@ void Effect::writetolua(FILE *out, const char *trigvar, const char* effectvar)
 	//unit group
 	if (unit_group!=-1)
 		fprintf(out, "\t\t%s:unit_group(\"%s\") --could also be written unit_group(%d)\n",
-			 effectvar, my_util::get_ugroup_str(unit_group), unit_group);
+			 effectvar, aokutil::get_ugroup_str(unit_group), unit_group);
 	//unit type
 	if (unit_type!=-1)
 		fprintf(out, "\t\t%s:unit_type(\"%s\") --could also be written unit_type(%d)\n",
-			effectvar, my_util::get_utype_str(unit_type), unit_type);
+			effectvar, aokutil::get_utype_str(unit_type), unit_type);
 	//panel
 	if (panel!=-1)
 		fprintf(out, "\t\t%s:panel(%d)\n", effectvar, panel);

@@ -1,6 +1,8 @@
 
-#include "LuaTrig.h"
-#include "Scenario.h"
+#include "../include/LuaTrig.h"
+#include "../include/Scenario.h"
+#include <lua.hpp>
+#include <luabind/luabind.hpp>
 
 LuaTrig *LuaTrig::my_instance = NULL;
 
@@ -45,10 +47,6 @@ void LuaTrig::init_lua()
 
 	// load the libs
 	luaL_openlibs(L);
-
-	LuaTrigger::lua_init(L);
-	LuaCondition::lua_init(L);
-	LuaEffect::lua_init(L);
 
 	this->lua=L;
 }

@@ -1,4 +1,5 @@
-#include "Condition.h"
+#include "../include/Condition.h"
+#include "../include/fileutil.h"
 
 Condition::Condition()
 {
@@ -75,7 +76,7 @@ void Condition::writetolua(FILE *out, const char *trigvar, const char* condvar)
 	//resource type
 	if (resource_type!=-1) 
 		fprintf(out, "\t\t%s:resource(\"%s\") --could also be written resource(%d)\n",
-			condvar, my_util::get_res_str(resource_type), resource_type);
+			condvar, aokutil::get_res_str(resource_type), resource_type);
 	//unit object
 	if (uid_object!=-1)
 		fprintf(out, "\t\t%s:unit_object(%d)\n", condvar, uid_object);
@@ -101,11 +102,11 @@ void Condition::writetolua(FILE *out, const char *trigvar, const char* condvar)
 	//unit group
 	if (unit_group!=-1)
 		fprintf(out, "\t\t%s:unit_group(\"%s\") --could also be written unit_group(%d)\n",
-			 condvar, my_util::get_ugroup_str(unit_group), unit_group);
+			 condvar, aokutil::get_ugroup_str(unit_group), unit_group);
 	//unit type
 	if (unit_type!=-1)
 		fprintf(out, "\t\t%s:unit_type(\"%s\") --could also be written unit_type(%d)\n",
-			condvar, my_util::get_utype_str(unit_type), unit_type);
+			condvar, aokutil::get_utype_str(unit_type), unit_type);
 	//ai signal
 	if (ai_signal!=-1)
 		fprintf(out, "\t\t%s:ai_signal(%d)\n", condvar, ai_signal);

@@ -1,13 +1,10 @@
 #ifndef LUATRIG_H_
 #define LUATRIG_H_
 
-#include <lua.hpp>
 #include <stdio.h>
 #include "Trigger.h"
-#include "LuaTrigger.h"
-#include "LuaEffect.h"
-#include "LuaCondition.h"
 
+class lua_State;
 class Scenario; //just forward it here so don't have to include the whole scenario.h
 
 #define MAX_TRIGGERS 500

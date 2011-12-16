@@ -1,18 +1,5 @@
-#ifndef AOK_DATA_H_
-#define AOK_DATA_H_
-
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#define pf(s) printf("%s. %d bytes read\n", s, bytes_read)
-#define pf2(s, v) printf(s, v); pf("")
-#define pf3(s, v, w) printf(s, v, w); pf("")
-
-#define SKIP(file, bytes) for (int i=0; i<bytes; i++) fgetc(file); \
-	bytes_read+=bytes
-#define READ(var, size, num, file) fread(var, size, num, file); \
-	bytes_read+=(size*num)
+#ifndef AOK_UTIL_H
+#define AOK_UTIL_H
 
 class AOKRES
 {
@@ -46,7 +33,7 @@ public:
 	}
 };
 
-class my_util
+class aokutil
 {
 public:
 	static const AOKRES resources[14];
@@ -67,8 +54,6 @@ public:
 	static const AOKRES unit_groups[54];
 	static int get_ugroup(char *s);
 	static const char *get_ugroup_str(int id);
-
-	static int fsize(const char *path);
 };
 
 #endif

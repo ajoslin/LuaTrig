@@ -7,7 +7,7 @@
 using namespace std;
 #include "Effect.h"
 #include "Condition.h"
-#include "my_util.h"
+#include "aokutil.h"
 
 
 /* Triggers */

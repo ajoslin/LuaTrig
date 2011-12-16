@@ -1,44 +1,41 @@
-CC=gcc
-outputName=LuaTrig
-libs=-llua51
+outname=LuaTrig
+libs=-llua -lluabind
 src=src/
-sources=$(src)Condition.cpp $(src)Effect.cpp $(src)Trigger.cpp $(src)Scenario.cpp $(src)LuaTrigger.cpp $(src)LuaEffect.cpp $(src)LuaCondition.cpp $(src)util.cpp $(src)LuaTrig.cpp
-main=$(src)Main.cpp
+include=include/
+objects=$(src)Condition.o $(src)Effect.o $(src)Trigger.o $(src)Scenario.o $(src)lua/LuaTrigger.o $(src)lua/LuaEffect.o $(src)lua/LuaCondition.o $(src)aokutil.o $(src)fileutil.o $(src)LuaTrig.o
 
+program: $(objects)
+	g++ -Wall -o $(outname) $(libs) $(objects)
+	
+Condition.o: $(src)Condition.cpp $(include)Condition.h
+	g++ -Wall -o Condition.o -c Condition.cpp
 
+Effect.o: $(src)Effect.cpp $(include)Effect.h
+	g++ -Wall -o Effect.o -c Effect.cpp
 
-program: my_util.o effect.o condition.o trigger.o luautil.o luatrigger.o luaeffect.o luacondition.o luatrig.o scenario.o 
-	g++ -Wall my_util.o effect.o condition.o trigger.o luautil.o luatrigger.o luaeffect.o luacondition.o luatrig.o scenario.o  -o LuaTrig -llua51
+Trigger.o: $(src)Trigger.cpp $(include)Trigger.h
+	g++ -Wall -o Trigger.o -c Trigger.cpp
 
-my_util: my_util.cpp 
-	g++ -c -Wall my_util.cpp -o my_util.o
+Scenario.o: $(src)Scenario.cpp $(include)Scenario.h
+	g++ -Wall -o Scenario.o -c Scenario.cpp
 
-condition: Condition.cpp 
-	g++ -c -Wall Condition.cpp -o condition.o
+LuaTrigger.o: $(src)lua/LuaTrigger.cpp $(include)lua/LuaTrigger.h
+	g++ -Wall -o LuaTrigger.o -c LuaTrigger.cpp
 
-effect: Effect.cpp 
-	g++ -c -Wall -Effect.cpp -o effect.o
+LuaEffect.o: $(src)lua/LuaEffect.cpp $(include)lua/LuaEffect.h
+	g++ -Wall -o LuaEffect.o -c LuaEffect.cpp
 
-luaeffect: LuaEffect.cpp 
-	g++ -c -Wall LuaEffect.cpp -o luaeffect.o
+LuaCondition.o: $(src)lua/LuaCondition.cpp $(include)lua/LuaCondition.h
+	g++ -Wall -o LuaCondition.o -c LuaCondition.cpp
 
-luacondition: LuaCondition.cpp 
-	g++ -c -Wall LuaCondition.cpp -o luacondition.o
+aokutil.o: $(src)aokutil.cpp $(include)aokutil.h
+	g++ -Wall -o aokutil.o -c aokutil.cpp
 
-luatrigger: LuaTrigger.cpp
-	g++ -c -Wall LuaTrigger.cpp -o luatrigger.o
+fileutil.o: $(src)fileutil.cpp $(include)fileutil.h
+	g++ -Wall -o fileutil.o -c fileutil.cpp
 
-main: LuaTrig.cpp 
-	g++ -c -Wall LuaTrig.cpp -o Main.o
-
-luautil: LuaUtil.cpp
-	g++ -c -Wall LuaUtil.cpp -o luautil.o
-
-scenario: Scenario.cpp
-	g++ -c -Wall Scenario.cpp -o scenario.o
-
-trigger: Trigger.cpp
-	g++ -c -Wall Trigger.cpp -o trigger.o
+LuaTrig.o: $(src)LuaTrig.cpp $(include)LuaTrig.h
+	g++ -Wall -o LuaTrig.o -c LuaTrig.cpp
 
 clean:
 	rm -rf *.o
