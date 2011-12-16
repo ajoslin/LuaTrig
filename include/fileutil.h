@@ -22,8 +22,4 @@
 
 extern "C" int fsize(const char *path);
 
-extern "C" int deflate_file(Bytef *in, int length, FILE *out);
-
-extern "C" int inflate_file(Bytef *in, int length, FILE *out);
-
 #endif
