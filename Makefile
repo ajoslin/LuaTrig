@@ -38,5 +38,4 @@ LuaTrig.o: $(src)LuaTrig.cpp $(include)LuaTrig.h
 	g++ -Wall -o $(src)LuaTrig.o -c $(src)LuaTrig.cpp
 
 clean:
-	rm -rf $(src)*.o
-	rm -rf *.gch
+	rm $(src)*.o
