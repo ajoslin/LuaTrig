@@ -1,6 +1,7 @@
 /* MODEL */
 
 #include "../include/Trigger.h"
+#include "../include/fileutil.h"
 
 Trigger::Trigger()
 {

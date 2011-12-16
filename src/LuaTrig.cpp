@@ -2,7 +2,7 @@
 #include "../include/LuaTrig.h"
 #include "../include/Scenario.h"
 #include <lua.hpp>
-#include <luabind/luabind.hpp>
+//#include <luabind/luabind.hpp>
 
 LuaTrig *LuaTrig::my_instance = NULL;
 
