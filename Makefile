@@ -2,10 +2,13 @@ outname=LuaTrig
 libs=-llua51
 src=src/
 include=include/
-objects=$(src)Condition.o $(src)Effect.o $(src)Trigger.o $(src)Scenario.o $(src)LuaTrigger.o $(src)LuaEffect.o $(src)LuaCondition.o $(src)aokutil.o $(src)fileutil.o $(src)luautil.o $(src)LuaTrig.o 
+objects=$(src)Condition.o $(src)Effect.o $(src)Trigger.o $(src)Scenario.o $(src)LuaTrigger.o $(src)LuaEffect.o $(src)LuaCondition.o $(src)aokutil.o $(src)fileutil.o $(src)luautil.o $(src)LuaTrig.o $(src)Main.o
 
-program: clean $(objects)
-	g++ -Wall -o $(outname) $(libs) $(objects) $(libs)
+program: $(objects)
+	g++ -Wall -o $(outname) $(objects) $(libs)
+
+Main.o: $(src)Main.cpp $(include)Main.h
+	g++ -Wall -o $(src)Main.o -c $(src)Main.cpp
 	
 Condition.o: $(src)Condition.cpp $(include)Condition.h
 	g++ -Wall -o $(src)Condition.o -c $(src)Condition.cpp
@@ -34,8 +37,11 @@ aokutil.o: $(src)aokutil.cpp $(include)aokutil.h
 fileutil.o: $(src)fileutil.cpp $(include)fileutil.h
 	g++ -Wall -o $(src)fileutil.o -c $(src)fileutil.cpp
 
+luautil.o: $(src)luautil.cpp $(include)luautil.h
+	g++ -Wall -o $(src)luautil.o -c $(src)luautil.cpp
+
 LuaTrig.o: $(src)LuaTrig.cpp $(include)LuaTrig.h
 	g++ -Wall -o $(src)LuaTrig.o -c $(src)LuaTrig.cpp
 
 clean:
-	rm $(src)*.o
+	rm -rf $(src)*.o

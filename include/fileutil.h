@@ -1,5 +1,7 @@
 #ifndef FILE_UTIL_H
 #define FILE_UTIL_H
+#include <string>
+#include <stdio.h>
 
 /**
 	Taken from AOKTS:
@@ -21,5 +23,7 @@
 	bytes_read+=(size*num)
 
 extern "C" int fsize(const char *path);
+
+extern "C" const char *readline(FILE *f, int skip);
 
 #endif

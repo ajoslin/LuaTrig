@@ -64,7 +64,7 @@ bool Scenario::open(const char *path)
 	
 	fclose(compr_data_file);
 		
-	system("../bin/scn_decompress compressed_in.hex scndata.hex");
+	system("scn_decompress compressed_in.hex scndata.hex");
 
 	fclose(scx);
 	fclose(compr_data_file);
@@ -178,7 +178,7 @@ bool Scenario::write(const char *base_scx_path, const char *new_scx_path)
 
 	printf("out.hex size: %d\n", fsize("out.hex"));
 
-	system("../bin/scn_compress out.hex compressed_out.hex");
+	system("scn_compress out.hex compressed_out.hex");
 
 	//open new scx file
 	FILE *scx=fopen(new_scx_path, "wb");
