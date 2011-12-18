@@ -1,8 +1,6 @@
 #ifndef LUA_CONDITION_H
 #define LUA_CONDITION_H
 
-#include "Condition.h"
-
 class lua_State; //fwd declaration here so we don't have to include lua
 
 class LuaCondition

@@ -1,5 +1,5 @@
-#include "../include/luautil.h"
-#include "../include/LuaTrig.h"
+#include "../util/luautil.h"
+#include "../model/LuaTrig.h"
 #include <lua.hpp>
 
  

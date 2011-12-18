@@ -1,47 +1,52 @@
-outname=LuaTrig
-libs=-llua51
+################################################################################
+#### Makefile heavily based on TBFE-Engine makefile, created by Tyler Dodge ####
+##################### github.com/tyler-dodge/TBFE-Engine #######################
+################################################################################
+
+CC=gcc
+outName=../LuaTrig
+bin=bin/
 src=src/
-include=include/
-objects=$(src)Condition.o $(src)Effect.o $(src)Trigger.o $(src)Scenario.o $(src)LuaTrigger.o $(src)LuaEffect.o $(src)LuaCondition.o $(src)aokutil.o $(src)fileutil.o $(src)luautil.o $(src)LuaTrig.o $(src)Main.o
+objs=objs/
+model=$(src)model/
+view=$(src)view/
+util=$(src)util/
+juce=$(src)juce/
+libs=-llua51 -ljucelib_static_Win32_debug
 
-program: $(objects)
-	g++ -Wall -o $(outname) $(objects) $(libs)
+#all the source files
+modelFiles=$(model)Condition.cpp $(model)Effect.cpp $(model)Trigger.cpp $(model)LuaEffect.cpp $(model)LuaCondition.cpp $(model)LuaTrigger.cpp $(model)Scenario.cpp $(model)LuaTrig.cpp
 
-Main.o: $(src)Main.cpp $(include)Main.h
-	g++ -Wall -o $(src)Main.o -c $(src)Main.cpp
-	
-Condition.o: $(src)Condition.cpp $(include)Condition.h
-	g++ -Wall -o $(src)Condition.o -c $(src)Condition.cpp
+utilFiles=$(util)luautil.cpp $(util)aokutil.cpp $(util)fileutil.cpp
 
-Effect.o: $(src)Effect.cpp $(include)Effect.h
-	g++ -Wall -o $(src)Effect.o -c $(src)Effect.cpp
+viewFiles=$(view)Main.cpp $(view)MainWindow.cpp
 
-Trigger.o: $(src)Trigger.cpp $(include)Trigger.h
-	g++ -Wall -o $(src)Trigger.o -c $(src)Trigger.cpp
+juceFiles=
 
-Scenario.o: $(src)Scenario.cpp $(include)Scenario.h
-	g++ -Wall -o $(src)Scenario.o -c $(src)Scenario.cpp
+srcFiles=$(modelFiles) $(utilFiles) $(viewFiles) $(juceFiles)
 
-LuaTrigger.o: $(src)LuaTrigger.cpp $(include)LuaTrigger.h
-	g++ -Wall -o $(src)LuaTrigger.o -c $(src)LuaTrigger.cpp
+#Compiled source files
+objFiles=$(subst $(src),$(objs),$(srcFiles:.cpp=.o))
 
-LuaEffect.o: $(src)LuaEffect.cpp $(include)LuaEffect.h
-	g++ -Wall -o $(src)LuaEffect.o -c $(src)LuaEffect.cpp
+#main compilation, final linking
+program: $(objFiles)
+	g++ $(objFiles) $(libs) -o $(outName)
 
-LuaCondition.o: $(src)LuaCondition.cpp $(include)LuaCondition.h
-	g++ -Wall -o $(src)LuaCondition.o -c $(src)LuaCondition.cpp
+#Uses makefiles created by dependency generation for source files
+include $(objFiles:.o=.d)
 
-aokutil.o: $(src)aokutil.cpp $(include)aokutil.h
-	g++ -Wall -o $(src)aokutil.o -c $(src)aokutil.cpp
+#Dependency generation for source files 
+$(objs)%.d:$(src)%.cpp 
+	$(CC) -MM $(CPPFLAGS) $< -o $(objs)$*.P;
+	sed -r 's/$(notdir $*.o)/objs\/$(subst /,\/,$*.o)/g' < $(objs)$*.P > $(objs)$*.d;
+	rm $(objs)$*.P
 
-fileutil.o: $(src)fileutil.cpp $(include)fileutil.h
-	g++ -Wall -o $(src)fileutil.o -c $(src)fileutil.cpp
 
-luautil.o: $(src)luautil.cpp $(include)luautil.h
-	g++ -Wall -o $(src)luautil.o -c $(src)luautil.cpp
-
-LuaTrig.o: $(src)LuaTrig.cpp $(include)LuaTrig.h
-	g++ -Wall -o $(src)LuaTrig.o -c $(src)LuaTrig.cpp
+#Compile instructions for source files
+$(objs)%.o:$(src)%.cpp 
+	g++ -c $(DEFINES) $< -o $@
 
 clean:
-	rm -rf $(src)*.o
+	rm -rf $(objFiles)
+	rm -rf $(objFiles:.o=.d)
+

@@ -2,8 +2,6 @@
 #ifndef LUA_TRIGGER_H
 #define LUA_TRIGGER_H
 
-#include "LuaTrig.h"
-
 class lua_State; //fwd declaration here so we don't have to include lua
 
 class LuaTrigger

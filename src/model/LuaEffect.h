@@ -1,8 +1,6 @@
 #ifndef LUA_EFFECT_H
 #define LUA_EFFECT_H
 
-#include "Effect.h"
-
 class lua_State; //fwd declaration here so we don't have to include lua
 
 class LuaEffect

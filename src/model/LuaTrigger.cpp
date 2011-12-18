@@ -1,6 +1,7 @@
-#include "../include/LuaTrigger.h"
-#include "../include/Trigger.h"
-#include "../include/luautil.h"
+#include "LuaTrig.h"
+#include "LuaTrigger.h"
+#include "Trigger.h"
+#include "../util/luautil.h"
 #include <lua.hpp>
 #include <string.h>
 #include <stdio.h>
