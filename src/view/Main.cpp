@@ -1,13 +1,13 @@
 #include "Main.h"
 
-bool LTrig::OnInit()
+bool MainApp::OnInit()
 {
-	MainFrame = new LTFrame(wxT("LuaTrig"));
-	MainFrame->SetSize(640, 480);
-	MainFrame->Show(true);
-	SetTopWindow(MainFrame);
+	Main = new MainFrame(wxT("LuaTrig"));
+	Main->SetSize(640, 480);
+	Main->Show(true);
+	SetTopWindow(Main);
 
 	return true;
 }
 
-IMPLEMENT_APP(LTrig)
+IMPLEMENT_APP(MainApp)

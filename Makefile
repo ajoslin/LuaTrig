@@ -18,7 +18,7 @@ modelFiles=$(model)Condition.cpp $(model)Effect.cpp $(model)Trigger.cpp $(model)
 
 utilFiles=$(util)luautil.cpp $(util)aokutil.cpp $(util)fileutil.cpp
 
-viewFiles=$(view)Main.cpp $(view)LTFrame.cpp
+viewFiles=$(view)Main.cpp $(view)MainFrame.cpp $(view)LTPage_Settings.cpp
 
 srcFiles=$(modelFiles) $(utilFiles) $(viewFiles)
 

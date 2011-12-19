@@ -2,15 +2,15 @@
 #define MAIN_H_
 
 #include "wx/wx.h"
-#include "LTFrame.h"
+#include "MainFrame.h"
 
-class LTrig: public wxApp
+class MainApp: public wxApp
 {
     virtual bool OnInit();
     
-    LTFrame * MainFrame;
+    MainFrame * Main;
 };
 
-DECLARE_APP(LTrig)
+DECLARE_APP(MainApp)
 
 #endif
