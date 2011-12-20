@@ -1,99 +1,107 @@
 #include "LTFrame.h"
+#include "../res/info.xpm"
+#include "../res/aoc.xpm"
+#include "../res/lua.xpm"
+#include "../res/brain.xpm"
+#include "../res/gear.xpm"
+#include "LTDialog_Settings.h"
+#include "LTDialog_About.h"
 
 LTFrame::LTFrame(const wxString& title)
 	: wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxDefaultSize)
 {
 	//Get config settings (if they exist)
-	Config = new wxFileConfig("LuaTrig", wxEmptyString, "luatrigconfig.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	Config->Read("DefaultScenarioDir", &ScenarioDir, wxT(""));
-	Config->Read("DefaultScriptsDir", &ScriptsDir, wxT(""));
+	config = new wxFileConfig("LuaTrig", wxEmptyString, "luatrigconfig.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+	config->Read("DefaultScenarioDir", &scenarioDir, wxT(""));
+	config->Read("DefaultScriptDir", &scriptDir, wxT(""));
+	config->Read("FirstTimeStartup", &firstTimeStartup, true);
+	config->Write("FirstTimeStartup", false);
+	delete config;
 
-	//Menu Bar
-	MenuBar_Main = new wxMenuBar();
+	CreateStatusBar();
 
-	SubMenu_File = new wxMenu();
-	SubMenu_File->Append(MenuItem_About, "&About");
-	SubMenu_File->Append(MenuItem_Exit, "E&xit");
-
-	MenuBar_Main->Append(SubMenu_File, "&File");
-	this->SetMenuBar(MenuBar_Main);
+	toolBar = CreateToolBar(wxTB_TEXT | wxTB_HORIZONTAL);
+	toolBar->AddTool(ICHOICE_About, wxT("About"), wxBitmap(info_xpm));
+	toolBar->AddTool(ICHOICE_Settings, wxT("Settings"), wxBitmap(gear_xpm), wxT("Adjust program settings"));
+	toolBar->AddSeparator();
+	toolBar->AddTool(ICHOICE_OpenScenario, wxT("Open Scenario"), wxBitmap(aoc_xpm), wxT("Open a scenario"));
+	toolBar->AddTool(ICHOICE_OpenScript, wxT("Open Script"), wxBitmap(lua_xpm), wxT("Open a lua trigger-script file"));
+	toolBar->AddSeparator();
+	toolBar->AddTool(ICHOICE_TriggerGen, wxT("Generate Triggers"), wxBitmap(brain_xpm), wxT("Coming soon"));
+	toolBar->ToggleTool(ICHOICE_TriggerGen, false); //disabled - not done yet
+	toolBar->Realize();
 
 	//Tab Bar
-	TabBar_Main = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-	CreateSettingsTabPage();
+	tabBarMain = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+	//fileOpenPanel = new LTDialog_ImportExport(this, tabBarMain);
 
-	TabBar_Main->AddPage(TabPage_Settings, "Settings");
-	//TabBar_Main->AddPage(Tab_Import, "Trigger Importer/Exporter");
 	//TabBar_Main->AddPage(Tab_TriggerGen, "Trigger Generator");
-	TabBar_Main->SetSelection(1);
+	//TabBar_Main->SetSelection(0);
 
 	//Connect menu events
-	Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(LTFrame::OnExit));
-	Connect(MenuItem_About, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::OnMenuOption));
-	Connect(MenuItem_Exit, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::OnMenuOption));
+	Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(LTFrame::onExit));
+	Connect(ICHOICE_About, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onAbout));
+	Connect(ICHOICE_Settings, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onSettings));
+	Connect(ICHOICE_OpenScenario, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onOpenScenario));
+	Connect(ICHOICE_OpenScript, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onOpenScript));
+	Connect(ICHOICE_TriggerGen, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onTriggerGen));
 
-	ScenarioFile = "";
-	ScriptFile = "";
-}
+	scenarioFile = "";
+	scriptFile = "";
 
-void LTFrame::CreateSettingsTabPage()
-{
-	TabPage_Settings = new wxPanel(TabBar_Main);
-	Settings_Sizer_Main = new wxBoxSizer(wxHORIZONTAL);
-	Settings_Sizer_DefaultBtn = new wxBoxSizer(wxHORIZONTAL);
-	Settings_Sizer_Grid = new wxGridSizer(2, 2, 2);
-
-	Settings_ButtonDefaults = new wxButton(this, wxID_ANY, "Set to Defaults");
-
-	Settings_TextScenario = new wxStaticText(this, wxID_ANY, "Default Scenario folder:");
-	Settings_PathScenario = new wxDirPickerCtrl(this, wxID_ANY, ScenarioDir, wxT("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
-	Settings_TextScript = new wxStaticText(this, wxID_ANY, wxT("Default Lua Scripts folder:"));
-	Settings_PathScript = new wxDirPickerCtrl(this, wxID_ANY, ScriptsDir, wxT("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
-
-	Settings_Sizer_DefaultBtn->Add(Settings_ButtonDefaults, 1, wxEXPAND);
-
-	Settings_Sizer_Grid->Add(Settings_TextScenario, 1, wxEXPAND);
-	Settings_Sizer_Grid->Add(Settings_PathScenario, 1, wxEXPAND);
-	Settings_Sizer_Grid->Add(Settings_TextScript, 1, wxEXPAND);
-	Settings_Sizer_Grid->Add(Settings_PathScript, 1, wxEXPAND);
-
-	Settings_Sizer_Main->AddSpacer(15);
-	Settings_Sizer_Main->Add(Settings_Sizer_DefaultBtn, 1, wxALIGN_LEFT);
-	Settings_Sizer_Main->AddSpacer(15);
-	Settings_Sizer_Main->Add(Settings_Sizer_Grid, 1, wxEXPAND);
-	Settings_Sizer_Main->AddSpacer(5);
-
-	TabPage_Settings->SetSizerAndFit(Settings_Sizer_Main);
-
-	Connect(Settings_ButtonDefaults->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTFrame::Settings_OnDefaults));
-	Connect(Settings_PathScenario->GetId(), wxEVT_COMMAND_DIRPICKER_CHANGED, wxCommandEventHandler(LTFrame::Settings_OnChangeScenarioPath));
-	Connect(Settings_PathScript->GetId(), wxEVT_COMMAND_DIRPICKER_CHANGED, wxCommandEventHandler(LTFrame::Settings_OnChangeScriptsPath));
-}
-
-void LTFrame::Settings_OnDefaults(wxCommandEvent& event)
-{
-	wxString Path;
-
-	if (wxIsPlatform64Bit())
+	if (firstTimeStartup) //on first startup, open settings dialog
 	{
-		Path = "C:\\Program Files (x86)\\Microsoft Games\\Age of Empires II\\Scenario";
+		wxCommandEvent settingsCmd(wxEVT_COMMAND_MENU_SELECTED, ICHOICE_Settings);
+		ProcessEvent(settingsCmd);
 	}
-	else
-	{
-		Path = "C:\\Program Files\\Microsoft Games\\Age of Empires II\\Scenario";
-	}
-	Settings_PathScenario->SetPath(Path);
-	Settings_PathScript->SetPath(wxString(wxGetCwd() + "\\scripts");
 }
 
-void LTFrame::Settings_OnChangeScenarioPath(wxCommandEvent& event)
+void LTFrame::onExit(wxCloseEvent& event)
 {
-	ScenarioDir=Settings_PathScenario->GetPath();
-	Config->Write("DefaultScenarioDir", parent->ScenarioDir);
+	tabBarMain->Show(false);
+	tabBarMain->Destroy();
+	Destroy();
 }
 
-void LTFrame::Settings_OnChangeScriptsPath(wxCommandEvent& event)
+void LTFrame::onAbout(wxCommandEvent& event)
 {
-	ScriptsDir=Settings_PathScript->GetPath();
-	Config->Write("DefaultScriptsDir", parent->ScriptsDir);
+	LTDialog_About about(this);
+	about.ShowModal();
+}
+
+void LTFrame::onSettings(wxCommandEvent& event)
+{
+	LTDialog_Settings settings(this);
+	settings.ShowModal();
+}
+
+void LTFrame::onOpenScenario(wxCommandEvent& event)
+{
+	
+}
+
+void LTFrame::onOpenScript(wxCommandEvent& event)
+{
+	
+}
+
+void LTFrame::onTriggerGen(wxCommandEvent& event)
+{
+	
+}
+
+void LTFrame::setScenarioDir(wxString path)
+{
+	scenarioDir=path;
+	config = new wxFileConfig("LuaTrig", wxEmptyString, "luatrigconfig.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+	config->Write("DefaultScenarioDir", path);
+	delete config;
+}
+
+void LTFrame::setScriptDir(wxString path)
+{
+	scriptDir=path;
+	config = new wxFileConfig("LuaTrig", wxEmptyString, "luatrigconfig.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+	config->Write("DefaultScriptDir", path);
+	delete config;
 }

@@ -4,7 +4,7 @@
 ################################################################################
 
 CC=gcc
-outName=LuaTrig
+outName=program/LuaTrig
 bin=bin/
 src=src/
 objs=objs/
@@ -18,7 +18,7 @@ modelFiles=$(model)Condition.cpp $(model)Effect.cpp $(model)Trigger.cpp $(model)
 
 utilFiles=$(util)luautil.cpp $(util)aokutil.cpp $(util)fileutil.cpp
 
-viewFiles=$(view)LTMain.cpp $(view)LTFrame.cpp
+viewFiles=$(view)LTMain.cpp $(view)LTFrame.cpp $(view)LTDialog_Settings.cpp $(view)LTDialog_About.cpp
 
 srcFiles=$(modelFiles) $(utilFiles) $(viewFiles)
 
@@ -44,6 +44,6 @@ $(objs)%.o:$(src)%.cpp
 	g++ -c $(DEFINES) $(libs) $< -o $@
 
 clean:
-	rm -rf $(objFiles)
-	rm -rf $(objFiles:.o=.d)
+	rm $(objFiles)
+	rm $(objFiles:.o=.d)
 

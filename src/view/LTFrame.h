@@ -5,72 +5,51 @@
 #include "wx/notebook.h"
 #include "wx/fileconf.h"
 #include "wx/filepicker.h"
+#include "wx/image.h"
+#include "wx/toolbar.h"
+#include "wx/tbarbase.h"
 
 
 enum InterfaceChoices
 {
-	MenuItem_About,
-	MenuItem_Exit,
-	TabPage_Settings,
-	TabPage_ImportExport,
-	TabPage_TriggerGen,
-	Settings_ScenarioDir,
-	Settings_ScriptDir
+	ICHOICE_About,
+	ICHOICE_Settings,
+	ICHOICE_OpenScenario,
+	ICHOICE_OpenScript,
+	ICHOICE_TriggerGen
 };
 
 class LTFrame : public wxFrame
 {
+private:
+	//Misc variables
+	wxString scenarioFile;
+	wxString scriptFile;
+	wxString scenarioDir;
+	wxString scriptDir;
+	bool firstTimeStartup;
+
+	//wxWidgets
+	wxNotebook *tabBarMain;
+	wxToolBar *toolBar;
+
 public:
 	LTFrame(const wxString& title);
 
-	wxFileConfig *Config;
+	wxFileConfig *config;
 
 	//App Events
-	void OnExit(wxCloseEvent& event); 
-	void OnMenuOption(wxCommandEvent& event);
+	void onExit(wxCloseEvent& event); 
+	void onAbout(wxCommandEvent& event);
+	void onSettings(wxCommandEvent& event);
+	void onOpenScenario(wxCommandEvent& event);
+	void onOpenScript(wxCommandEvent& event);
+	void onTriggerGen(wxCommandEvent& event);
 
-	//Misc variables
-	wxString ScenarioFile;
-	wxString ScriptFile;
-	wxString ScenarioDir;
-	wxString ScriptsDir;
-
-	//Create
-	void CreateSettingsTabPage();
-
-	//TABS
-	
-	//SETTINGS
-	void Settings_OnDefaults(wxCommandEvent& event);
-	void Settings_OnChangeScenarioPath(wxCommandEvent& event);
-	void Settings_OnChangeScriptsPath(wxCommandEvent& event);
-
-	wxBoxSizer *Settings_Sizer_Main;
-	wxBoxSizer *Settings_Sizer_DefaultBtn;
-	wxGridSizer *Settings_Sizer_Grid;
-	wxButton *Settings_ButtonDefaults;
-	wxStaticText *Settings_TextScenario;
-	wxDirPickerCtrl *Settings_PathScenario;
-	wxStaticText *Settings_TextScript;
-	wxDirPickerCtrl *Settings_PathScript;
-	
-
-	//App Variables
-	
-	
-	wxMenuBar *MenuBar_Main;
-	wxMenu *SubMenu_File;
-
-	wxNotebook *TabBar_Main;
-	wxPanel *TabPage_Settings;
-	wxPanel *TabPage_ImportExport;
-	wxPanel *TabPage_TriggerGen;
-	
-	
-
-	//SETTINGS
-	
-	DECLARE_EVENT_TABLE();
+	void setScenarioDir(wxString path);
+	wxString getScenarioDir() { return scenarioDir; };
+	void setScriptDir(wxString path);
+	wxString getScriptDir() { return scriptDir; };
 };
 
 #endif
