@@ -1,7 +1,7 @@
 #include "LTDialog_About.h"
 
 LTDialog_About::LTDialog_About(wxWindow *parent)
-	: wxDialog(parent, -1, "About LuaTrig", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxNO_DEFAULT)
+  : wxDialog(parent, -1, wxT("About LuaTrig"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxNO_DEFAULT)
 {
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -10,7 +10,7 @@ LTDialog_About::LTDialog_About(wxWindow *parent)
 	wxHyperlinkCtrl *aoktsLink = new wxHyperlinkCtrl(this, wxID_ANY, wxT("-  AoK Trigger Studio, created by DiGiT: "), wxT("http://sourceforge.net/projects/aokts/"));
 	wxHyperlinkCtrl *tseLink = new wxHyperlinkCtrl(this, wxID_ANY, wxT("- Trigger Script Editor, created by Jatayu: "), wxT("http://aok.heavengames.com/blacksmith/showfile.php?fileid=10278"));
 
-	wxButton *doneButton = new wxButton(this, wxID_ANY, "OK");
+	wxButton *doneButton = new wxButton(this, wxID_ANY, wxT("OK"));
 	
 	sizer->AddSpacer(15);
 	sizer->Add(title);
