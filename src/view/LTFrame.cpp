@@ -11,11 +11,11 @@ LTFrame::LTFrame(const wxString& title)
 	: wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxDefaultSize)
 {
 	//Get config settings (if they exist)
-	config = new wxFileConfig("LuaTrig", wxEmptyString, "luatrigconfig.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	config->Read("DefaultScenarioDir", &scenarioDir, wxT(""));
-	config->Read("DefaultScriptDir", &scriptDir, wxT(""));
-	config->Read("FirstTimeStartup", &firstTimeStartup, true);
-	config->Write("FirstTimeStartup", false);
+  config = new wxFileConfig(wxT("LuaTrig"), wxEmptyString, wxT("luatrigconfig.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+  config->Read(wxT("DefaultScenarioDir"), &scenarioDir, wxT(""));
+  config->Read(wxT("DefaultScriptDir"), &scriptDir, wxT(""));
+  config->Read(wxT("FirstTimeStartup"), &firstTimeStartup, true);
+  config->Write(wxT("FirstTimeStartup"), false);
 	delete config;
 
 	CreateStatusBar();
@@ -46,8 +46,8 @@ LTFrame::LTFrame(const wxString& title)
 	Connect(ICHOICE_OpenScript, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onOpenScript));
 	Connect(ICHOICE_TriggerGen, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onTriggerGen));
 
-	scenarioFile = "";
-	scriptFile = "";
+	scenarioFile = wxT("");
+	scriptFile = wxT("");
 
 	if (firstTimeStartup) //on first startup, open settings dialog
 	{
@@ -93,15 +93,15 @@ void LTFrame::onTriggerGen(wxCommandEvent& event)
 void LTFrame::setScenarioDir(wxString path)
 {
 	scenarioDir=path;
-	config = new wxFileConfig("LuaTrig", wxEmptyString, "luatrigconfig.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	config->Write("DefaultScenarioDir", path);
+	config = new wxFileConfig(wxT("LuaTrig"), wxEmptyString, wxT("luatrigconfig.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+	config->Write(wxT("DefaultScenarioDir"), path);
 	delete config;
 }
 
 void LTFrame::setScriptDir(wxString path)
 {
 	scriptDir=path;
-	config = new wxFileConfig("LuaTrig", wxEmptyString, "luatrigconfig.ini", wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	config->Write("DefaultScriptDir", path);
+	config = new wxFileConfig(wxT("LuaTrig"), wxEmptyString, wxT("luatrigconfig.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+	config->Write(wxT("DefaultScriptDir"), path);
 	delete config;
 }

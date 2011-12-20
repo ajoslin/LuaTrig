@@ -3,7 +3,7 @@
 #include "LTFrame.h"
 
 LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
-	: wxDialog(parent, -1, "Settings", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxNO_DEFAULT | wxSTAY_ON_TOP)
+  : wxDialog(parent, -1, wxT("Settings"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxNO_DEFAULT | wxSTAY_ON_TOP)
 {
 	this->frame = parent;
 
@@ -16,7 +16,7 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 	
 	defaultBtnSizer->Add(defaultsButton, wxEXPAND);
 
-	scenarioText = new wxStaticText(this, wxID_ANY, "Scenario folder:");
+	scenarioText = new wxStaticText(this, wxID_ANY, wxT("Scenario folder:"));
 	scenarioDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScenarioDir(), wxT("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
 	scriptText = new wxStaticText(this, wxID_ANY, wxT("Lua Scripts folder:"));
 	scriptDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScriptDir(), wxT("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
@@ -57,11 +57,11 @@ void LTDialog_Settings::onDefaults(wxCommandEvent& event)
 	wxString path;
 	if (wxIsPlatform64Bit())
 	{
-		path = "c:\\Program Files (x86)\\Microsoft Games\\Age of Empires II\\Scenario";
+	  path = wxT("c:\\Program Files (x86)\\Microsoft Games\\Age of Empires II\\Scenario");
 	}
 	else
 	{
-		path = "c:\\Program Files\\Microsoft Games\\Age of Empires II\\Scenario";
+	  path = wxT("c:\\Program Files\\Microsoft Games\\Age of Empires II\\Scenario");
 	}
 	scenarioDirPicker->SetPath(path);
 
@@ -71,7 +71,7 @@ void LTDialog_Settings::onDefaults(wxCommandEvent& event)
 	while (exePath.Last()!='\\')
 		exePath.RemoveLast();
 
-	scriptDirPicker->SetPath(wxString(exePath + "scripts"));
+	scriptDirPicker->SetPath(wxString(exePath + wxT("scripts")));
 }
 
 void LTDialog_Settings::onChangeScenarioPath(wxCommandEvent& event)
