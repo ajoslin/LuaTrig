@@ -8,19 +8,22 @@ outName=program/LuaTrig
 bin=bin/
 src=src/
 objs=objs/
-model=$(src)model/
+lua=$(src)lua/
 view=$(src)view/
 util=$(src)util/
+genie=$(src)genie/
 libs=-llua `wx-config --cxxflags --libs`
 
 #all the source files
-modelFiles=$(model)Condition.cpp $(model)Effect.cpp $(model)Trigger.cpp $(model)LuaEffect.cpp $(model)LuaCondition.cpp $(model)LuaTrigger.cpp $(model)Scenario.cpp $(model)LuaTrig.cpp
+genieFiles=$(genie)Condition.cpp $(genie)Effect.cpp $(genie)Trigger.cpp $(genie)Scenario.cpp 
+
+luaFiles=$(lua)LuaEffect.cpp $(lua)LuaCondition.cpp $(lua)LuaTrigger.cpp $(lua)LuaFile.cpp
 
 utilFiles=$(util)luautil.cpp $(util)aokutil.cpp $(util)fileutil.cpp
 
-viewFiles=$(view)LTMain.cpp $(view)LTFrame.cpp $(view)LTDialog_Settings.cpp $(view)LTDialog_About.cpp
+viewFiles=$(view)LTMain.cpp $(view)LTFrame.cpp $(view)LTDialog_Settings.cpp $(view)LTDialog_About.cpp $(view)LTDialog_TriggerGen.cpp $(view)LTPage_FileBase.cpp $(view)LTPage_Script.cpp $(view)LTPage_Scen.cpp
 
-srcFiles=$(modelFiles) $(utilFiles) $(viewFiles)
+srcFiles=$(genieFiles) $(luaFiles) $(utilFiles) $(viewFiles)
 
 #Compiled source files
 objFiles=$(subst $(src),$(objs),$(srcFiles:.cpp=.o))

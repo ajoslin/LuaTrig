@@ -1,7 +1,10 @@
 #include "Scenario.h"
 #include "../util/fileutil.h"
-#include "Trigger.h"
-#include "../model/LuaTrig.h"
+
+Scenario::Scenario(const char *path)
+{
+	this->path = path;
+}
 
 Scenario::~Scenario()
 {
@@ -20,8 +23,10 @@ void Scenario::cleanup()
 	remove("out.hex");
 }
 
-bool Scenario::open(const char *path)
+bool Scenario::open()
 {
+	printf("opening scenario %s\n", path);
+
 	FILE *scx = fopen(path, "rb");
 	if (scx==NULL)
 		return false;
@@ -57,39 +62,43 @@ bool Scenario::open(const char *path)
 	printf("scx_filesize: %d\n", scx_filesize);
 	printf("clen: %d\n", clen);
 
-	FILE * compr_data_file = fopen("compressed_in.hex", "wb"); 
-	for (int i=0; i<clen; i++)
-		fputc(fgetc(scx), compr_data_file);
-	bytes_read+=clen;
-	
-	fclose(compr_data_file);
-		
-	system("scn_decompress compressed_in.hex scndata.hex");
+	Bytef *cdata = new Bytef[clen];
+	READ(cdata, sizeof(char), clen, scx);
+
+	FILE *out = fopen("scndata.hex", "wb");
+
+	inflate_file(cdata, clen, out);
 
 	fclose(scx);
-	fclose(compr_data_file);
+	fclose(out);
+
+	printf("open done\n");
 
 	return true;
 }
 
 bool Scenario::read(bool save_triggers = false)
 {
+	printf("reading scenario\n");
+
 	FILE *scx=fopen("scndata.hex", "rb");
 	if (scx==NULL)
 		return false; //must open scn before reading data
+
 	
 	trigger_start = skiptotriggers("scndata.hex");
 
 	long bytes_read = 0;
 	SKIP(scx, trigger_start);
 	
-	long numtriggers;
 	READ(&numtriggers, sizeof(long), 1, scx);
 
 	printf("numtriggers=%d\n",numtriggers);
 	
 	long trigger_skip=0;
 	bool displayed=0;
+
+	triggers.clear();
 	for (int i=0; i<numtriggers; i++)
 	{
 		Trigger *t=new Trigger;
@@ -97,7 +106,7 @@ bool Scenario::read(bool save_triggers = false)
 		trigger_skip+=bytes;
 
 		if (save_triggers)
-			LuaTrig::instance()->triggers.push_back(t);
+			triggers.push_back(t);
 	}
 	bytes_read+=trigger_skip;
 
@@ -114,18 +123,17 @@ bool Scenario::read(bool save_triggers = false)
 	printf("scenario_end=%d\n", scenario_end);
 	printf("scndata.hex size: %d, size without triggers: %d\n", filesize, filesize-trigger_skip-4*numtriggers-4);
 
-	if (save_triggers)
-		cleanup();
+	printf("read done\n");
 
 	fclose(scx);
 
 	return true;
 }
 
-bool Scenario::write(const char *base_scx_path, const char *new_scx_path)
+bool Scenario::write(const char *new_path)
 {
 	//open creates header.hex and scndata.hex
-	int success=open(base_scx_path);
+	int success=open();
 	if (!success) return false;
 
 	//read sets trigger_start and trigger_end
@@ -141,21 +149,15 @@ bool Scenario::write(const char *base_scx_path, const char *new_scx_path)
 	while(len--)
 		fputc(fgetc(olddata), newdata);
 	fclose(olddata);
-	
-	//write triggers data
-	LuaTrig *luatrig = LuaTrig::instance();
 
 	//write trigger count
-	long numtriggers = luatrig->triggers.size();
+	long numtriggers = triggers.size();
 	fwrite(&numtriggers, sizeof(long), 1, newdata);
 
 	//write triggers
-	list<Trigger *>::iterator t = luatrig->triggers.begin();
-	for (int i=0; i<numtriggers; i++) {
-		(*t)->writetoscx(newdata);
-		t++;
-	}
-		
+	for (int i=0; i<numtriggers; i++) 
+		triggers[i]->writetoscx(newdata);
+
 	//write trigger order
 	for (int i=0; i<numtriggers; i++)
 		fwrite(&i, sizeof(long), 1, newdata);
@@ -163,25 +165,28 @@ bool Scenario::write(const char *base_scx_path, const char *new_scx_path)
 		
 	//write after triggers data
 	olddata = fopen("scndata.hex", "rb");
-	
+
 	//skip to trigger_end
 	for (int i=0; i<trigger_end; i++) fgetc(olddata);
 
-	len=scenario_end-trigger_end;
-	while(len--)
+	long restlen=scenario_end-trigger_end;
+	//write the rest
+	for (int i=0; i<restlen; i++)
 		fputc(fgetc(olddata), newdata);
 	fclose(olddata);
 
-	//done with newdata hex file, close it and comprses it
+	//close and reopen newdata, then write it to a byte array
 	fclose(newdata);
-	
+	newdata = fopen("out.hex", "rb");
+	long newdata_len = fsize("out.hex");
 
-	printf("out.hex size: %d\n", fsize("out.hex"));
+	Bytef *uncompr_data = new Bytef[newdata_len];
+	fread(uncompr_data, sizeof(char), newdata_len, newdata);	
 
-	system("scn_compress out.hex compressed_out.hex");
+	printf("out.hex size: %d\n", newdata_len);
 
 	//open new scx file
-	FILE *scx=fopen(new_scx_path, "wb");
+	FILE *scx=fopen(new_path, "wb");
 
 	//Write header to new scx
 	FILE *header=fopen("header.hex", "rb");
@@ -192,20 +197,12 @@ bool Scenario::write(const char *base_scx_path, const char *new_scx_path)
 
 	printf("headerlen=%d\n", headerlen);
 
-	//write compressed data to scx
-	FILE *comprdata = fopen("compressed_out.hex", "rb");
-	long compressedlen = fsize("compressed_out.hex");
-	for (long i=0; i<compressedlen; i++)
-		fputc(fgetc(comprdata), scx);
-	fclose(comprdata);
-
-	printf("compressedlen=%d\n", compressedlen);
+	//compress new data and write it to new scx
+	deflate_file(uncompr_data, newdata_len, scx);
 
 	//done!
 	fclose(scx);
 	printf("write done!\n");
-
-	cleanup();
 	
 	return true;
 }

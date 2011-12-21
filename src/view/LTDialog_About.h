@@ -6,10 +6,23 @@
 
 class LTDialog_About : public wxDialog
 {
+private:
+	wxBoxSizer *sizer;
+	wxBoxSizer *widthSizer;
+
+	wxStaticText *title1;
+	wxStaticText *title2;
+	wxStaticText *title3;
+
+	wxStaticText *ref;
+	wxHyperlinkCtrl *aoktsLink;
+	wxHyperlinkCtrl *tseLink;
+	
+	wxButton *doneButton;
 public:
 	LTDialog_About(wxWindow *parent);
 
-	void onExit(wxCloseEvent &event);
+	void onDone(wxCommandEvent &event);
 };
 
 #endif

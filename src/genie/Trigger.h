@@ -18,7 +18,7 @@ public:
 
 	int readfromscx(FILE *scx);
 	void writetoscx(FILE *out);
-	void writetolua(FILE *out, int id, bool easyread);
+	void writetolua(FILE *out, int id, bool generate_comments);
 	
 	const static size_t MAX_TRIGNAME = 128;
 

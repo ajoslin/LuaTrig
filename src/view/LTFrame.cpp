@@ -4,18 +4,21 @@
 #include "../res/lua.xpm"
 #include "../res/brain.xpm"
 #include "../res/gear.xpm"
-#include "LTDialog_Settings.h"
-#include "LTDialog_About.h"
+#include "../res/aoc_16.xpm"
+#include "../res/lua_16.xpm"
+#include "LTPage_Scen.h"
+#include "LTPage_Script.h"
+
 
 LTFrame::LTFrame(const wxString& title)
 	: wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxDefaultSize)
 {
 	//Get config settings (if they exist)
-  config = new wxFileConfig(wxT("LuaTrig"), wxEmptyString, wxT("luatrigconfig.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-  config->Read(wxT("DefaultScenarioDir"), &scenarioDir, wxT(""));
-  config->Read(wxT("DefaultScriptDir"), &scriptDir, wxT(""));
-  config->Read(wxT("FirstTimeStartup"), &firstTimeStartup, true);
-  config->Write(wxT("FirstTimeStartup"), false);
+	config = new wxFileConfig(wxT("LuaTrig"), wxEmptyString, wxT("luatrigconfig.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+	config->Read(wxT("DefaultScenarioDir"), &scenarioDir, wxT(""));
+	config->Read(wxT("DefaultScriptDir"), &scriptDir, wxT(""));
+	config->Read(wxT("FirstTimeStartup"), &firstTimeStartup, true);
+	config->Write(wxT("FirstTimeStartup"), false);
 	delete config;
 
 	CreateStatusBar();
@@ -32,22 +35,29 @@ LTFrame::LTFrame(const wxString& title)
 	toolBar->Realize();
 
 	//Tab Bar
-	tabBarMain = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-	//fileOpenPanel = new LTDialog_ImportExport(this, tabBarMain);
+	tabBarImageList = new wxImageList(16, 16, false, 0);
+	tabBarImageList->Add(wxBitmap(aoc_16_xpm));
+	tabBarImageList->Add(wxBitmap(lua_16_xpm));
 
-	//TabBar_Main->AddPage(Tab_TriggerGen, "Trigger Generator");
-	//TabBar_Main->SetSelection(0);
+	tabBarMain = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+	tabBarMain->SetImageList(tabBarImageList);
 
 	//Connect menu events
 	Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(LTFrame::onExit));
 	Connect(ICHOICE_About, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onAbout));
 	Connect(ICHOICE_Settings, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onSettings));
-	Connect(ICHOICE_OpenScenario, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onOpenScenario));
-	Connect(ICHOICE_OpenScript, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onOpenScript));
+	Connect(ICHOICE_OpenScenario, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onOpenDialogScenario));
+	Connect(ICHOICE_OpenScript, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onOpenDialogScript));
 	Connect(ICHOICE_TriggerGen, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onTriggerGen));
 
 	scenarioFile = wxT("");
 	scriptFile = wxT("");
+
+	aboutDialog = new LTDialog_About(this);
+	settingsDialog = new LTDialog_Settings(this);
+	openScenarioDialog = new wxFileDialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("Scx files (*.scx)|*.scx"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	openScriptDialog = new wxFileDialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("Lua files (*.lua)|*.lua"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	triggerGenDialog = new LTDialog_TriggerGen(this);
 
 	if (firstTimeStartup) //on first startup, open settings dialog
 	{
@@ -65,30 +75,53 @@ void LTFrame::onExit(wxCloseEvent& event)
 
 void LTFrame::onAbout(wxCommandEvent& event)
 {
-	LTDialog_About about(this);
-	about.ShowModal();
+	aboutDialog->ShowModal();
 }
 
 void LTFrame::onSettings(wxCommandEvent& event)
 {
-	LTDialog_Settings settings(this);
-	settings.ShowModal();
+	settingsDialog->ShowModal();
 }
 
-void LTFrame::onOpenScenario(wxCommandEvent& event)
+void LTFrame::onOpenDialogScenario(wxCommandEvent& event)
 {
-	
+	openScenarioDialog->SetDirectory(scenarioDir);
+	int id=openScenarioDialog->ShowModal();
+	if (id==wxID_OK)
+		openScenario(openScenarioDialog->GetDirectory(), openScenarioDialog->GetFilename());
 }
 
-void LTFrame::onOpenScript(wxCommandEvent& event)
+void LTFrame::onOpenDialogScript(wxCommandEvent& event)
 {
-	
+	openScriptDialog->SetDirectory(scriptDir);
+	int id=openScriptDialog->ShowModal();
+	if (id==wxID_OK)
+		openScript(openScriptDialog->GetDirectory(), openScriptDialog->GetFilename());
 }
 
 void LTFrame::onTriggerGen(wxCommandEvent& event)
 {
-	
+	triggerGenDialog->ShowModal();
 }
+
+
+
+void LTFrame::openScenario(wxString dir, wxString filename)
+{
+	LTPage_Scen *newPage = new LTPage_Scen(this, tabBarMain, dir, filename);
+	int index = tabBarMain->GetPageCount();
+	tabBarMain->AddPage(newPage, filename, true);
+	tabBarMain->SetPageImage(index, 0);
+}
+
+void LTFrame::openScript(wxString dir, wxString filename)
+{
+	LTPage_Script *newPage = new LTPage_Script(this, tabBarMain, dir, filename);
+	int index = tabBarMain->GetPageCount();
+	tabBarMain->AddPage(newPage, filename, true);
+	tabBarMain->SetPageImage(index, 1);
+}
+
 
 void LTFrame::setScenarioDir(wxString path)
 {
@@ -105,3 +138,4 @@ void LTFrame::setScriptDir(wxString path)
 	config->Write(wxT("DefaultScriptDir"), path);
 	delete config;
 }
+

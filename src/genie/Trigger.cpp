@@ -129,13 +129,13 @@ void Trigger::writetoscx(FILE *scx)
 		fwrite(&i, 4, 1, scx);
 }
 
-void Trigger::writetolua(FILE *out, int id, bool easyread=true)
+void Trigger::writetolua(FILE *out, int id, bool generate_comments=true)
 {
 	char *trigvar = new char[15];
 	sprintf(trigvar, "trigger_%d", id);
 
-	//Trigger header with comment if easyread is on
-	if (easyread)
+	//Trigger header with comment if generate_comments is on
+	if (generate_comments)
 		fprintf(out, "----- TRIGGER %d -----\n", id);
 	fprintf(out, "local %s = Trigger(%d)\n", trigvar, id);
 	//name (always write)
@@ -161,8 +161,8 @@ void Trigger::writetolua(FILE *out, int id, bool easyread=true)
 	while (cond_it!=conds.end())
 	{
 		sprintf(ecvar, "condition_%d", i);
-		//comment if easyread
-		if (easyread)
+		//comment if generate_comments
+		if (generate_comments)
 			fprintf(out, "\t-- CONDITION %d %s --\n", i, (*cond_it)->getName().c_str());
 		(*cond_it)->writetolua(out, trigvar, ecvar);
 		cond_it++;
@@ -175,8 +175,8 @@ void Trigger::writetolua(FILE *out, int id, bool easyread=true)
 	while (eff_it!=effects.end())
 	{
 		sprintf(ecvar, "effect_%d", i);
-		//comment if easyread
-		if (easyread)
+		//comment if generate_comments
+		if (generate_comments)
 			fprintf(out, "\t-- EFFECT %d %s --\n", i, (*eff_it)->getName().c_str());
 		(*eff_it)->writetolua(out, trigvar, ecvar);
 		eff_it++;

@@ -32,8 +32,6 @@ public:
 	LTDialog_Settings(LTFrame *parent);
 
 	void onDefaults(wxCommandEvent& event);
-	void onChangeScenarioPath(wxCommandEvent& event);
-	void onChangeScriptsPath(wxCommandEvent& event);
 	void onDone(wxCommandEvent &event);
 };
 

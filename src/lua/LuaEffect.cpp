@@ -1,6 +1,6 @@
 #include "LuaEffect.h"
 #include "../util/luautil.h"
-#include "Effect.h"
+#include "../genie/Effect.h"
 #include <lua.hpp>
 #include <string.h>
 

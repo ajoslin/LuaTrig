@@ -1,6 +1,6 @@
-#include "LuaTrig.h"
+#include "LuaFile.h"
 #include "LuaTrigger.h"
-#include "Trigger.h"
+#include "../genie/Trigger.h"
 #include "../util/luautil.h"
 #include <lua.hpp>
 #include <string.h>
@@ -14,22 +14,20 @@ int LuaTrigger::f_new(lua_State *L)
 	int id = luaL_checknumber(L, 1);
 	if (id<0)
 		return luaL_error(L, "Error in Trigger()! Expected id>=0, got id=%d", id);
-	else if (id>=MAX_TRIGGERS) 
-	 	return luaL_error(L, "Error in Trigger()! Expected id less than %d, got %d", MAX_TRIGGERS, id);
-	else if (LuaTrig::instance()->triggers.size()>id) 
+	else if (LuaFile::current()->triggers.size()>id) 
 	 	return luaL_error(L, "Error in Trigger()! Trigger with id %d already exists!", id);
-	else if (LuaTrig::instance()->triggers.size()<id) 
+	else if (LuaFile::current()->triggers.size()<id) 
 		return luaL_error(L, "Error in Trigger()! Cannot create trigger with id %d because trigger with previous id %d does not exist.", id, id-1);
 	
 	//stores this trigger's index in lua, so it can be retrieved any time
 	int * trig_index = (int *)lua_newuserdata(L, sizeof(int));
-	*trig_index = LuaTrig::instance()->triggers.size();
+	*trig_index = LuaFile::current()->triggers.size();
 
 	luaL_getmetatable(L, TRIGGER_METATABLE);
 	lua_setmetatable(L, -2);
 
 	Trigger *t = new Trigger(*trig_index);
-	LuaTrig::instance()->triggers.push_back(t);
+	LuaFile::current()->triggers.push_back(t);
 
 	return 1; /* new userdata is already on the stack */
 }

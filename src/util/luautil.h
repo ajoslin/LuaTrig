@@ -1,8 +1,10 @@
 #ifndef LUA_UTIL_H
 #define LUA_UTIL_H
 
-#include "../model/Trigger.h"
-class lua_State; //don't want to fully include lua here so just lua_State
+class lua_State; //don't want to fully include things here so we just declare
+class Trigger;
+class Effect;
+class Condition;
 
 #define TRIGGER_METATABLE "LuaBook.trigger"
 #define EFFECT_METATABLE "LuaBook.trigger_effect"

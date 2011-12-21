@@ -1,6 +1,6 @@
 #include "LuaCondition.h"
 #include "../util/luautil.h"
-#include "Condition.h"
+#include "../genie/Condition.h"
 #include <lua.hpp>
 
 //EC_CREATOR in luautil
