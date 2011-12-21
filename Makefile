@@ -29,8 +29,9 @@ srcFiles=$(genieFiles) $(luaFiles) $(utilFiles) $(viewFiles)
 objFiles=$(subst $(src),$(objs),$(srcFiles:.cpp=.o))
 
 #main compilation, final linking
+.PHONY: program
 program: $(objFiles)
-	g++ $(objFiles) $(libs) -o $(outName)
+	g++ $(objFiles) $(libs) $(linker) -o $(outName)
 
 #Uses makefiles created by dependency generation for source files
 include $(objFiles:.o=.d)
@@ -49,4 +50,3 @@ $(objs)%.o:$(src)%.cpp
 clean:
 	rm $(objFiles)
 	rm $(objFiles:.o=.d)
-

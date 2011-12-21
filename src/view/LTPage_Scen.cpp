@@ -43,7 +43,7 @@ LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxString dir, wxStr
 
 	wxString path;
 	path = dir + wxT('/') + filename;
-	scenario = new Scenario(path.c_str());
+	scenario = new Scenario(path.char_str());
 	read();
 
 	Connect(saveScriptButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Scen::onSaveButtonPressed));
@@ -82,10 +82,10 @@ void LTPage_Scen::write(wxString path)
 	wxBeginBusyCursor();
 
 	//copy triggers from scn to luafile
-	LuaFile *lf = new LuaFile(path.c_str());
+	LuaFile *lf = new LuaFile(path.char_str());
 	lf->triggers=scenario->triggers;
 	
-	lf->write(path.c_str(), commentsCheckBox->GetValue());
+	lf->write(path.char_str(), commentsCheckBox->GetValue());
 	delete lf;
 
 	wxEndBusyCursor();
@@ -103,9 +103,9 @@ void LTPage_Scen::read()
 	scenario->read(true);
 	scenario->cleanup();
 
-	char *triggersStr = new char[sizeof(long)*8+1];
-	sprintf(triggersStr, "%d", scenario->numtriggers);
-	numTriggersText->SetLabel(wxString(triggersStr));
+	wxString triggersStr;
+	triggersStr.Printf(wxT("%d"), scenario->numtriggers);
+	numTriggersText->SetLabel(triggersStr);
 
 	wxEndBusyCursor();
 }
