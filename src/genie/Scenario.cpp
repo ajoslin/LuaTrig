@@ -1,9 +1,14 @@
 #include "Scenario.h"
 #include "../util/fileutil.h"
 
-Scenario::Scenario(const char *path)
+Scenario::Scenario(const char *_path, int len)
 {
-	this->path = path;
+	path = new char[len+1];
+	for (int i=0; i<len; i++)
+		path[i] = _path[i];
+	path[len+1]='\0';
+
+	triggers = new std::vector<Trigger *>;
 }
 
 Scenario::~Scenario()
@@ -98,7 +103,7 @@ bool Scenario::read(bool save_triggers = false)
 	long trigger_skip=0;
 	bool displayed=0;
 
-	triggers.clear();
+	triggers->clear();
 	for (int i=0; i<numtriggers; i++)
 	{
 		Trigger *t=new Trigger;
@@ -106,7 +111,7 @@ bool Scenario::read(bool save_triggers = false)
 		trigger_skip+=bytes;
 
 		if (save_triggers)
-			triggers.push_back(t);
+			triggers->push_back(t);
 	}
 	bytes_read+=trigger_skip;
 
@@ -151,12 +156,12 @@ bool Scenario::write(const char *new_path)
 	fclose(olddata);
 
 	//write trigger count
-	long numtriggers = triggers.size();
+	long numtriggers = triggers->size();
 	fwrite(&numtriggers, sizeof(long), 1, newdata);
 
 	//write triggers
 	for (int i=0; i<numtriggers; i++) 
-		triggers[i]->writetoscx(newdata);
+		triggers->at(i)->writetoscx(newdata);
 
 	//write trigger order
 	for (int i=0; i<numtriggers; i++)

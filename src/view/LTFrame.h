@@ -5,6 +5,7 @@
 #include "wx/notebook.h"
 #include "wx/fileconf.h"
 #include "wx/filepicker.h"
+#include "wx/filename.h"
 #include "wx/image.h"
 #include "wx/toolbar.h"
 #include "wx/tbarbase.h"
@@ -12,6 +13,7 @@
 #include "LTDialog_About.h"
 #include "LTDialog_Settings.h"
 #include "LTDialog_TriggerGen.h"
+#include "LTPage_FileBase.h"
 #include <vector>
 
 enum InterfaceChoices
@@ -57,14 +59,19 @@ public:
 	void onTriggerGen(wxCommandEvent& event);
 
 	//Functions
-	void openScenario(wxString dir, wxString filename);
-	void openScript(wxString dir, wxString filename);
+	//isOpen returns index of open file with path
+	int fileIndex(wxFileName *fname);
+	void openScenario(wxFileName *fname, bool select = true);
+	void openScript(wxFileName *fname, bool select = true);
+	void closeSelectedFile();
 
 	//Getters/setters
 	void setScenarioDir(wxString path);
 	wxString getScenarioDir() { return scenarioDir; };
 	void setScriptDir(wxString path);
 	wxString getScriptDir() { return scriptDir; };
+
+	std::vector<LTPage_FileBase *> openFiles;
 };
 
 #endif

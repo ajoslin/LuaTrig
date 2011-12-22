@@ -1,20 +1,31 @@
 #include "LTPage_FileBase.h"
+#include "LTFrame.h"
 
-LTPage_FileBase::LTPage_FileBase(wxNotebook *parent, FileType type, wxString dir, wxString filename)
+LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, FileType type, wxFileName *fname)
 	: wxPanel(parent)
 {
+	this->file = fname;
+	this->frame=frame;
 	this->type=type;
-	this->directory=dir;
-	this->filename=filename;
 
 	areaSizer = new wxBoxSizer(wxVERTICAL);
+	infoSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	closeButton = new wxButton(this, wxID_CANCEL, wxT("Close"));
-	reloadButton = new wxButton(this, wxID_CANCEL, wxT("Reload"));
+	reloadButton = new wxButton(this, wxID_ANY, wxT("Reload"));
+
+	wxString stype = type==FTYPE_Scenario ? wxT("Scenario") : wxT("Script");
+	numTriggersLabelText = new wxStaticText(this, wxID_ANY, stype + wxT(" Trigger Count: "));
+	numTriggersText = new wxStaticText(this, wxID_ANY, wxT(""));
+
+	infoSizer->Add(numTriggersLabelText, 1, wxALIGN_CENTER_VERTICAL);
+	infoSizer->Add(numTriggersText, 1, wxALIGN_CENTER_VERTICAL);
 
 	areaSizer->AddSpacer(15);
-	areaSizer->Add(closeButton, 0, wxALIGN_BOTTOM | wxALIGN_LEFT);
+	areaSizer->Add(closeButton);
 	areaSizer->Add(reloadButton);
+	areaSizer->AddSpacer(10);
+	areaSizer->Add(infoSizer);
 
 	SetSizer(areaSizer);
 
@@ -22,11 +33,14 @@ LTPage_FileBase::LTPage_FileBase(wxNotebook *parent, FileType type, wxString dir
 	Connect(reloadButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_FileBase::onReload));
 }
 
+void LTPage_FileBase::onOpenFilesChanged()
+{
+	
+}
+
 void LTPage_FileBase::onClose(wxCommandEvent& event)
 {
-	wxNotebook *parent=(wxNotebook *)GetParent();
-	printf("%d\n", parent->GetSelection());
-	parent->DeletePage(parent->GetSelection());
+	frame->closeSelectedFile();
 }
 
 void LTPage_FileBase::onReload(wxCommandEvent& event)

@@ -1,54 +1,50 @@
 #include "LTPage_Scen.h"
 #include "LTFrame.h"
-#include "string.h"
 #include "../lua/LuaFile.h"
+#include "../res/check.xpm"
 
-LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxString dir, wxString filename)
-	: LTPage_FileBase(parent, FTYPE_Scenario, dir, filename)
+LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
+	: LTPage_FileBase(frame, parent, FTYPE_Scenario, fname)
 {
-	this->frame = frame;
-
 	infoSizer = new wxBoxSizer(wxHORIZONTAL);
-	pickSizer = new wxBoxSizer(wxHORIZONTAL);
-	exportSizer = new wxBoxSizer(wxHORIZONTAL);
+	pickSizer = new wxBoxSizer(wxVERTICAL);
+	writeSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	numTriggersLabelText = new wxStaticText(this, wxID_ANY, wxT("Scenario Trigger Count: "));
-	numTriggersText = new wxStaticText(this, wxID_ANY, wxT(""));
-
-	infoSizer->Add(numTriggersLabelText, 1, wxALIGN_CENTER_VERTICAL);
-	infoSizer->Add(numTriggersText, 1, wxALIGN_CENTER_VERTICAL);
-
-	saveScriptText = new wxStaticText(this, wxID_ANY, wxT("Choose script file location: "));
+	saveScriptText = new wxStaticText(this, wxID_ANY, wxT("Select location to save triggers script to: "));
 	saveScriptDialog = new wxFileDialog(this, wxT("Select a location"), frame->getScriptDir(), wxT(""), wxT("Lua file (*.lua)|*.lua"), wxFD_SAVE | wxFD_CHANGE_DIR);
 	saveScriptButton = new wxButton(this, wxID_ANY, wxT("Browse..."));
 
 	pickSizer->Add(saveScriptText, 1, wxALIGN_CENTER_VERTICAL);
 	pickSizer->Add(saveScriptButton);
 
-	exportButton = new wxButton(this, wxID_ANY, wxT("Write Triggers"));
-	exportButton->Disable();
+	writeButton = new wxButton(this, wxID_ANY, wxT("Write Triggers"));
+	writeButton->Disable();
 	commentsCheckBox = new wxCheckBox(this, wxID_ANY, wxT("Generate Comments"));
 	commentsCheckBox->SetValue(true);
 
-	exportSizer->Add(exportButton, 1, wxALIGN_CENTER_VERTICAL);
-	exportSizer->AddSpacer(5);
-	exportSizer->Add(commentsCheckBox, 1, wxALIGN_CENTER_VERTICAL);
+	writeSizer->Add(writeButton, 1, wxALIGN_CENTER_VERTICAL);
+	writeSizer->AddSpacer(5);
+	writeSizer->Add(commentsCheckBox, 1, wxALIGN_CENTER_VERTICAL);
 
-	areaSizer->AddSpacer(10);
-	areaSizer->Add(infoSizer);
+	successText = new wxStaticText(this, wxID_ANY, wxT(""));
+	successTimer = new wxTimer(this, wxID_ANY);
+
 	areaSizer->AddSpacer(15);
 	areaSizer->Add(pickSizer);
-	areaSizer->AddSpacer(10);
-	areaSizer->Add(exportSizer);
-
-	wxString path;
-	path = dir + wxT('/') + filename;
-	scenario = new Scenario(path.char_str());
-	read();
+	areaSizer->AddSpacer(15);
+	areaSizer->Add(writeSizer);
+	areaSizer->AddSpacer(5);
+	areaSizer->Add(successText);
 
 	Connect(saveScriptButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Scen::onSaveButtonPressed));
-	Connect(exportButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Scen::onExportPressed));
+	Connect(writeButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Scen::onExportPressed));
+	Connect(successTimer->GetId(), wxEVT_TIMER, wxTimerEventHandler(LTPage_Scen::onSuccessTimer));
 
+	//hide all the gui until scn is done loading or it looks dumb
+	areaSizer->Show(false);
+	scenario = new Scenario(file->GetFullPath().mb_str().data(), file->GetFullPath().Len());
+	read();
+	areaSizer->Show(true);
 }
 
 void LTPage_Scen::onSaveButtonPressed(wxCommandEvent& event)
@@ -57,16 +53,16 @@ void LTPage_Scen::onSaveButtonPressed(wxCommandEvent& event)
 	if (id==wxID_CANCEL)
 		return;
 
-	//if a valid script location is chosen, enable export
+	//if a valid script location is chosen, enable write
 	wxFile *testFile = new wxFile(saveScriptDialog->GetPath().c_str(), wxFile::write);
 	if (testFile->IsOpened())
 	{
-		exportButton->Enable();
+		writeButton->Enable();
 		saveScriptButton->SetLabel(saveScriptDialog->GetFilename());
 	}
 	else
 	{
-		if (exportButton->Disable()) //if was not already disabled, re-set label
+		if (writeButton->Disable()) //if was not already disabled, re-set label
 			saveScriptButton->SetLabel(wxT("Browse..."));
 	}
 	delete testFile;
@@ -74,19 +70,28 @@ void LTPage_Scen::onSaveButtonPressed(wxCommandEvent& event)
 
 void LTPage_Scen::onExportPressed(wxCommandEvent& event)
 {
-	write(saveScriptDialog->GetPath());
+	write(new wxFileName(saveScriptDialog->GetPath()));
+	successText->SetLabel(wxT("\tSuccess!"));
+	successTimer->Start(700, wxTIMER_ONE_SHOT);
 }
 
-void LTPage_Scen::write(wxString path)
+void LTPage_Scen::onSuccessTimer(wxTimerEvent &event)
+{
+	successText->SetLabel(wxT(""));
+}
+
+void LTPage_Scen::write(wxFileName *fname)
 {
 	wxBeginBusyCursor();
 
 	//copy triggers from scn to luafile
-	LuaFile *lf = new LuaFile(path.char_str());
-	lf->triggers=scenario->triggers;
+	LuaFile *lf = new LuaFile(fname->GetFullPath().mb_str().data());
+	lf->triggers=*(scenario->triggers);
 	
-	lf->write(path.char_str(), commentsCheckBox->GetValue());
+	lf->write(fname->GetFullPath().mb_str().data(), commentsCheckBox->GetValue());
 	delete lf;
+
+	frame->openScript(fname, false);
 
 	wxEndBusyCursor();
 }
@@ -95,9 +100,6 @@ void LTPage_Scen::read()
 {
 	//display busy cursor while opening / reading scen
 	wxBeginBusyCursor();
-
-	//remove triggercount before reloading, to make it look reloadish
-	numTriggersText->SetLabel(wxT("")); 
 
 	scenario->open();
 	scenario->read(true);

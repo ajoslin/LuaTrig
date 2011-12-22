@@ -3,6 +3,7 @@
 
 #include "wx/wx.h"
 #include "wx/filedlg.h"
+#include "wx/timer.h"
 #include "LTPage_FileBase.h"
 #include "../genie/Scenario.h"
 
@@ -11,30 +12,29 @@ class LTFrame; //fwd here so we don't have to include
 class LTPage_Scen : public LTPage_FileBase
 {
 private:
-	LTFrame *frame;
 	Scenario *scenario;
-
-	wxBoxSizer *infoSizer;
+	
 	wxBoxSizer *pickSizer;
-	wxBoxSizer *exportSizer;
-
-	wxStaticText *numTriggersLabelText;
-	wxStaticText *numTriggersText;
+	wxBoxSizer *writeSizer;
 
 	wxStaticText *saveScriptText;
 	wxFileDialog *saveScriptDialog;
 	wxButton *saveScriptButton;
 
-	wxButton *exportButton;
+	wxButton *writeButton;
 	wxCheckBox *commentsCheckBox;
+	wxStaticText *successText;
+	wxTimer *successTimer;
+
 
 public:	
-	LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxString dir, wxString filename);
+	LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname);
 
 	void onSaveButtonPressed(wxCommandEvent &event);
 	void onExportPressed(wxCommandEvent &event);
+	void onSuccessTimer(wxTimerEvent &event);
 
-	virtual void write(wxString path);
+	virtual void write(wxFileName *fname);
 	virtual void read();
 };
 

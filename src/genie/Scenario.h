@@ -7,7 +7,7 @@
 class Scenario
 {
 private:
-	const char *path;
+	char *path;
 
 	int skiptotriggers(const char *path);
 	int skiptoscenarioend(const char *path);
@@ -19,7 +19,7 @@ private:
 	unsigned long headerlength;
 
 public:	
-	Scenario(const char *path);
+	Scenario(const char *path, int len);
 	~Scenario();
 
 	bool open();
@@ -28,7 +28,7 @@ public:
 
 	void cleanup();
 
-	std::vector<Trigger *> triggers;
+	std::vector<Trigger *> *triggers;
 
 	long numtriggers;
 };
