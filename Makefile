@@ -12,7 +12,7 @@ lua=$(src)lua/
 view=$(src)view/
 util=$(src)util/
 genie=$(src)genie/
-libs=-llua `wx-config --cxxflags --libs`
+libs=-llua `wx-config --cxxflags --libs` -lz
 
 #all the source files
 genieFiles=$(genie)Condition.cpp $(genie)Effect.cpp $(genie)Trigger.cpp $(genie)Scenario.cpp 
@@ -30,7 +30,7 @@ objFiles=$(subst $(src),$(objs),$(srcFiles:.cpp=.o))
 
 #main compilation, final linking
 .PHONY: program
-program: $(objFiles)
+$(outName): $(objFiles)
 	g++ $(objFiles) $(libs) $(linker) -o $(outName)
 
 #Uses makefiles created by dependency generation for source files
