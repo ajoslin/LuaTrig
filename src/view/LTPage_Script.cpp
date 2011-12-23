@@ -64,7 +64,7 @@ void LTPage_Script::onPickBaseButtonPressed(wxCommandEvent &event)
 	//create an array of strings for the pick scenario dialog
 	//first get len
 	int len=0;
-	for (int i=0; igit resolveframe->openFiles.size(); i++)
+	for (int i=0; i<frame->openFiles.size(); i++)
 		if (frame->openFiles[i]->type==FTYPE_Scenario) 
 			len++;
 	
@@ -170,3 +170,4 @@ void LTPage_Script::write(wxFileName *fname)
 
 void LTPage_Script::read()
 {
+}
