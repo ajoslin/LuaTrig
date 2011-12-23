@@ -1,7 +1,3 @@
-################################################################################
-#### Makefile heavily based on TBFE-Engine makefile, created by Tyler Dodge ####
-##################### github.com/tyler-dodge/TBFE-Engine #######################
-################################################################################
 
 CC=gcc
 outName=program/LuaTrig

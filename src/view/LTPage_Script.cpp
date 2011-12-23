@@ -70,13 +70,16 @@ void LTPage_Script::onPickBaseButtonPressed(wxCommandEvent &event)
 	
 	//create array of len, and fill it with scens
 	wxString choices[len];
+	wxString choicePaths[len];
 	int idx=0;
 	for (int i=0; i<frame->openFiles.size(); i++)
 	{
 		if (frame->openFiles[i]->type==FTYPE_Scenario)
 		{
 			wxFileName *file=frame->openFiles[i]->file;
-			choices[idx++]=/*file->GetDirs().Last() + wxT("/") + */file->GetFullName();
+			choices[idx]=/*file->GetDirs().Last() + wxT("/") + */file->GetFullName();
+			choicePaths[idx]=file->GetFullPath();
+			idx++;
 		}
 	}
 	
@@ -84,9 +87,10 @@ void LTPage_Script::onPickBaseButtonPressed(wxCommandEvent &event)
 	LTDialog_ChooseScen *chooseScnDialog = new LTDialog_ChooseScen(this, choices, len);
 	int choice=chooseScnDialog->ShowModal();
 	delete chooseScnDialog;
+	
 	if (choice != wxNOT_FOUND)
 	{
-		baseScenario->Assign(choices[choice]);
+		baseScenario->Assign(choicePaths[choice]);
 		setBaseScenario(baseScenario);
 	}
 }
@@ -133,9 +137,13 @@ void LTPage_Script::setBaseScenario(wxFileName *fname)
 	baseScenario->Assign(fname->GetFullPath());
 
 	if (!fname->FileExists())
+	{
 		pickBaseButton->SetLabel(wxT("Choose Scenario..."));
+	}
 	else
+	{
 		pickBaseButton->SetLabel(fname->GetFullName());
+	}
 	
 	if (pickTargetCheckBox->GetValue()==true)
 		setTargetScenario(fname);
