@@ -7,9 +7,13 @@
 
 LuaFile *LuaFile::currentLuaFile = NULL;
 
-LuaFile::LuaFile(const char *path)
+LuaFile::LuaFile(const char *_path, int len)
 {
-	this->path=path;
+	path = new char[len+1];
+	for (int i=0; i<len; i++)
+		path[i] = _path[i];
+	path[len+1]='\0';
+
 }
 
 char *LuaFile::open()

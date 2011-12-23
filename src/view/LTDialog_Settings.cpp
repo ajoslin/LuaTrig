@@ -7,7 +7,7 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 {
 	this->frame = parent;
 
-	areaSizer = new wxBoxSizer(wxVERTICAL);
+	mainSizer = new wxBoxSizer(wxVERTICAL);
 	defaultBtnSizer = new wxBoxSizer(wxHORIZONTAL);
 	gridSizer = new wxFlexGridSizer(2, 2, 2);
 	okBtnSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -15,7 +15,6 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 	defaultsButton = new wxButton(this, wxID_ANY, wxT("Set Default Folders"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
 		
 	defaultBtnSizer->Add(defaultsButton, wxEXPAND);
-	defaultBtnSizer->AddSpacer(500); //forces window to be larger
 
 	scenarioText = new wxStaticText(this, wxID_ANY, wxT("Scenario folder:"));
 	scenarioDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScenarioDir(), wxT("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
@@ -33,19 +32,20 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 	okBtnSizer->Add(okButton, wxEXPAND);
 	okBtnSizer->Add(cancelButton, wxEXPAND);
 
-	areaSizer->AddSpacer(10);
-	areaSizer->Add(defaultBtnSizer, 0, wxALIGN_CENTER);
-	areaSizer->AddSpacer(10);
-	areaSizer->Add(gridSizer, 1, wxEXPAND);
-	areaSizer->AddSpacer(15);
-	areaSizer->Add(okBtnSizer, 0, wxALIGN_CENTER | wxALIGN_BOTTOM);
-	areaSizer->AddSpacer(5);
+	mainSizer->AddSpacer(10);
+	mainSizer->Add(defaultBtnSizer, 0, wxALIGN_CENTER);
+	mainSizer->AddSpacer(10);
+	mainSizer->Add(gridSizer, 1, wxEXPAND);
+	mainSizer->AddSpacer(15);
+	mainSizer->Add(okBtnSizer, 0, wxALIGN_CENTER | wxALIGN_BOTTOM);
+	mainSizer->AddSpacer(5);
 
 	Connect(defaultsButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTDialog_Settings::onDefaults));
 	Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTDialog_Settings::onDone));
 	Connect(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTDialog_Settings::onDone));
 
-	SetSizerAndFit(areaSizer);
+	mainSizer->SetMinSize(wxSize(500, 1)); //only care about width
+	SetSizerAndFit(mainSizer);
 }
 
 void LTDialog_Settings::onDefaults(wxCommandEvent& event)
@@ -64,7 +64,7 @@ void LTDialog_Settings::onDefaults(wxCommandEvent& event)
 	wxString exePath = wxStandardPaths::Get().GetExecutablePath();
 
 	//Shave "LuaTrig.exe" off of the path to just get the dir
-	while (exePath.Last()!='/')
+	while (exePath.Last()!='/' && exePath.Last()!='\\')
 		exePath.RemoveLast();
 
 	scriptDirPicker->SetPath(wxString(exePath + wxT("scripts")));

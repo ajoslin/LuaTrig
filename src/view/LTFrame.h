@@ -10,11 +10,13 @@
 #include "wx/toolbar.h"
 #include "wx/tbarbase.h"
 #include "wx/imaglist.h"
-#include "LTDialog_About.h"
-#include "LTDialog_Settings.h"
-#include "LTDialog_TriggerGen.h"
-#include "LTPage_FileBase.h"
+#include "wx/dynarray.h"
 #include <vector>
+
+class LTPage_FileBase; //forward these so we don't have to include
+class LTDialog_Settings;
+class LTDialog_About;
+class LTDialog_TriggerGen;
 
 enum InterfaceChoices
 {
@@ -23,6 +25,12 @@ enum InterfaceChoices
 	ICHOICE_OpenScenario,
 	ICHOICE_OpenScript,
 	ICHOICE_TriggerGen
+};
+
+enum FileType
+{
+	FTYPE_Script,
+	FTYPE_Scenario
 };
 
 class LTFrame : public wxFrame
@@ -59,11 +67,12 @@ public:
 	void onTriggerGen(wxCommandEvent& event);
 
 	//Functions
-	//isOpen returns index of open file with path
 	int fileIndex(wxFileName *fname);
 	void openScenario(wxFileName *fname, bool select = true);
 	void openScript(wxFileName *fname, bool select = true);
-	void closeSelectedFile();
+
+	//returns true if successful close
+	bool closeFile(wxFileName *fname);
 
 	//Getters/setters
 	void setScenarioDir(wxString path);

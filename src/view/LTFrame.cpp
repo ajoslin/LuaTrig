@@ -9,6 +9,9 @@
 #include "LTPage_Scen.h"
 #include "LTPage_Script.h"
 #include "LTPage_FileBase.h"
+#include "LTDialog_About.h"
+#include "LTDialog_Settings.h"
+#include "LTDialog_TriggerGen.h"
 
 
 LTFrame::LTFrame(const wxString& title)
@@ -116,10 +119,8 @@ void LTFrame::onTriggerGen(wxCommandEvent& event)
 int LTFrame::fileIndex(wxFileName *fname)
 {
 	for (int i=0; i<openFiles.size(); i++)
-	{
-		if (openFiles.at(i)->file->GetFullPath()==fname->GetFullPath())
+		if (openFiles[i]->file->GetFullPath()==fname->GetFullPath())
 			return i;
-	}
 	return -1;
 }
 
@@ -133,10 +134,6 @@ void LTFrame::openScenario(wxFileName *fname, bool select)
 		delete fname;
 		return;
 	}
-
-	//tell all the current pages that open files changed
-	for (int i=0; i<openFiles.size(); i++)
-		openFiles[i]->onOpenFilesChanged();
 
 	LTPage_Scen *newPage = new LTPage_Scen(this, tabBarMain, fname);
 	tabBarMain->AddPage(newPage, fname->GetFullName(), select, 0);
@@ -154,26 +151,22 @@ void LTFrame::openScript(wxFileName *fname, bool select)
 		return;
 	}
 
-	//tell all the current pages that open files changed
-	for (int i=0; i<openFiles.size(); i++)
-		openFiles[i]->onOpenFilesChanged();
-
 	LTPage_Script *newPage = new LTPage_Script(this, tabBarMain, fname);
 	tabBarMain->AddPage(newPage, fname->GetFullName(), select, 1);
 	openFiles.push_back(newPage);
 }
 
-void LTFrame::closeSelectedFile()
+bool LTFrame::closeFile(wxFileName *fname)
 {
-	int index = tabBarMain->GetSelection();
-	printf("deleting %d\n", index);
-
-	tabBarMain->DeletePage(index);
-	openFiles.erase(openFiles.begin()+index);
-
-	//tell all the remaining pages that open files changed
 	for (int i=0; i<openFiles.size(); i++)
-		openFiles[i]->onOpenFilesChanged();
+	{
+		if (openFiles[i]->file==fname)
+		{
+			tabBarMain->RemovePage(i);
+			openFiles.erase(openFiles.begin()+i);
+		}
+	}
+	return false;
 }
 
 

@@ -5,9 +5,9 @@
 #include "wx/filedlg.h"
 #include "wx/timer.h"
 #include "LTPage_FileBase.h"
-#include "../genie/Scenario.h"
 
 class LTFrame; //fwd here so we don't have to include
+class Scenario;
 
 class LTPage_Scen : public LTPage_FileBase
 {

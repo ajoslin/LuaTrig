@@ -6,8 +6,7 @@
 class LTDialog_TriggerGen : public wxDialog
 {
 private:
-	wxBoxSizer *sizer;
-	wxBoxSizer *widthSizer;
+	wxBoxSizer *mainSizer;
 	
 	wxStaticText *title;
 	wxButton *okButton;

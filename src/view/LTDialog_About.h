@@ -7,8 +7,7 @@
 class LTDialog_About : public wxDialog
 {
 private:
-	wxBoxSizer *sizer;
-	wxBoxSizer *widthSizer;
+	wxBoxSizer *mainSizer;
 
 	wxStaticText *title1;
 	wxStaticText *title2;

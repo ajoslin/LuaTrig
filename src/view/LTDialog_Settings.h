@@ -12,7 +12,7 @@ class LTDialog_Settings : public wxDialog
 private:
 	LTFrame *frame;
 
-	wxBoxSizer *areaSizer;
+	wxBoxSizer *mainSizer;
 	wxBoxSizer *defaultBtnSizer;
 	wxFlexGridSizer *gridSizer;
 	wxBoxSizer *okBtnSizer;

@@ -8,10 +8,10 @@
 class LuaFile
 {
 private:
-	const char *path;
+	char *path;
 
 public:
-	LuaFile(const char *path);
+	LuaFile(const char *path, int len);
 
 	//returns errors found
 	char *open();

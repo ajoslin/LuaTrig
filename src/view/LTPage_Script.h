@@ -6,16 +6,19 @@
 #include "wx/timer.h"
 #include "LTPage_FileBase.h"
 
-class LTFrame; //fwd here so we don't have to
+class LTFrame; //fwd here so we don't have to include
+class LuaFile;
 
 class LTPage_Script : public LTPage_FileBase
 {
 private:
+	LuaFile *luaFile;
+
 	wxBoxSizer *pickBaseSizer;
 	wxBoxSizer *pickTargetSizer;
 
 	wxStaticText *pickBaseText;
-	wxComboBox *pickBaseComboBox;
+	wxButton *pickBaseButton;
 
 	wxStaticText *pickTargetText;
 	wxButton *pickTargetButton;
@@ -35,7 +38,7 @@ private:
 public:
 	LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fname);
 
-	void onScenarioComboBoxChanged(wxCommandEvent &event);
+	void onPickBaseButtonPressed(wxCommandEvent &event);
 	void onPickTargetButtonPressed(wxCommandEvent &event);
 	void onPickTargetCheckBoxChanged(wxCommandEvent &event);
 	void onWriteButtonPressed(wxCommandEvent &event);
@@ -43,8 +46,8 @@ public:
 
 	void setBaseScenario(wxFileName *fname);
 	void setTargetScenario(wxFileName *fname);
-	
-	virtual void onOpenFilesChanged();
+	void checkCanWrite();
+
 	virtual void write(wxFileName *fname);
 	virtual void read();
 

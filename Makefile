@@ -21,7 +21,7 @@ luaFiles=$(lua)LuaEffect.cpp $(lua)LuaCondition.cpp $(lua)LuaTrigger.cpp $(lua)L
 
 utilFiles=$(util)luautil.cpp $(util)aokutil.cpp $(util)fileutil.cpp
 
-viewFiles=$(view)LTMain.cpp $(view)LTFrame.cpp $(view)LTDialog_Settings.cpp $(view)LTDialog_About.cpp $(view)LTDialog_TriggerGen.cpp $(view)LTPage_FileBase.cpp $(view)LTPage_Script.cpp $(view)LTPage_Scen.cpp
+viewFiles=$(view)LTMain.cpp $(view)LTFrame.cpp $(view)LTDialog_Settings.cpp $(view)LTDialog_About.cpp $(view)LTDialog_TriggerGen.cpp $(view)LTDialog_ChooseScen.cpp $(view)LTPage_FileBase.cpp $(view)LTPage_Script.cpp $(view)LTPage_Scen.cpp
 
 srcFiles=$(genieFiles) $(luaFiles) $(utilFiles) $(viewFiles)
 
@@ -34,7 +34,7 @@ $(outName): $(objFiles)
 	g++ $(objFiles) $(libs) $(linker) -o $(outName)
 
 #Uses makefiles created by dependency generation for source files
-include $(objFiles:.o=.d)
+-include $(objFiles:.o=.d)
 
 #Dependency generation for source files 
 $(objs)%.d:$(src)%.cpp 

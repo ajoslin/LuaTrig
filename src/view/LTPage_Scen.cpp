@@ -1,6 +1,7 @@
 #include "LTPage_Scen.h"
 #include "LTFrame.h"
 #include "../lua/LuaFile.h"
+#include "../genie/Scenario.h"
 #include "../res/check.xpm"
 
 LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
@@ -85,7 +86,7 @@ void LTPage_Scen::write(wxFileName *fname)
 	wxBeginBusyCursor();
 
 	//copy triggers from scn to luafile
-	LuaFile *lf = new LuaFile(fname->GetFullPath().mb_str().data());
+	LuaFile *lf = new LuaFile(fname->GetFullPath().mb_str().data(), fname->GetFullPath().Len());
 	lf->triggers=*(scenario->triggers);
 	
 	lf->write(fname->GetFullPath().mb_str().data(), commentsCheckBox->GetValue());

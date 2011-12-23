@@ -1,7 +1,7 @@
 #include "LTPage_FileBase.h"
 #include "LTFrame.h"
 
-LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, FileType type, wxFileName *fname)
+LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, int type, wxFileName *fname)
 	: wxPanel(parent)
 {
 	this->file = fname;
@@ -33,14 +33,9 @@ LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, FileType ty
 	Connect(reloadButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_FileBase::onReload));
 }
 
-void LTPage_FileBase::onOpenFilesChanged()
-{
-	
-}
-
 void LTPage_FileBase::onClose(wxCommandEvent& event)
 {
-	frame->closeSelectedFile();
+	frame->closeFile(file);
 }
 
 void LTPage_FileBase::onReload(wxCommandEvent& event)

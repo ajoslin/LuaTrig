@@ -7,12 +7,6 @@
 
 class LTFrame; //fwd so we don't have to include
 
-enum FileType
-{
-	FTYPE_Script,
-	FTYPE_Scenario
-};
-
 class LTPage_FileBase : public wxPanel
 {
 protected:
@@ -27,10 +21,8 @@ protected:
 	wxStaticText *numTriggersLabelText;
 	wxStaticText *numTriggersText;
 
-	FileType type;
-
 public:
-	LTPage_FileBase(LTFrame *frame, wxNotebook *parent, FileType type, wxFileName *fname);
+	LTPage_FileBase(LTFrame *frame, wxNotebook *parent, int type, wxFileName *fname);
 
 	virtual void onClose(wxCommandEvent &event);
 	virtual void onReload(wxCommandEvent &event);
@@ -38,13 +30,8 @@ public:
 	virtual void write(wxFileName *fname) = 0;
 	virtual void read() = 0;
 
-	//called by LTFrame when the program's open files have changed
-	//Used by LTPage_Script
-	virtual void onOpenFilesChanged();
-
-	FileType getType() { return type; }
-
 	wxFileName *file;
+	int type;
 };
 
 #endif
