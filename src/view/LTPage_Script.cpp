@@ -72,7 +72,7 @@ void LTPage_Script::onPickTargetCheckBoxChanged(wxCommandEvent &event)
 	else
 	{
 		pickTargetButton->Enable(true);
-		pickTargetButton->SetLabel("Browse...");
+		pickTargetButton->SetLabel(wxT("Browse..."));
 	}
 }
 
@@ -94,7 +94,7 @@ void LTPage_Script::setBaseScenario(wxFileName *fname)
 		baseScenario->Assign(fname->GetFullPath());
 
 	if (!fname->FileExists())
-		pickBaseComboBox->SetValue("None");
+	  pickBaseComboBox->SetValue(wxT("None"));
 	else
 		pickBaseComboBox->SetValue(fname->GetFullName());
 	
@@ -125,7 +125,7 @@ void LTPage_Script::setTargetScenario(wxFileName *fname)
 void LTPage_Script::updatePickBaseComboBox()
 {
 	pickBaseComboBox->Clear();
-	pickBaseComboBox->Append("None", dummyScenFile);
+	pickBaseComboBox->Append(wxT("None"), dummyScenFile);
 	for (int i=0; i<frame->openFiles.size(); i++)
 		if (frame->openFiles[i]->getType()==FTYPE_Scenario)
 			pickBaseComboBox->Append(frame->openFiles[i]->file->GetFullName(), (wxClientData *)frame->openFiles[i]->file);
