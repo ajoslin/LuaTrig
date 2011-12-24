@@ -12,29 +12,29 @@
 #include "LTDialog_About.h"
 #include "LTDialog_Settings.h"
 #include "LTDialog_TriggerGen.h"
+#include "../defines.h"
 
 
 LTFrame::LTFrame(const wxString& title)
 	: wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxDefaultSize)
 {
 	//Get config settings (if they exist)
-	config = new wxFileConfig(wxT("LuaTrig"), wxEmptyString, wxT("luatrigconfig.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	config->Read(wxT("DefaultScenarioDir"), &scenarioDir, wxT(""));
-	config->Read(wxT("DefaultScriptDir"), &scriptDir, wxT(""));
-	config->Read(wxT("FirstTimeStartup"), &firstTimeStartup, true);
-	config->Write(wxT("FirstTimeStartup"), false);
+	config = new wxFileConfig(wxT(STR_LUATRIG), wxEmptyString, wxT(STR_CFG_FNAME), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+	config->Read(wxT(STR_CFG_SCNDIR), &scenarioDir, wxT(""));
+	config->Read(wxT(STR_CFG_LUADIR), &scriptDir, wxT(""));
+	bool openSettings=config->Exists(wxT(STR_CFG_SCNDIR)); //if scndir isn't set in config, open settings on startup
 	delete config;
 
 	CreateStatusBar();
 
 	toolBar = CreateToolBar(wxTB_TEXT | wxTB_HORIZONTAL);
-	toolBar->AddTool(ICHOICE_About, wxT("About"), wxBitmap(info_xpm));
-	toolBar->AddTool(ICHOICE_Settings, wxT("Settings"), wxBitmap(gear_xpm), wxT("Adjust program settings"));
+	toolBar->AddTool(ICHOICE_About, wxT(STR_TOOLBAR_ABT), wxBitmap(info_xpm));
+	toolBar->AddTool(ICHOICE_Settings, wxT(STR_TOOLBAR_STGS), wxBitmap(gear_xpm));
 	toolBar->AddSeparator();
-	toolBar->AddTool(ICHOICE_OpenScenario, wxT("Open Scenario"), wxBitmap(aoc_xpm), wxT("Open a scenario"));
-	toolBar->AddTool(ICHOICE_OpenScript, wxT("Open Script"), wxBitmap(lua_xpm), wxT("Open a lua trigger-script file"));
+	toolBar->AddTool(ICHOICE_OpenScenario, wxT(STR_TOOLBAR_SCN), wxBitmap(aoc_xpm));
+	toolBar->AddTool(ICHOICE_OpenScript, wxT(STR_TOOLBAR_LUA), wxBitmap(lua_xpm));
 	toolBar->AddSeparator();
-	toolBar->AddTool(ICHOICE_TriggerGen, wxT("Generate Triggers"), wxBitmap(brain_xpm), wxT("Coming soon"));
+	toolBar->AddTool(ICHOICE_TriggerGen, wxT(STR_TOOLBAR_TGEN), wxBitmap(brain_xpm));
 	toolBar->ToggleTool(ICHOICE_TriggerGen, false); //disabled - not done yet
 	toolBar->Realize();
 
@@ -59,11 +59,11 @@ LTFrame::LTFrame(const wxString& title)
 
 	aboutDialog = new LTDialog_About(this);
 	settingsDialog = new LTDialog_Settings(this);
-	openScenarioDialog = new wxFileDialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("Scx files (*.scx)|*.scx"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-	openScriptDialog = new wxFileDialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("Lua files (*.lua)|*.lua"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	openScenarioDialog = new wxFileDialog(this, wxT(STR_FILE_SELECT), wxT(""), wxT(""), wxT(STR_EXT_SCX), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	openScriptDialog = new wxFileDialog(this, wxT(STR_FILE_SELECT), wxT(""), wxT(""), wxT(STR_EXT_LUA), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	triggerGenDialog = new LTDialog_TriggerGen(this);
 
-	if (firstTimeStartup) //on first startup, open settings dialog
+	if (openSettings)
 	{
 		wxCommandEvent settingsCmd(wxEVT_COMMAND_MENU_SELECTED, ICHOICE_Settings);
 		ProcessEvent(settingsCmd);
@@ -173,16 +173,16 @@ bool LTFrame::closeFile(wxFileName *fname)
 void LTFrame::setScenarioDir(wxString path)
 {
 	scenarioDir=path;
-	config = new wxFileConfig(wxT("LuaTrig"), wxEmptyString, wxT("luatrigconfig.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	config->Write(wxT("DefaultScenarioDir"), path);
+	config = new wxFileConfig(wxT(STR_LUATRIG), wxEmptyString, wxT(STR_CFG_FNAME), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+	config->Write(wxT(STR_CFG_SCNDIR), path);
 	delete config;
 }
 
 void LTFrame::setScriptDir(wxString path)
 {
 	scriptDir=path;
-	config = new wxFileConfig(wxT("LuaTrig"), wxEmptyString, wxT("luatrigconfig.ini"), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	config->Write(wxT("DefaultScriptDir"), path);
+	config = new wxFileConfig(wxT(STR_LUATRIG), wxEmptyString, wxT(STR_CFG_FNAME), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
+	config->Write(wxT(STR_CFG_LUADIR), path);
 	delete config;
 }
 

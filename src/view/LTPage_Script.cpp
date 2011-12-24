@@ -4,6 +4,7 @@
 #include "../lua/LuaFile.h"
 #include "../genie/Scenario.h"
 #include "LTDialog_ChooseScen.h"
+#include "../defines.h"
 
 LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
 	: LTPage_FileBase(frame, parent, FTYPE_Script, fname)
@@ -11,23 +12,26 @@ LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fna
 	pickBaseSizer = new wxBoxSizer(wxVERTICAL);
 	pickTargetSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	pickBaseText = new wxStaticText(this, wxID_ANY, wxT("Scenario this script is based from: "));
-	pickBaseButton = new wxButton(this, wxID_ANY, wxT("Choose Scenario..."));
+	pickBaseText = new wxStaticText(this, wxID_ANY, wxT(STR_LUA_BASE));
+	pickBaseButton = new wxButton(this, wxID_ANY, wxT(STR_FILEBTN_SPACER));
+	//pickBaseButton->SetLabel(wxT(STR_BROWSE));
 
 	pickBaseSizer->Add(pickBaseText);
 	//pickBaseSizer->AddSpacer(5);
 	pickBaseSizer->Add(pickBaseButton);
 
-	pickTargetText = new wxStaticText(this, wxID_ANY, wxT("Select location to save scenario to: "));
-	pickTargetButton = new wxButton(this, wxID_ANY, wxT("Browse..."));
-	pickTargetDialog = new wxFileDialog(this, wxT("Select a location"), frame->getScenarioDir(), wxT(""), wxT("Scx file (*.scx)|*.scx"), wxFD_SAVE | wxFD_CHANGE_DIR);
-	pickTargetCheckBox = new wxCheckBox(this, wxID_ANY, wxT("Save to base scenario"));
+	pickTargetText = new wxStaticText(this, wxID_ANY, wxT(STR_LUA_TARGET));
+	pickTargetButton = new wxButton(this, wxID_ANY, wxT(STR_FILEBTN_SPACER));
+	pickTargetButton->SetLabel(wxT(STR_BROWSE));
+	pickTargetDialog = new wxFileDialog(this, wxT(STR_FILE_SELECT), frame->getScenarioDir(), wxT(""), wxT(STR_EXT_SCX), wxFD_SAVE | wxFD_CHANGE_DIR);
+	pickTargetCheckBox = new wxCheckBox(this, wxID_ANY, wxT(STR_LUA_OVERWRITE));
 
 	pickTargetSizer->Add(pickTargetButton, 1, wxALIGN_CENTER_VERTICAL);
 	pickTargetSizer->AddSpacer(5);
 	pickTargetSizer->Add(pickTargetCheckBox, 1, wxALIGN_CENTER_VERTICAL);
 
-	writeButton = new wxButton(this, wxID_ANY, wxT("Write Scenario File"));
+	writeButton = new wxButton(this, wxID_ANY, wxT(STR_LUA_WRITE));
+	writeButton->Disable();
 	successText = new wxStaticText(this, wxID_ANY, wxT(""));
 	successTimer = new wxTimer(this, wxID_ANY);
 
@@ -47,7 +51,7 @@ LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fna
 	Connect(writeButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Script::onWriteButtonPressed));
 	Connect(successTimer->GetId(), wxEVT_TIMER, wxTimerEventHandler(LTPage_Script::onSuccessTimer));
 
-	//Set these to null by default
+	//Set these to none by default
 	baseScenario = new wxFileName(wxT(""));
 	targetScenario = new wxFileName(wxT(""));
 
@@ -113,12 +117,12 @@ void LTPage_Script::onPickTargetCheckBoxChanged(wxCommandEvent &event)
 	if (pickTargetCheckBox->GetValue()==true)
 	{
 		setTargetScenario(baseScenario);
-		//pickTargetButton->Disable();
+		pickTargetButton->Disable();
 	}
 	else
 	{
 		pickTargetButton->Enable(true);
-		pickTargetButton->SetLabel(wxT("Browse..."));
+		pickTargetButton->SetLabel(wxT(STR_BROWSE));
 	}
 }
 
@@ -138,7 +142,7 @@ void LTPage_Script::setBaseScenario(wxFileName *fname)
 
 	if (!fname->FileExists())
 	{
-		pickBaseButton->SetLabel(wxT("Choose Scenario..."));
+		pickBaseButton->SetLabel(wxT(STR_BROWSE));
 	}
 	else
 	{
@@ -155,10 +159,7 @@ void LTPage_Script::setTargetScenario(wxFileName *fname)
 
 	if (!fname->FileExists())
 	{
-		if (pickTargetCheckBox->GetValue()==true)
-			pickTargetButton->SetLabel(wxT("No Base Scenario!"));
-		else
-			pickTargetButton->SetLabel(wxT("Browse..."));
+		pickTargetButton->SetLabel(wxT(STR_BROWSE));
 	}
 	else
 	{

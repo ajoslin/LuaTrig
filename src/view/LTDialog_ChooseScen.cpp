@@ -1,18 +1,19 @@
 #include "LTDialog_ChooseScen.h"
+#include "../defines.h"
 
 LTDialog_ChooseScen::LTDialog_ChooseScen(wxWindow *parent, wxString choices[], int nChoices)
-  : wxDialog(parent, -1, wxT("Choose Base Scenario"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxNO_DEFAULT | wxSTAY_ON_TOP)
+  : wxDialog(parent, -1, wxT(STR_CHSSCN_TITLE), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxNO_DEFAULT | wxSTAY_ON_TOP)
 {
 	mainSizer = new wxBoxSizer(wxVERTICAL);
 	buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	radioBox = new wxRadioBox(this, wxID_ANY, wxT("Choose from open scenarios:"), wxDefaultPosition, wxDefaultSize, nChoices, choices, 0, wxRA_SPECIFY_ROWS);
+	radioBox = new wxRadioBox(this, wxID_ANY, wxT(STR_CHSSCN_RADIO), wxDefaultPosition, wxDefaultSize, nChoices, choices, 0, wxRA_SPECIFY_ROWS);
 
 	mainSizer->AddSpacer(10);
 	mainSizer->Add(radioBox, 1, wxALIGN_CENTER);
 
-	okButton = new wxButton(this, wxID_OK, wxT("OK"));
-	cancelButton = new wxButton(this, wxID_CANCEL, wxT("Cancel"));
+	okButton = new wxButton(this, wxID_OK, wxT(STR_OK));
+	cancelButton = new wxButton(this, wxID_CANCEL, wxT(STR_CANCEL));
 
 	buttonSizer->Add(okButton);
 	buttonSizer->Add(cancelButton);

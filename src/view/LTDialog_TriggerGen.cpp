@@ -1,13 +1,14 @@
 #include "LTDialog_TriggerGen.h"
+#include "../defines.h"
 
 LTDialog_TriggerGen::LTDialog_TriggerGen(wxWindow *parent)
-	: wxDialog(parent, -1, wxT("Generate Triggers"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxNO_DEFAULT | wxSTAY_ON_TOP)
+	: wxDialog(parent, -1, wxT(STR_TGEN_TITLE), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxNO_DEFAULT | wxSTAY_ON_TOP)
 {
 
 	mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	title = new wxStaticText(this, wxID_ANY, wxT("Coming soon!"));
-	okButton = new wxButton(this, wxID_OK, wxT("OK"));
+	title = new wxStaticText(this, wxID_ANY, wxT(STR_SOON));
+	okButton = new wxButton(this, wxID_OK, wxT(STR_OK));
 
 	mainSizer->AddSpacer(15);
 	mainSizer->Add(title, 0, wxALIGN_CENTER);

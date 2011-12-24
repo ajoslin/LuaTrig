@@ -1,9 +1,10 @@
 #include "LTDialog_Settings.h"
 #include "wx/stdpaths.h"
 #include "LTFrame.h"
+#include "../defines.h"
 
 LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
-  : wxDialog(parent, -1, wxT("Settings"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxNO_DEFAULT | wxSTAY_ON_TOP)
+  : wxDialog(parent, -1, wxT(STR_STGS_TITLE), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxNO_DEFAULT | wxSTAY_ON_TOP)
 {
 	this->frame = parent;
 
@@ -12,14 +13,14 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 	gridSizer = new wxFlexGridSizer(2, 2, 2);
 	okBtnSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	defaultsButton = new wxButton(this, wxID_ANY, wxT("Set Default Folders"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+	defaultsButton = new wxButton(this, wxID_ANY, wxT(STR_STGS_DEFAULT), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
 		
 	defaultBtnSizer->Add(defaultsButton, wxEXPAND);
 
-	scenarioText = new wxStaticText(this, wxID_ANY, wxT("Scenario folder:"));
-	scenarioDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScenarioDir(), wxT("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
-	scriptText = new wxStaticText(this, wxID_ANY, wxT("Lua Scripts folder:"));
-	scriptDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScriptDir(), wxT("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
+	scenarioText = new wxStaticText(this, wxID_ANY, wxT(STR_STGS_SCN_TITLE));
+	scenarioDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScenarioDir(), wxT(STR_DIR_SELECT), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
+	scriptText = new wxStaticText(this, wxID_ANY, wxT(STR_STGS_LUA_TITLE));
+	scriptDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScriptDir(), wxT(STR_DIR_SELECT), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
 
 	gridSizer->Add(scenarioText, 1, wxEXPAND);
 	gridSizer->Add(scenarioDirPicker, 1, wxEXPAND);
@@ -27,8 +28,8 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 	gridSizer->Add(scriptDirPicker, 1, wxEXPAND);
 	gridSizer->AddGrowableCol(1, 1);
 
-	okButton = new wxButton(this, wxID_OK, wxT("OK"));
-	cancelButton = new wxButton(this, wxID_CANCEL, wxT("Cancel"));
+	okButton = new wxButton(this, wxID_OK, wxT(STR_OK));
+	cancelButton = new wxButton(this, wxID_CANCEL, wxT(STR_CANCEL));
 	okBtnSizer->Add(okButton, wxEXPAND);
 	okBtnSizer->Add(cancelButton, wxEXPAND);
 
@@ -53,11 +54,11 @@ void LTDialog_Settings::onDefaults(wxCommandEvent& event)
 	wxString path;
 	if (wxIsPlatform64Bit())
 	{
-	  path = wxT("c:/Program Files (x86)/Microsoft Games/Age of Empires II/Scenario");
+	  path = wxT(STR_STGS_SCN_DIR64);
 	}
 	else
 	{
-	  path = wxT("c:/Program Files/Microsoft Games/Age of Empires II/Scenario");
+	  path = wxT(STR_STGS_SCN_DIR32);
 	}
 	scenarioDirPicker->SetPath(path);
 
@@ -67,7 +68,7 @@ void LTDialog_Settings::onDefaults(wxCommandEvent& event)
 	while (exePath.Last()!='/' && exePath.Last()!='\\')
 		exePath.RemoveLast();
 
-	scriptDirPicker->SetPath(wxString(exePath + wxT("scripts")));
+	scriptDirPicker->SetPath(wxString(exePath + wxT(STR_STGS_LUA_DIR)));
 }
 
 void LTDialog_Settings::onDone(wxCommandEvent& event)

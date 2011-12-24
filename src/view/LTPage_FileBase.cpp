@@ -1,5 +1,6 @@
 #include "LTPage_FileBase.h"
 #include "LTFrame.h"
+#include "../defines.h"
 
 LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, int type, wxFileName *fname)
 	: wxPanel(parent)
@@ -11,11 +12,11 @@ LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, int type, w
 	areaSizer = new wxBoxSizer(wxVERTICAL);
 	infoSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	closeButton = new wxButton(this, wxID_CANCEL, wxT("Close"));
-	reloadButton = new wxButton(this, wxID_ANY, wxT("Reload"));
+	closeButton = new wxButton(this, wxID_CANCEL, wxT(STR_CLOSE));
+	reloadButton = new wxButton(this, wxID_ANY, wxT(STR_RELOAD));
 
-	wxString stype = type==FTYPE_Scenario ? wxT("Scenario") : wxT("Script");
-	numTriggersLabelText = new wxStaticText(this, wxID_ANY, stype + wxT(" Trigger Count: "));
+	wxString stype = type==FTYPE_Scenario ? wxT(STR_SCENARIO) : wxT(STR_SCRIPT);
+	numTriggersLabelText = new wxStaticText(this, wxID_ANY, stype+wxT(" ")+wxT(STR_FILE_TRIGCNT)+wxT(" "));
 	numTriggersText = new wxStaticText(this, wxID_ANY, wxT(""));
 
 	infoSizer->Add(numTriggersLabelText, 1, wxALIGN_CENTER_VERTICAL);

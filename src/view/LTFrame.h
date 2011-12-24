@@ -41,7 +41,6 @@ private:
 	wxString scriptFile;
 	wxString scenarioDir;
 	wxString scriptDir;
-	bool firstTimeStartup;
 
 	//wxWidgets
 	wxNotebook *tabBarMain;

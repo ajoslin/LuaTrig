@@ -3,6 +3,7 @@
 #include "../lua/LuaFile.h"
 #include "../genie/Scenario.h"
 #include "../res/check.xpm"
+#include "../defines.h"
 
 LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
 	: LTPage_FileBase(frame, parent, FTYPE_Scenario, fname)
@@ -11,16 +12,17 @@ LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
 	pickSizer = new wxBoxSizer(wxVERTICAL);
 	writeSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	saveScriptText = new wxStaticText(this, wxID_ANY, wxT("Select location to save triggers script to: "));
-	saveScriptDialog = new wxFileDialog(this, wxT("Select a location"), frame->getScriptDir(), wxT(""), wxT("Lua file (*.lua)|*.lua"), wxFD_SAVE | wxFD_CHANGE_DIR);
-	saveScriptButton = new wxButton(this, wxID_ANY, wxT("Browse..."));
+	saveScriptText = new wxStaticText(this, wxID_ANY, wxT(STR_SCEN_SAVETITLE));
+	saveScriptDialog = new wxFileDialog(this, wxT(STR_FILE_SELECT), frame->getScriptDir(), wxT(""), wxT(STR_EXT_LUA), wxFD_SAVE | wxFD_CHANGE_DIR);
+	saveScriptButton = new wxButton(this, wxID_ANY, wxT(STR_FILEBTN_SPACER));
+	saveScriptButton->SetLabel(wxT(STR_BROWSE));
 
 	pickSizer->Add(saveScriptText, 1, wxALIGN_CENTER_VERTICAL);
 	pickSizer->Add(saveScriptButton);
 
-	writeButton = new wxButton(this, wxID_ANY, wxT("Write Triggers"));
+	writeButton = new wxButton(this, wxID_ANY, wxT(STR_SCEN_WRITE));
 	writeButton->Disable();
-	commentsCheckBox = new wxCheckBox(this, wxID_ANY, wxT("Generate Comments"));
+	commentsCheckBox = new wxCheckBox(this, wxID_ANY, wxT(STR_SCEN_COMMENTS));
 	commentsCheckBox->SetValue(true);
 
 	writeSizer->Add(writeButton, 1, wxALIGN_CENTER_VERTICAL);
@@ -64,7 +66,7 @@ void LTPage_Scen::onSaveButtonPressed(wxCommandEvent& event)
 	else
 	{
 		if (writeButton->Disable()) //if was not already disabled, re-set label
-			saveScriptButton->SetLabel(wxT("Browse..."));
+			saveScriptButton->SetLabel(wxT(STR_BROWSE));
 	}
 	delete testFile;
 }
@@ -72,7 +74,7 @@ void LTPage_Scen::onSaveButtonPressed(wxCommandEvent& event)
 void LTPage_Scen::onExportPressed(wxCommandEvent& event)
 {
 	write(new wxFileName(saveScriptDialog->GetPath()));
-	successText->SetLabel(wxT("\tSuccess!"));
+	successText->SetLabel(wxT(STR_TABSUCCESS));
 	successTimer->Start(700, wxTIMER_ONE_SHOT);
 }
 
