@@ -169,6 +169,16 @@ bool LTFrame::closeFile(wxFileName *fname)
 	return false;
 }
 
+void LTFrame::onError(wxString err)
+{
+	wxString str(wxT(STR_FILE_ERROR));
+	str+=wxT("\n");
+	str+=err;
+	wxMessageDialog *errDialog = new wxMessageDialog(this, str, wxT(STR_ERROR), wxOK);
+	errDialog->ShowModal();
+	delete errDialog;
+}
+
 
 void LTFrame::setScenarioDir(wxString path)
 {

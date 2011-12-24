@@ -24,7 +24,7 @@ private:
 	wxButton *writeButton;
 	wxCheckBox *commentsCheckBox;
 	wxStaticText *successText;
-	wxTimer *successTimer;
+	wxTimer *timer;
 
 
 public:	
@@ -32,7 +32,7 @@ public:
 
 	void onSaveButtonPressed(wxCommandEvent &event);
 	void onExportPressed(wxCommandEvent &event);
-	void onSuccessTimer(wxTimerEvent &event);
+	void onTimer(wxTimerEvent &event);
 
 	virtual void write(wxFileName *fname);
 	virtual void read();

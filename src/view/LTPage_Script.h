@@ -27,7 +27,7 @@ private:
 
 	wxButton *writeButton;
 	wxStaticText *successText;
-	wxTimer *successTimer;
+	wxTimer *timer;
 
 	wxFileName *baseScenario;
 	wxFileName *targetScenario;
@@ -42,7 +42,7 @@ public:
 	void onPickTargetButtonPressed(wxCommandEvent &event);
 	void onPickTargetCheckBoxChanged(wxCommandEvent &event);
 	void onWriteButtonPressed(wxCommandEvent &event);
-	void onSuccessTimer(wxTimerEvent &event);
+	void onTimer(wxTimerEvent &event);
 
 	void setBaseScenario(wxFileName *fname);
 	void setTargetScenario(wxFileName *fname);

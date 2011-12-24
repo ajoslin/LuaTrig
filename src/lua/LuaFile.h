@@ -9,12 +9,16 @@ class LuaFile
 {
 private:
 	char *path;
+	char *read_error;
 
 public:
 	LuaFile(const char *path, int len);
 
-	//returns errors found
-	char *open();
+	//returns whether has errors
+	bool read();
+
+	//returns error str from last read, or null
+	const char *error();
 	
 	void write(const char *new_path, bool generate_comments);
 

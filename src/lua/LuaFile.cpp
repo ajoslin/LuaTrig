@@ -14,9 +14,10 @@ LuaFile::LuaFile(const char *_path, int len)
 		path[i] = _path[i];
 	path[len+1]='\0';
 
+	read_error=NULL;
 }
 
-char *LuaFile::open()
+bool LuaFile::read()
 {
 	currentLuaFile = this;
 
@@ -28,18 +29,31 @@ char *LuaFile::open()
 	LuaCondition::lua_init(L);
 	LuaTrigger::lua_init(L);
 
-	char *error = NULL;
+	triggers.clear();
 	
-	int haserrors=luaL_dofile(L, path);
-	if (haserrors)
+	//Record error if it exists
+	int has_errors=luaL_dofile(L, path);
+
+	if (read_error!=NULL) //free error if it was occupied before
+		free(read_error);
+
+	if (has_errors!=0)
 	{
-		error = (char *)lua_tostring(L, -1);
+		read_error=(char *)lua_tostring(L, -1);
 		lua_pop(L, 1); // remove error message
 	}
-
+	else
+	{
+		read_error=NULL;
+	}
+	
 	lua_close(L);
+	return has_errors!=0;
+};
 
-	return error;
+const char *LuaFile::error()
+{
+	return (const char *)read_error;
 }
 
 void LuaFile::write(const char *new_path, bool generate_comments=false)

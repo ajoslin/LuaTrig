@@ -14,8 +14,7 @@ LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
 
 	saveScriptText = new wxStaticText(this, wxID_ANY, wxT(STR_SCEN_SAVETITLE));
 	saveScriptDialog = new wxFileDialog(this, wxT(STR_FILE_SELECT), frame->getScriptDir(), wxT(""), wxT(STR_EXT_LUA), wxFD_SAVE | wxFD_CHANGE_DIR);
-	saveScriptButton = new wxButton(this, wxID_ANY, wxT(STR_FILEBTN_SPACER));
-	saveScriptButton->SetLabel(wxT(STR_BROWSE));
+	saveScriptButton = new wxButton(this, wxID_ANY, wxT(STR_BROWSE));
 
 	pickSizer->Add(saveScriptText, 1, wxALIGN_CENTER_VERTICAL);
 	pickSizer->Add(saveScriptButton);
@@ -30,24 +29,24 @@ LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
 	writeSizer->Add(commentsCheckBox, 1, wxALIGN_CENTER_VERTICAL);
 
 	successText = new wxStaticText(this, wxID_ANY, wxT(""));
-	successTimer = new wxTimer(this, wxID_ANY);
+	timer = new wxTimer(this, wxID_ANY);
 
-	areaSizer->AddSpacer(15);
-	areaSizer->Add(pickSizer);
-	areaSizer->AddSpacer(15);
-	areaSizer->Add(writeSizer);
-	areaSizer->AddSpacer(5);
-	areaSizer->Add(successText);
+	mainSizer->AddSpacer(15);
+	mainSizer->Add(pickSizer);
+	mainSizer->AddSpacer(15);
+	mainSizer->Add(writeSizer);
+	mainSizer->AddSpacer(5);
+	mainSizer->Add(successText);
 
 	Connect(saveScriptButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Scen::onSaveButtonPressed));
 	Connect(writeButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Scen::onExportPressed));
-	Connect(successTimer->GetId(), wxEVT_TIMER, wxTimerEventHandler(LTPage_Scen::onSuccessTimer));
+	Connect(timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(LTPage_Scen::onTimer));
 
 	//hide all the gui until scn is done loading or it looks dumb
-	areaSizer->Show(false);
+	mainSizer->Show(false);
 	scenario = new Scenario(file->GetFullPath().mb_str().data(), file->GetFullPath().Len());
 	read();
-	areaSizer->Show(true);
+	mainSizer->Show(true);
 }
 
 void LTPage_Scen::onSaveButtonPressed(wxCommandEvent& event)
@@ -75,10 +74,10 @@ void LTPage_Scen::onExportPressed(wxCommandEvent& event)
 {
 	write(new wxFileName(saveScriptDialog->GetPath()));
 	successText->SetLabel(wxT(STR_TABSUCCESS));
-	successTimer->Start(700, wxTIMER_ONE_SHOT);
+	timer->Start(700, wxTIMER_ONE_SHOT);
 }
 
-void LTPage_Scen::onSuccessTimer(wxTimerEvent &event)
+void LTPage_Scen::onTimer(wxTimerEvent &event)
 {
 	successText->SetLabel(wxT(""));
 }
@@ -108,9 +107,7 @@ void LTPage_Scen::read()
 	scenario->read(true);
 	scenario->cleanup();
 
-	wxString triggersStr;
-	triggersStr.Printf(wxT("%d"), scenario->numtriggers);
-	numTriggersText->SetLabel(triggersStr);
+	setTriggerCount(scenario->numtriggers);
 
 	wxEndBusyCursor();
 }

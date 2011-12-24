@@ -1,4 +1,3 @@
-
 //MISC/SHARED STUFF
 #define STR_LUATRIG			"LuaTrig"
 #define STR_SOON			"Coming Soon!"
@@ -10,9 +9,7 @@
 #define STR_CANCEL			"Cancel"
 #define STR_CLOSE			"Close"
 #define STR_RELOAD			"Reload"
-
-//60 spaces
-#define STR_FILEBTN_SPACER		"                                                                                                    "
+#define STR_ERROR 			"Error"
 
 #define STR_CFG_FNAME		"config.ini"
 #define STR_CFG_SCNDIR		"DefaultScenarioDir"
@@ -66,6 +63,7 @@
 
 //FILE FRAME
 #define STR_FILE_TRIGCNT	"Trigger Count:"
+#define STR_FILE_ERROR		"Script Read Error!"
 
 //SCEN FRAME
 #define STR_SCEN_SAVETITLE	"Select target location for triggers script:"
@@ -75,5 +73,5 @@
 //LUA FRAME
 #define STR_LUA_BASE		"Scenario this script is based from:"
 #define STR_LUA_TARGET		"Select target location for scenario:"
-#define STR_LUA_OVERWRITE	"Overwrite base scenario"
+#define STR_LUA_OVERWRITE	"Set target scenario to overwrite base scenario"
 #define STR_LUA_WRITE		"Write Scenario"

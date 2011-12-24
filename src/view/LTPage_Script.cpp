@@ -10,19 +10,17 @@ LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fna
 	: LTPage_FileBase(frame, parent, FTYPE_Script, fname)
 {
 	pickBaseSizer = new wxBoxSizer(wxVERTICAL);
-	pickTargetSizer = new wxBoxSizer(wxHORIZONTAL);
+	pickTargetSizer = new wxBoxSizer(wxVERTICAL);
 
 	pickBaseText = new wxStaticText(this, wxID_ANY, wxT(STR_LUA_BASE));
-	pickBaseButton = new wxButton(this, wxID_ANY, wxT(STR_FILEBTN_SPACER));
-	//pickBaseButton->SetLabel(wxT(STR_BROWSE));
+	pickBaseButton = new wxButton(this, wxID_ANY, wxT(STR_BROWSE), wxDefaultPosition, wxSize(250, wxDefaultSize.GetHeight()));
 
 	pickBaseSizer->Add(pickBaseText);
 	//pickBaseSizer->AddSpacer(5);
 	pickBaseSizer->Add(pickBaseButton);
 
 	pickTargetText = new wxStaticText(this, wxID_ANY, wxT(STR_LUA_TARGET));
-	pickTargetButton = new wxButton(this, wxID_ANY, wxT(STR_FILEBTN_SPACER));
-	pickTargetButton->SetLabel(wxT(STR_BROWSE));
+	pickTargetButton = new wxButton(this, wxID_ANY, wxT(STR_BROWSE), wxDefaultPosition, wxSize(250, wxDefaultSize.GetHeight()));
 	pickTargetDialog = new wxFileDialog(this, wxT(STR_FILE_SELECT), frame->getScenarioDir(), wxT(""), wxT(STR_EXT_SCX), wxFD_SAVE | wxFD_CHANGE_DIR);
 	pickTargetCheckBox = new wxCheckBox(this, wxID_ANY, wxT(STR_LUA_OVERWRITE));
 
@@ -33,33 +31,33 @@ LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fna
 	writeButton = new wxButton(this, wxID_ANY, wxT(STR_LUA_WRITE));
 	writeButton->Disable();
 	successText = new wxStaticText(this, wxID_ANY, wxT(""));
-	successTimer = new wxTimer(this, wxID_ANY);
+	timer = new wxTimer(this, wxID_ANY);
 
-	areaSizer->AddSpacer(15);
-	areaSizer->Add(pickBaseSizer);
-	areaSizer->AddSpacer(15);
-	areaSizer->Add(pickTargetText);
-	areaSizer->Add(pickTargetSizer);
-	areaSizer->AddSpacer(15);
-	areaSizer->Add(writeButton);
-	areaSizer->AddSpacer(5);
-	areaSizer->Add(successText);
+	mainSizer->AddSpacer(15);
+	mainSizer->Add(pickBaseSizer);
+	mainSizer->AddSpacer(15);
+	mainSizer->Add(pickTargetText);
+	mainSizer->Add(pickTargetSizer);
+	mainSizer->AddSpacer(15);
+	mainSizer->Add(writeButton);
+	mainSizer->AddSpacer(5);
+	mainSizer->Add(successText);
 
 	Connect(pickBaseButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Script::onPickBaseButtonPressed));
 	Connect(pickTargetButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Script::onPickTargetButtonPressed));
 	Connect(pickTargetCheckBox->GetId(), wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(LTPage_Script::onPickTargetCheckBoxChanged));
 	Connect(writeButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Script::onWriteButtonPressed));
-	Connect(successTimer->GetId(), wxEVT_TIMER, wxTimerEventHandler(LTPage_Script::onSuccessTimer));
+	Connect(timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(LTPage_Script::onTimer));
 
 	//Set these to none by default
 	baseScenario = new wxFileName(wxT(""));
 	targetScenario = new wxFileName(wxT(""));
 
 	//hide while it's reading 
-	areaSizer->Show(false);
+	mainSizer->Show(false);
 	luaFile = new LuaFile(file->GetFullPath().mb_str().data(), file->GetFullPath().Len());
 	read();
-	areaSizer->Show(true);
+	mainSizer->Show(true);
 
 }
 
@@ -117,23 +115,37 @@ void LTPage_Script::onPickTargetCheckBoxChanged(wxCommandEvent &event)
 	if (pickTargetCheckBox->GetValue()==true)
 	{
 		setTargetScenario(baseScenario);
-		pickTargetButton->Disable();
+		//pickTargetButton->Disable();
 	}
 	else
 	{
-		pickTargetButton->Enable(true);
-		pickTargetButton->SetLabel(wxT(STR_BROWSE));
+		//pickTargetButton->Enable(true);
+		//if targetscenario is still same as base scenario, ignore someone turning checkbox off
+		if (baseScenario==targetScenario)
+		{
+			wxCommandEvent checkCmd(wxEVT_COMMAND_CHECKBOX_CLICKED, pickTargetCheckBox->GetId());
+			ProcessEvent(checkCmd);
+			printf("unchecked but same\n");
+		}
 	}
 }
 
 void LTPage_Script::onWriteButtonPressed(wxCommandEvent &event)
 {
-	
+	write(targetScenario);
+	successText->SetLabel(wxT(STR_TABSUCCESS));
+	timer->Start(700, wxTIMER_ONE_SHOT);
 }
 
-void LTPage_Script::onSuccessTimer(wxTimerEvent &event)
+void LTPage_Script::onTimer(wxTimerEvent &event)
 {
-	
+	if (hasError)
+	{
+		wxCommandEvent cmdClose(wxEVT_COMMAND_BUTTON_CLICKED, wxID_CANCEL);
+		ProcessEvent(cmdClose);
+	}
+	else
+		successText->SetLabel(wxT(""));
 }
 
 void LTPage_Script::setBaseScenario(wxFileName *fname)
@@ -151,32 +163,64 @@ void LTPage_Script::setBaseScenario(wxFileName *fname)
 	
 	if (pickTargetCheckBox->GetValue()==true)
 		setTargetScenario(fname);
+	
+	checkCanWrite();
 }
 
 void LTPage_Script::setTargetScenario(wxFileName *fname)
 {
 	targetScenario->Assign(fname->GetFullPath());
 
-	if (!fname->FileExists())
+	if (fname->GetFullPath()==wxT(""))
 	{
 		pickTargetButton->SetLabel(wxT(STR_BROWSE));
 	}
 	else
 	{
 		pickTargetButton->SetLabel(fname->GetFullName());
-		//if targetScenario changes and same as base scenario is checked but it's not the same...
-		//then uncheck same as base scenario
-		if (pickTargetCheckBox->GetValue()==true && fname!=baseScenario)
-			pickTargetCheckBox->SetValue(false);
 	}
+	if (fname!=baseScenario)
+		pickTargetCheckBox->SetValue(false);
+	checkCanWrite();
+}
+
+void LTPage_Script::checkCanWrite()
+{
+	if (targetScenario->GetFullPath()!=wxT("") && baseScenario->FileExists())
+		writeButton->Enable(true);
+	else
+		writeButton->Disable();
 }
 
 
 void LTPage_Script::write(wxFileName *fname)
 {
-	
+	wxBeginBusyCursor();
+
+	Scenario *out = new Scenario(baseScenario->GetFullPath().mb_str().data(), baseScenario->GetFullPath().Len());
+	*(out->triggers)=luaFile->triggers;
+	out->write(fname->GetFullPath().mb_str().data());
+
+	wxEndBusyCursor();
 }
 
 void LTPage_Script::read()
 {
+	wxBeginBusyCursor();
+
+	bool haserrors = luaFile->read();
+	if (haserrors)
+	{
+		frame->onError(wxString::FromUTF8(luaFile->error()));
+
+		//close after an ms, it doesn't want to close immediately
+		timer->Start(1, wxTIMER_ONE_SHOT);
+		hasError=true;
+	}
+	else
+	{
+		setTriggerCount(luaFile->triggers.size());
+	}
+
+	wxEndBusyCursor();
 }

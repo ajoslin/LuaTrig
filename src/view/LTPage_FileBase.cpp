@@ -9,7 +9,10 @@ LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, int type, w
 	this->frame=frame;
 	this->type=type;
 
-	areaSizer = new wxBoxSizer(wxVERTICAL);
+	hasError=false;
+
+	masterSizer = new wxBoxSizer(wxVERTICAL);
+	mainSizer = new wxBoxSizer(wxVERTICAL);
 	infoSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	closeButton = new wxButton(this, wxID_CANCEL, wxT(STR_CLOSE));
@@ -22,15 +25,17 @@ LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, int type, w
 	infoSizer->Add(numTriggersLabelText, 1, wxALIGN_CENTER_VERTICAL);
 	infoSizer->Add(numTriggersText, 1, wxALIGN_CENTER_VERTICAL);
 
-	areaSizer->AddSpacer(15);
-	areaSizer->Add(closeButton);
-	areaSizer->Add(reloadButton);
-	areaSizer->AddSpacer(10);
-	areaSizer->Add(infoSizer);
+	mainSizer->Add(infoSizer);
 
-	SetSizer(areaSizer);
+	masterSizer->AddSpacer(15);
+	masterSizer->Add(closeButton);
+	masterSizer->Add(reloadButton);
+	masterSizer->AddSpacer(10);
+	masterSizer->Add(mainSizer);
 
-	Connect(closeButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_FileBase::onClose));
+	SetSizer(masterSizer);
+
+	Connect(wxID_CANCEL, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_FileBase::onClose));
 	Connect(reloadButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_FileBase::onReload));
 }
 
@@ -42,4 +47,11 @@ void LTPage_FileBase::onClose(wxCommandEvent& event)
 void LTPage_FileBase::onReload(wxCommandEvent& event)
 {
 	read();
+}
+
+void LTPage_FileBase::setTriggerCount(int count)
+{
+	wxString str;
+	str.Printf(wxT("%d"), count);
+	numTriggersText->SetLabel(str);
 }

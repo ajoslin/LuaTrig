@@ -73,6 +73,9 @@ public:
 	//returns true if successful close
 	bool closeFile(wxFileName *fname);
 
+	//brings up dialog
+	void onError(wxString err);
+
 	//Getters/setters
 	void setScenarioDir(wxString path);
 	wxString getScenarioDir() { return scenarioDir; };

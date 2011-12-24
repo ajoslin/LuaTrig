@@ -4,7 +4,7 @@
 bool LTMain::OnInit()
 {
 	LTMain = new LTFrame(wxT(STR_LUATRIG));
-	LTMain->SetSize(640, 480);
+	LTMain->SetSize(700, 520);
 	LTMain->Show(true);
 	SetTopWindow(LTMain);
 
