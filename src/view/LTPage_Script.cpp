@@ -1,6 +1,5 @@
 #include "LTPage_Script.h"
 #include "LTFrame.h"
-#include "wx/clntdata.h"
 #include "../lua/LuaFile.h"
 #include "../genie/Scenario.h"
 #include "LTDialog_ChooseScen.h"
@@ -11,6 +10,9 @@ LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fna
 {
 	pickBaseSizer = new wxBoxSizer(wxVERTICAL);
 	pickTargetSizer = new wxBoxSizer(wxVERTICAL);
+
+	openFileButton = new wxButton(this, wxID_ANY, wxT(STR_LUA_OPEN));
+	topButtonsSizer->Add(openFileButton);
 
 	pickBaseText = new wxStaticText(this, wxID_ANY, wxT(STR_LUA_BASE));
 	pickBaseButton = new wxButton(this, wxID_ANY, wxT(STR_BROWSE), wxDefaultPosition, wxSize(250, wxDefaultSize.GetHeight()));
@@ -43,6 +45,7 @@ LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fna
 	mainSizer->AddSpacer(5);
 	mainSizer->Add(successText);
 
+	Connect(openFileButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Script::onOpenFileButtonPressed));
 	Connect(pickBaseButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Script::onPickBaseButtonPressed));
 	Connect(pickTargetButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Script::onPickTargetButtonPressed));
 	Connect(pickTargetCheckBox->GetId(), wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(LTPage_Script::onPickTargetCheckBoxChanged));
@@ -53,12 +56,14 @@ LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fna
 	baseScenario = new wxFileName(wxT(""));
 	targetScenario = new wxFileName(wxT(""));
 
-	//hide while it's reading 
-	mainSizer->Show(false);
 	luaFile = new LuaFile(file->GetFullPath().mb_str().data(), file->GetFullPath().Len());
 	read();
-	mainSizer->Show(true);
 
+}
+
+void LTPage_Script::onOpenFileButtonPressed(wxCommandEvent& event)
+{
+	system(file->GetFullPath());
 }
 
 void LTPage_Script::onPickBaseButtonPressed(wxCommandEvent &event)
@@ -198,7 +203,7 @@ void LTPage_Script::write(wxFileName *fname)
 	wxBeginBusyCursor();
 
 	Scenario *out = new Scenario(baseScenario->GetFullPath().mb_str().data(), baseScenario->GetFullPath().Len());
-	*(out->triggers)=luaFile->triggers;
+	out->triggers=luaFile->triggers;
 	out->write(fname->GetFullPath().mb_str().data());
 
 	wxEndBusyCursor();
@@ -211,7 +216,11 @@ void LTPage_Script::read()
 	bool haserrors = luaFile->read();
 	if (haserrors)
 	{
-		frame->onError(wxString::FromUTF8(luaFile->error()));
+		wxString err=wxString::FromUTF8(luaFile->error());
+
+		//replace filename:linenum:error with filename: Line linenum:error for readability
+		err.Replace(wxT(".lua:"), wxT(".lua: line "), false); 
+		frame->onError(err);
 
 		//close after an ms, it doesn't want to close immediately
 		timer->Start(1, wxTIMER_ONE_SHOT);

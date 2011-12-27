@@ -17,6 +17,8 @@ private:
 	wxBoxSizer *pickBaseSizer;
 	wxBoxSizer *pickTargetSizer;
 
+	wxButton *openFileButton;
+
 	wxStaticText *pickBaseText;
 	wxButton *pickBaseButton;
 
@@ -38,6 +40,7 @@ private:
 public:
 	LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fname);
 
+	void onOpenFileButtonPressed(wxCommandEvent &event);
 	void onPickBaseButtonPressed(wxCommandEvent &event);
 	void onPickTargetButtonPressed(wxCommandEvent &event);
 	void onPickTargetCheckBoxChanged(wxCommandEvent &event);

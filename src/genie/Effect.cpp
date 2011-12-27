@@ -1,6 +1,4 @@
 #include "Effect.h"
-#include "../util/fileutil.h"
-#include <stdio.h>
 #include <string.h>
 
 Effect::Effect()
@@ -13,70 +11,72 @@ Effect::Effect()
 	memset(uids, -1, sizeof(uids));
 }
 
-int Effect::readfromscx(FILE *scx)
+const char *Effect::getName()
 {
-	long bytes_read=0;
+	return (type < NUM_EFFECTS) ? types[type] : "Unknown!";
+}
 
+
+void Effect::read(FILE *scx)
+{
 	//these are all longs
-	READ(&type, sizeof(long), 1, scx);
-	READ(&check_value, sizeof(long), 1, scx);
-	READ(&ai_goal, sizeof(long), 1, scx);
-	READ(&amount, sizeof(long), 1, scx);
-	READ(&resource, sizeof(long), 1, scx);
-	READ(&diplomacy, sizeof(long), 1, scx);
-	READ(&num_selected, sizeof(long), 1, scx);
-	READ(&uid_location, sizeof(long), 1, scx);
-	READ(&unit_const, sizeof(long), 1, scx);
-	READ(&player_source, sizeof(long), 1, scx);
-	READ(&player_target, sizeof(long), 1, scx);
-	READ(&technology, sizeof(long), 1, scx);
-	READ(&stableid, sizeof(long), 1, scx);
-	READ(&unknown, sizeof(long), 1, scx);
-	READ(&display_time, sizeof(long), 1, scx);
-	READ(&trigger_index, sizeof(long), 1, scx);
+	fread(&type, sizeof(long), 1, scx);
+	fread(&check_value, sizeof(long), 1, scx);
+	fread(&ai_goal, sizeof(long), 1, scx);
+	fread(&amount, sizeof(long), 1, scx);
+	fread(&resource, sizeof(long), 1, scx);
+	fread(&diplomacy, sizeof(long), 1, scx);
+	fread(&num_selected, sizeof(long), 1, scx);
+	fread(&uid_location, sizeof(long), 1, scx);
+	fread(&unit_const, sizeof(long), 1, scx);
+	fread(&player_source, sizeof(long), 1, scx);
+	fread(&player_target, sizeof(long), 1, scx);
+	fread(&technology, sizeof(long), 1, scx);
+	fread(&stableid, sizeof(long), 1, scx);
+	fread(&unknown, sizeof(long), 1, scx);
+	fread(&display_time, sizeof(long), 1, scx);
+	fread(&trigger_index, sizeof(long), 1, scx);
 
 	//it's y then x for some reason
-	READ(&location.y, sizeof(long), 1, scx);
-	READ(&location.x, sizeof(long), 1, scx);
-	READ(&area.ur.y, sizeof(long), 1, scx);
-	READ(&area.ur.x, sizeof(long), 1, scx);
-	READ(&area.ll.y, sizeof(long), 1, scx);
-	READ(&area.ll.x, sizeof(long), 1, scx);
+	fread(&location.y, sizeof(long), 1, scx);
+	fread(&location.x, sizeof(long), 1, scx);
+	fread(&area.ur.y, sizeof(long), 1, scx);
+	fread(&area.ur.x, sizeof(long), 1, scx);
+	fread(&area.ll.y, sizeof(long), 1, scx);
+	fread(&area.ll.x, sizeof(long), 1, scx);
 
-	READ(&unit_group, sizeof(long), 1, scx);
-	READ(&unit_type, sizeof(long), 1, scx);
-	READ(&panel, sizeof(long), 1, scx);
+	fread(&unit_group, sizeof(long), 1, scx);
+	fread(&unit_type, sizeof(long), 1, scx);
+	fread(&panel, sizeof(long), 1, scx);
 
 	long textlen;
-	READ(&textlen, sizeof(long), 1, scx);
+	fread(&textlen, sizeof(long), 1, scx);
 
 	text.resize(textlen);
 	for (int i=0; i<textlen; i++) {
 		char c=text.at(i);
-		READ(&c, 1, 1, scx);
+		fread(&c, 1, 1, scx);
 	}
 	//text.at(textlen)='\0'; //make sure it's null terminated
 
 	long soundlen;
-	READ(&soundlen, sizeof(long), 1, scx);
+	fread(&soundlen, sizeof(long), 1, scx);
 
 	sound.resize(soundlen);
 	for (int i=0; i<soundlen; i++) {
 		char c=sound.at(i);
-		READ(&c, 1, 1, scx);
+		fread(&c, 1, 1, scx);
 	}
 	//sound.at(soundlen)='\0'; //make sure it's null terminated
 
 	if (num_selected!=-1)
 	{
 		for (int i=0; i<num_selected; i++)
-			READ(&uids[i], sizeof(long), 1, scx);
+			fread(&uids[i], sizeof(long), 1, scx);
 	}
-
-	return bytes_read;
 }
 
-void Effect::writetoscx(FILE *scx)
+void Effect::write(FILE *scx)
 {
 	//these are all longs
 	fwrite(&type, sizeof(long), 1, scx);
@@ -123,89 +123,7 @@ void Effect::writetoscx(FILE *scx)
 	}
 }
 
-void Effect::writetolua(FILE *out, const char *trigvar, const char* effectvar)
-{
-	//condition declaration
-	fprintf(out, "\tlocal %s = %s:effect(Effect.%s())\n", effectvar, trigvar, getName().c_str());
-	//ai goal
-	if (ai_goal!=-1)
-		fprintf(out, "\t\t%s:ai_goal(%d)\n", effectvar, ai_goal);
-	//amount
-	if (amount!=-1)
-		fprintf(out, "\t\t%s:amount(%d)\n", effectvar, amount);
-	//resource
-	if (resource!=-1) 
-		fprintf(out, "\t\t%s:resource(\"%s\") --could also be written resource(%d)\n",
-			effectvar, aokutil::get_res_str(resource), resource);
-	//diplomacy
-	if (diplomacy!=-1)
-		fprintf(out, "\t\t%s:diplomacy(\"%s\") --could also be written diplomacy(%d)\n",
-			effectvar, aokutil::get_diplomacy_str(diplomacy), diplomacy);
-	//unit location
-	if (uid_location!=-1)
-		fprintf(out, "\t\t%s:unit_location(%d)\n", effectvar, uid_location);
-	//unit const
-	if (unit_const!=-1)
-		fprintf(out, "\t\t%s:unit_const(%d)\n", effectvar, unit_const);
-	//selected unit(s)
-	if (num_selected!=-1)
-	{
-		fprintf(out, "\t\t%s:units(", effectvar);
-		for (int i=0; i<num_selected; i++)
-		{
-			fprintf(out, "%d", uids[i]);
-			if (i<num_selected-1) //add comma on all except last
-				fprintf(out, ", ");
-		}
-		fprintf(out, ")\n");
-	}
-	//player_source
-	if (player_source!=-1)
-		fprintf(out, "\t\t%s:player(%d)\n", effectvar, player_source);
-	//player_target
-	if (player_target!=-1)
-		fprintf(out, "\t\t%s:player_target(%d)\n", effectvar, player_target);
-	//technology
-	if (technology!=-1)
-		fprintf(out, "\t\t%s:technology(%d)\n", effectvar, technology);
-	//display time
-	if (display_time!=-1)
-		fprintf(out, "\t\t%s:display_time(%d)\n", effectvar, display_time);
-	//trigger index
-	if (trigger_index!=-1)
-		fprintf(out, "\t\t%s:trigger(%d)\n", effectvar, trigger_index);
-	//location
-	if (location.x!=-1)
-		fprintf(out, "\t\t%s:location(%d,%d)\n", effectvar, location.x, location.y);
-	//area
-	if (area.ur.x!=-1 && area.ll.x!=-1)
-		fprintf(out, "\t\t%s:area(%d,%d, %d,%d) --lower left x1,y1 then upper right x2,y2\n", 
-			effectvar, area.ll.x, area.ll.y, area.ur.x, area.ur.y);
-	//unit group
-	if (unit_group!=-1)
-		fprintf(out, "\t\t%s:unit_group(\"%s\") --could also be written unit_group(%d)\n",
-			 effectvar, aokutil::get_ugroup_str(unit_group), unit_group);
-	//unit type
-	if (unit_type!=-1)
-		fprintf(out, "\t\t%s:unit_type(\"%s\") --could also be written unit_type(%d)\n",
-			effectvar, aokutil::get_utype_str(unit_type), unit_type);
-	//panel
-	if (panel!=-1)
-		fprintf(out, "\t\t%s:panel(%d)\n", effectvar, panel);
-	//text
-	if (text.length()>1)
-		fprintf(out, "\t\t%s:text(\"%s\")\n", effectvar, text.c_str());
-	//sound
-	if (sound.length()>1)
-		fprintf(out, "\t\t%s:sound(\"%s\")\n", effectvar, sound.c_str());	
-}
-
-const string Effect::getName() const
-{
-	return (type < NUM_EFFECTS) ? types[type] : "Unknown!";
-}
-
-bool Effect::check() const
+bool Effect::check()
 {
 	switch (type)
 	{
@@ -300,10 +218,13 @@ bool Effect::check() const
 	}
 }
 
-bool Effect::valid_property(EffectProperty p) const
+bool Effect::valid_property(EffectProperty p)
 {
 	switch (type)
 	{
+	case EFFECT_None:
+		return false;
+
 	case EFFECT_ChangeDiplomacy:
 		return (EFFECTP_PlayerSource==p || EFFECTP_PlayerTarget==p || EFFECTP_Diplomacy==p);
 
@@ -338,7 +259,7 @@ bool Effect::valid_property(EffectProperty p) const
 	case EFFECT_RemoveObject:
 	case EFFECT_FreezeUnit:
 	case EFFECT_StopUnit:
-		return (EFFECTP_UnitGroup==p || EFFECTP_Location==p || EFFECTP_UIDs==p || EFFECTP_PlayerSource==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
+		return (EFFECTP_UIDs==p || EFFECTP_UIDLocation==p || EFFECTP_UnitGroup==p || EFFECTP_Location==p || EFFECTP_UIDs==p || EFFECTP_PlayerSource==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
 
 	case EFFECT_DeclareVictory:
 		return (EFFECTP_PlayerSource==p);
@@ -349,10 +270,10 @@ bool Effect::valid_property(EffectProperty p) const
 		return (EFFECTP_PlayerSource==p || EFFECTP_Location==p);
 
 	case EFFECT_Unload:
-		return (EFFECTP_UnitGroup==p || EFFECTP_PlayerSource==p || EFFECTP_Location==p || EFFECTP_UIDLocation==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
+		return (EFFECTP_UIDs || EFFECTP_UnitGroup==p || EFFECTP_PlayerSource==p || EFFECTP_Location==p || EFFECTP_UIDLocation==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
 
 	case EFFECT_ChangeOwnership:
-		return (EFFECTP_PlayerSource==p || EFFECTP_PlayerTarget==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
+		return (EFFECTP_UIDs==p || EFFECTP_PlayerSource==p || EFFECTP_PlayerTarget==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
 
 	case EFFECT_Patrol:
 		return (EFFECTP_UIDs==p || EFFECTP_Location==p);
@@ -420,4 +341,30 @@ const char *Effect::types[] =
 	"ChangeObjectHP",
 	"ChangeObjectAttack",
 	"StopUnit",
+};
+
+
+const char *Effect::partypes[] =
+{
+	"Amount",
+	"Location",
+	"Area",
+	"AIGoal",
+	"Diplomacy",
+	"DisplayTime",
+	"NumSelected",
+	"Panel",
+	"PlayerSource",
+	"PlayerTarget",
+	"Resource",
+	"Technology",
+	"TriggerIndex",
+	"Type",
+	"UIDs",
+	"UIDLocation",
+	"UnitGroup",
+	"UnitType",
+	"UnitConst",
+	"Sound",
+	"Text",
 };

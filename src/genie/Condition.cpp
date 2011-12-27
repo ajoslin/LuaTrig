@@ -1,5 +1,4 @@
 #include "Condition.h"
-#include "../util/fileutil.h"
 
 Condition::Condition()
 {
@@ -8,40 +7,36 @@ Condition::Condition()
 	timer = unknown = unit_group = unit_type = unit_const = ai_signal = -1;
 }
 
-const std::string Condition::getName() const {
+const char * Condition::getName() {
 	return (type < NUM_CONDS) ? types[type] : "Unknown!";
 }
 
-int Condition::readfromscx(FILE *scx)
+void Condition::read(FILE *scx)
 {
-	long bytes_read=0;
-
-	READ(&type, sizeof(long), 1, scx);
-	READ(&check_value, sizeof(long), 1, scx);
-	READ(&amount, sizeof(long), 1, scx);
-	READ(&resource_type, sizeof(long), 1, scx);
-	READ(&uid_object, sizeof(long), 1, scx);
-	READ(&uid_location, sizeof(long), 1, scx);
-	READ(&unit_const, sizeof(long), 1, scx);
-	READ(&player, 4, 1, scx);
-	READ(&technology, 4, 1, scx);
-	READ(&timer, 4, 1, scx);
-	READ(&unknown, 4, 1, scx);
+	fread(&type, sizeof(long), 1, scx);
+	fread(&check_value, sizeof(long), 1, scx);
+	fread(&amount, sizeof(long), 1, scx);
+	fread(&resource_type, sizeof(long), 1, scx);
+	fread(&uid_object, sizeof(long), 1, scx);
+	fread(&uid_location, sizeof(long), 1, scx);
+	fread(&unit_const, sizeof(long), 1, scx);
+	fread(&player, 4, 1, scx);
+	fread(&technology, 4, 1, scx);
+	fread(&timer, 4, 1, scx);
+	fread(&unknown, 4, 1, scx);
 
 	//aok points are y,x for some reason
-	READ(&area.ur.y, 4, 1, scx);
-	READ(&area.ur.x, 4, 1, scx);
-	READ(&area.ll.y, 4, 1, scx);
-	READ(&area.ll.x, 4, 1, scx);
+	fread(&area.ur.y, 4, 1, scx);
+	fread(&area.ur.x, 4, 1, scx);
+	fread(&area.ll.y, 4, 1, scx);
+	fread(&area.ll.x, 4, 1, scx);
 
-	READ(&unit_group, 4, 1, scx);
-	READ(&unit_type, 4, 1, scx);
-	READ(&ai_signal, 4, 1, scx);
-
-	return bytes_read; 
+	fread(&unit_group, 4, 1, scx);
+	fread(&unit_type, 4, 1, scx);
+	fread(&ai_signal, 4, 1, scx);
 }
 
-void Condition::writetoscx(FILE *scx)
+void Condition::write(FILE *scx)
 {
 	fwrite(&type, sizeof(long), 1, scx);
 	fwrite(&check_value, sizeof(long), 1, scx);
@@ -66,54 +61,7 @@ void Condition::writetoscx(FILE *scx)
 	fwrite(&ai_signal, 4, 1, scx);
 }
 
-void Condition::writetolua(FILE *out, const char *trigvar, const char* condvar)
-{
-	//condition declaration
-	fprintf(out, "\tlocal %s = %s:condition(Condition.%s())\n", condvar, trigvar, getName().c_str());
-	//amount
-	if (amount!=-1)
-		fprintf(out, "\t\t%s:amount(%d)\n", condvar, amount);
-	//resource type
-	if (resource_type!=-1) 
-		fprintf(out, "\t\t%s:resource(\"%s\") --could also be written resource(%d)\n",
-			condvar, aokutil::get_res_str(resource_type), resource_type);
-	//unit object
-	if (uid_object!=-1)
-		fprintf(out, "\t\t%s:unit_object(%d)\n", condvar, uid_object);
-	//unit location
-	if (uid_location!=-1)
-		fprintf(out, "\t\t%s:unit_location(%d)\n", condvar, uid_location);
-	//unit const
-	if (unit_const!=-1)
-		fprintf(out, "\t\t%s:unit_const(%d)\n", condvar, unit_const);
-	//player
-	if (player!=-1)
-		fprintf(out, "\t\t%s:player(%d)\n", condvar, player);
-	//technology
-	if (technology!=-1)
-		fprintf(out, "\t\t%s:technology(%d)\n", condvar, technology);
-	//timer (uses amount() function in lua)
-	if (timer!=-1)
-		fprintf(out, "\t\t%s:amount(%d)\n", condvar, timer);
-	//area
-	if (area.ur.x!=-1 && area.ll.x!=-1)
-		fprintf(out, "\t\t%s:area(%d,%d, %d,%d) --usage: lower left x1,y1 then upper right x2,y2\n", 
-			condvar, area.ll.x, area.ll.y, area.ur.x, area.ur.y);
-	//unit group
-	if (unit_group!=-1)
-		fprintf(out, "\t\t%s:unit_group(\"%s\") --could also be written unit_group(%d)\n",
-			 condvar, aokutil::get_ugroup_str(unit_group), unit_group);
-	//unit type
-	if (unit_type!=-1)
-		fprintf(out, "\t\t%s:unit_type(\"%s\") --could also be written unit_type(%d)\n",
-			condvar, aokutil::get_utype_str(unit_type), unit_type);
-	//ai signal
-	if (ai_signal!=-1)
-		fprintf(out, "\t\t%s:ai_signal(%d)\n", condvar, ai_signal);
-}
-
-
-bool Condition::check() const
+bool Condition::check()
 {
 	switch (type)
 	{
@@ -180,10 +128,13 @@ bool Condition::check() const
 	}
 }
 
-bool Condition::valid_property(ConditionProperty p) const
+bool Condition::valid_property(ConditionProperty p)
 {
 	switch (type)
 	{
+	case CONDITION_None:
+		return false;
+
 	case CONDITION_BringObjectToArea:
 		return (p==CONDITIONP_UIDObject || p==CONDITIONP_Area);
 
@@ -269,4 +220,20 @@ const char *Condition::types[] =
 	"ResearchingTechnology",
 	"UnitsGarrisoned",
 	"DifficultyLevel",
+};
+
+const char *Condition::partypes[] =
+{
+	"Amount",
+	"ResourceType",
+	"UIDObject",
+	"UIDLocation",
+	"Player",
+	"Technology",
+	"Timer",
+	"Area",
+	"UnitGroup",
+	"UnitType",
+	"UnitConst",
+	"AISignal",
 };

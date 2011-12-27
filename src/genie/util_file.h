@@ -1,28 +1,20 @@
-#ifndef FILE_UTIL_H
-#define FILE_UTIL_H
-#include <string>
-#include <stdio.h>
+#ifndef UTIL_FILE_H
+#define UTIL_FILE_H
+
 #include <zlib.h>	//for the zlib errors & types
+#include <stdio.h>
 
 /**
-	Taken from AOKTS:
 	zlibfile.h -- Deflation/Inflation of DEFLATE streams to a FILE.
 	Written by DiGiT for AOKTS and zlibnoh utilities.
 	Contact: cyan.spam@gmail.com
 
 	These files (zlibfile.h and zlibfile.cpp) may be freely distributed as long as the above notice remains intact.
-
-	UTIL
 **/
 
-#define SKIP(file, bytes) for (int i=0; i<bytes; i++) fgetc(file); \
-	bytes_read+=bytes
-#define READ(var, size, num, file) fread(var, size, num, file); \
-	bytes_read+=(size*num)
+//Not efrom andy: all three of these functions are written by DiGiT
 
 extern "C" int fsize(const char *path);
-
-extern "C" const char *readline(FILE *f, int skip);
 
 /*
 	deflate_file: Deflates a string of characters and outputs to a file.

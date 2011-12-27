@@ -1,46 +1,32 @@
 #ifndef TRIGGER_H_
 #define TRIGGER_H_
 
-#include <list>
-#include <algorithm>
+#include <vector>
 #include <string>
-using namespace std;
 #include "Effect.h"
 #include "Condition.h"
 
  
-/* Triggers */
 class Trigger
 {
 public:
 	Trigger();
-	Trigger(int id);
 
-	int readfromscx(FILE *scx);
-	void writetoscx(FILE *out);
-	void writetolua(FILE *out, int id, bool generate_comments);
+	void read(FILE *scx);
+	void write(FILE *out);
 	
 	const static size_t MAX_TRIGNAME = 128;
 
-	long state, loop;
-	char unknown, obj;
+	long state;
+	long loop;
+	char unknown;
+	char obj;
 	long obj_order;
-	string description;
-	string name;
+	std::string description;
+	std::string name;
 
-	int index; //index in scenario
-
-	/*	get_player: Returns non-GAIA player for conditions/effect in the trigger.
-
-		Returns:
-		* 0 if all players are unassigned (GAIA)
-		* -1 if there is a mix of non-GAIA players
-		* EC player index if above are false
-	*/
-	int get_player();
-
-	std::list<Effect *> effects;
-	std::list<Condition *> conds;
+	std::vector<Effect *> effects;
+	std::vector<Condition *> conds;
 };
 
 #endif

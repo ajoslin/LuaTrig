@@ -32,6 +32,7 @@ LTDialog_About::LTDialog_About(wxWindow *parent)
 	mainSizer->SetMinSize(wxSize(285, 1)); //only care about width
 	SetSizerAndFit(mainSizer);
 	SetDefaultItem(doneButton);
+	Center();
 } 
 
 void LTDialog_About::onDone(wxCommandEvent &event)

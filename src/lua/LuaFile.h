@@ -3,13 +3,18 @@
 
 #include <stdio.h>
 #include <vector>
-#include "../genie/Trigger.h"
+#include <string>
+
+class lua_State; //fwd it here so we don't have to include
+class Trigger;
 
 class LuaFile
 {
 private:
 	char *path;
-	char *read_error;
+	std::string read_error;
+
+	void writeTrigger(FILE *out, int id);
 
 public:
 	LuaFile(const char *path, int len);
@@ -20,7 +25,9 @@ public:
 	//returns error str from last read, or null
 	const char *error();
 	
-	void write(const char *new_path, bool generate_comments);
+	void write(const char *new_path);
+
+	bool add_trigger(Trigger *t, int id);
 
 	//when reading a lua file, the luafunctions have to know which lua file-object is being used currently
 	//they call this function to get the correct lua object

@@ -14,19 +14,15 @@ LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
 
 	saveScriptText = new wxStaticText(this, wxID_ANY, wxT(STR_SCEN_SAVETITLE));
 	saveScriptDialog = new wxFileDialog(this, wxT(STR_FILE_SELECT), frame->getScriptDir(), wxT(""), wxT(STR_EXT_LUA), wxFD_SAVE | wxFD_CHANGE_DIR);
-	saveScriptButton = new wxButton(this, wxID_ANY, wxT(STR_BROWSE));
+	saveScriptButton = new wxButton(this, wxID_ANY, wxT(STR_BROWSE), wxDefaultPosition, wxSize(250, wxDefaultSize.GetHeight()));
 
 	pickSizer->Add(saveScriptText, 1, wxALIGN_CENTER_VERTICAL);
 	pickSizer->Add(saveScriptButton);
 
 	writeButton = new wxButton(this, wxID_ANY, wxT(STR_SCEN_WRITE));
 	writeButton->Disable();
-	commentsCheckBox = new wxCheckBox(this, wxID_ANY, wxT(STR_SCEN_COMMENTS));
-	commentsCheckBox->SetValue(true);
 
 	writeSizer->Add(writeButton, 1, wxALIGN_CENTER_VERTICAL);
-	writeSizer->AddSpacer(5);
-	writeSizer->Add(commentsCheckBox, 1, wxALIGN_CENTER_VERTICAL);
 
 	successText = new wxStaticText(this, wxID_ANY, wxT(""));
 	timer = new wxTimer(this, wxID_ANY);
@@ -42,11 +38,8 @@ LTPage_Scen::LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
 	Connect(writeButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTPage_Scen::onExportPressed));
 	Connect(timer->GetId(), wxEVT_TIMER, wxTimerEventHandler(LTPage_Scen::onTimer));
 
-	//hide all the gui until scn is done loading or it looks dumb
-	mainSizer->Show(false);
 	scenario = new Scenario(file->GetFullPath().mb_str().data(), file->GetFullPath().Len());
 	read();
-	mainSizer->Show(true);
 }
 
 void LTPage_Scen::onSaveButtonPressed(wxCommandEvent& event)
@@ -88,12 +81,12 @@ void LTPage_Scen::write(wxFileName *fname)
 
 	//copy triggers from scn to luafile
 	LuaFile *lf = new LuaFile(fname->GetFullPath().mb_str().data(), fname->GetFullPath().Len());
-	lf->triggers=*(scenario->triggers);
+	lf->triggers=scenario->triggers;
 	
-	lf->write(fname->GetFullPath().mb_str().data(), commentsCheckBox->GetValue());
+	lf->write(fname->GetFullPath().mb_str().data());
 	delete lf;
 
-	frame->openScript(fname, false);
+	//frame->openScript(fname, false);
 
 	wxEndBusyCursor();
 }
@@ -107,7 +100,7 @@ void LTPage_Scen::read()
 	scenario->read(true);
 	scenario->cleanup();
 
-	setTriggerCount(scenario->numtriggers);
+	setTriggerCount(scenario->triggers.size());
 
 	wxEndBusyCursor();
 }

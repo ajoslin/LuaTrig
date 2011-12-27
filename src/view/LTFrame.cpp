@@ -22,7 +22,7 @@ LTFrame::LTFrame(const wxString& title)
 	config = new wxFileConfig(wxT(STR_LUATRIG), wxEmptyString, wxT(STR_CFG_FNAME), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
 	config->Read(wxT(STR_CFG_SCNDIR), &scenarioDir, wxT(""));
 	config->Read(wxT(STR_CFG_LUADIR), &scriptDir, wxT(""));
-	bool openSettings=config->Exists(wxT(STR_CFG_SCNDIR)); //if scndir isn't set in config, open settings on startup
+	bool openSettings=scenarioDir == wxT(""); //if scndir is blank (aka not set in config), open settings on startup
 	delete config;
 
 	CreateStatusBar();

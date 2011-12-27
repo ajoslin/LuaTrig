@@ -3,45 +3,45 @@
 
 #include <stdio.h>
 #include <string>
-using namespace std;
-#include "../util/aokutil.h"
+#include "aok_types.h"
 
-#define MAX_EFFECT EFFECT_StopUnit
-#define NUM_EFFECTS	30
-#define MAX_UNITSEL 22
+#define MAX_EFFECT 			EFFECT_StopUnit
+#define NUM_EFFECTS			30
+#define NUM_EFFECT_PARAMS 	21
+#define MAX_UNITSEL 		22
 
 enum EffectType
 {
-	EFFECT_None,
-	EFFECT_ChangeDiplomacy,
-	EFFECT_ResearchTechnology,
-	EFFECT_SendChat,
-	EFFECT_PlaySound,
-	EFFECT_SendTribute,
-	EFFECT_UnlockGate,
-	EFFECT_LockGate,
-	EFFECT_ActivateTrigger,
-	EFFECT_DeactivateTrigger,
-	EFFECT_AIScriptGoal,
-	EFFECT_CreateObject,
-	EFFECT_TaskObject,
-	EFFECT_DeclareVictory,
-	EFFECT_KillObject,
-	EFFECT_RemoveObject,
-	EFFECT_ChangeView,
-	EFFECT_Unload,
-	EFFECT_ChangeOwnership,
-	EFFECT_Patrol,
-	EFFECT_DisplayInstructions,
-	EFFECT_ClearInstructions,
-	EFFECT_FreezeUnit,
-	EFFECT_UseAdvancedButtons,
-	EFFECT_DamageObject,
-	EFFECT_PlaceFoundation,
-	EFFECT_ChangeObjectName,
-	EFFECT_ChangeObjectHP,
-	EFFECT_ChangeObjectAttack,
-	EFFECT_StopUnit,
+	EFFECT_None
+	EFFECT_ChangeDiplomacy
+	EFFECT_ResearchTechnology
+	EFFECT_SendChat
+	EFFECT_PlaySound
+	EFFECT_SendTribute
+	EFFECT_UnlockGate
+	EFFECT_LockGate
+	EFFECT_ActivateTrigger
+	EFFECT_DeactivateTrigger
+	EFFECT_AIScriptGoal
+	EFFECT_CreateObject
+	EFFECT_TaskObject
+	EFFECT_DeclareVictory
+	EFFECT_KillObject
+	EFFECT_RemoveObject
+	EFFECT_ChangeView
+	EFFECT_Unload
+	EFFECT_ChangeOwnership
+	EFFECT_Patrol
+	EFFECT_DisplayInstructions
+	EFFECT_ClearInstructions
+	EFFECT_FreezeUnit
+	EFFECT_UseAdvancedButtons
+	EFFECT_DamageObject
+	EFFECT_PlaceFoundation
+	EFFECT_ChangeObjectName
+	EFFECT_ChangeObjectHP
+	EFFECT_ChangeObjectAttack
+	EFFECT_StopUnit
 };
 
 enum EffectProperty
@@ -74,17 +74,13 @@ class Effect
 public:
 	Effect();
 
-	int readfromscx(FILE *in);
-	void writetoscx(FILE *out);
-	void writetolua(FILE *out, const char *trigvar, const char* effectvar);
-	
-	//set default values depending on efftype
-	void set_type_defaults();
+	const char *getName();
 
-	bool check() const;
-	bool valid_property(EffectProperty) const;
+	void read(FILE *in);
+	void write(FILE *out);
 
-	const std::string getName() const;
+	bool check();
+	bool valid_property(EffectProperty);
 
 	AOKPT location;
 	AOKRECT area;
@@ -113,6 +109,7 @@ public:
 	std::string sound;
 
 	static const char* types[NUM_EFFECTS];
+	static const char* partypes[NUM_EFFECT_PARAMS];
 };
 
 #endif

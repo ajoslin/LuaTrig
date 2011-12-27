@@ -22,7 +22,6 @@ private:
 	wxButton *saveScriptButton;
 
 	wxButton *writeButton;
-	wxCheckBox *commentsCheckBox;
 	wxStaticText *successText;
 	wxTimer *timer;
 

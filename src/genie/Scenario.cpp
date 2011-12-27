@@ -1,5 +1,11 @@
 #include "Scenario.h"
-#include "../util/fileutil.h"
+#include "util_file.h"
+
+#define SKIP(file, bytes) for (int i=0; i<bytes; i++) fgetc(file); \
+	bytes_read+=bytes
+
+#define READ(readin, typelen, len, file) fread(readin, typelen, len, file); \
+	bytes_read+=typelen*len
 
 Scenario::Scenario(const char *_path, int len)
 {
@@ -7,8 +13,6 @@ Scenario::Scenario(const char *_path, int len)
 	for (int i=0; i<len; i++)
 		path[i] = _path[i];
 	path[len+1]='\0';
-
-	triggers = new std::vector<Trigger *>;
 }
 
 Scenario::~Scenario()
@@ -82,7 +86,7 @@ bool Scenario::open()
 	return true;
 }
 
-bool Scenario::read(bool save_triggers = false)
+bool Scenario::read(bool save_triggers)
 {
 	printf("reading scenario\n");
 
@@ -96,6 +100,7 @@ bool Scenario::read(bool save_triggers = false)
 	long bytes_read = 0;
 	SKIP(scx, trigger_start);
 	
+	int numtriggers;
 	READ(&numtriggers, sizeof(long), 1, scx);
 
 	printf("numtriggers=%d\n",numtriggers);
@@ -103,16 +108,15 @@ bool Scenario::read(bool save_triggers = false)
 	long trigger_skip=0;
 	bool displayed=0;
 
-	triggers->clear();
+	triggers.clear();
 	for (int i=0; i<numtriggers; i++)
 	{
-		Trigger *t=new Trigger;
-		int bytes = t->readfromscx(scx);
-		trigger_skip+=bytes;
-
+		Trigger *t = new Trigger;
+		t->read(scx);
 		if (save_triggers)
-			triggers->push_back(t);
+			triggers.push_back(t);
 	}
+	trigger_skip = ftell(scx) - bytes_read;
 	bytes_read+=trigger_skip;
 
 	//at the end is numtriggers longs representing order of triggers.
@@ -156,12 +160,12 @@ bool Scenario::write(const char *new_path)
 	fclose(olddata);
 
 	//write trigger count
-	long numtriggers = triggers->size();
+	long numtriggers = triggers.size();
 	fwrite(&numtriggers, sizeof(long), 1, newdata);
 
 	//write triggers
 	for (int i=0; i<numtriggers; i++) 
-		triggers->at(i)->writetoscx(newdata);
+		triggers.at(i)->write(newdata);
 
 	//write trigger order
 	for (int i=0; i<numtriggers; i++)

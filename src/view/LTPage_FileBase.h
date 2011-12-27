@@ -10,12 +10,16 @@ class LTFrame; //fwd so we don't have to include
 class LTPage_FileBase : public wxPanel
 {
 protected:
+	//sets numTriggersText from read()
+	void setTriggerCount(int count);
+
 	LTFrame *frame;
 
 	wxBoxSizer *masterSizer;
 
 	wxBoxSizer *mainSizer;
 	wxBoxSizer *infoSizer;
+	wxBoxSizer *topButtonsSizer;
 
 	wxButton *closeButton;
 	wxButton *reloadButton;
@@ -33,9 +37,6 @@ public:
 
 	virtual void write(wxFileName *fname) = 0;
 	virtual void read() = 0;
-
-	//sets numTriggersText statictext
-	void setTriggerCount(int count);
 
 	wxFileName *file;
 	int type;

@@ -23,14 +23,12 @@ public:
 	~Scenario();
 
 	bool open();
-	bool read(bool save_triggers);
+	bool read(bool save_triggers = false);
 	bool write(const char *new_path);
 
 	void cleanup();
 
-	std::vector<Trigger *> *triggers;
-
-	long numtriggers;
+	std::vector<Trigger *> triggers;
 };
 
 #endif

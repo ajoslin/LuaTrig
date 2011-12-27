@@ -3,11 +3,11 @@
 
 #include <stdio.h>
 #include <string>
-using namespace std;
-#include "../util/aokutil.h"
+#include "aok_types.h"
 
-#define MAX_CONDITION CONDITION_DifficultyLevel
-#define NUM_CONDS	20
+#define MAX_CONDITION 	CONDITION_DifficultyLevel
+#define NUM_CONDS		20
+#define NUM_COND_PARAMS	12
 
 enum ConditionType
 {
@@ -54,15 +54,14 @@ class Condition
 public:
 	Condition();
 
-	int readfromscx(FILE *in);
-	void writetoscx(FILE *out);
-	void writetolua(FILE *out, const char *trigvar, const char* condvar);
+	const char *getName();
 
-	const std::string getName() const;
+	void read(FILE *in);
+	void write(FILE *out);
 
-	bool check() const;
-	bool valid_property(ConditionProperty) const;
-
+	bool check();
+	bool valid_property(ConditionProperty);
+	
 	AOKRECT area;
 	long type;
 	long check_value;
@@ -82,6 +81,7 @@ public:
 //internal
 
 	static const char* types[NUM_CONDS];
+	static const char* partypes[NUM_COND_PARAMS];
 };
 
 #endif

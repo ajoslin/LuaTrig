@@ -21,6 +21,7 @@ LTDialog_TriggerGen::LTDialog_TriggerGen(wxWindow *parent)
 	mainSizer->SetMinSize(wxSize(150, 1)); //only care about width
 	SetSizerAndFit(mainSizer);
 	SetDefaultItem(okButton);
+	Center();
 };
 
 void LTDialog_TriggerGen::onDone(wxCommandEvent &event)

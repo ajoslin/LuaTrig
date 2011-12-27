@@ -14,9 +14,13 @@ LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, int type, w
 	masterSizer = new wxBoxSizer(wxVERTICAL);
 	mainSizer = new wxBoxSizer(wxVERTICAL);
 	infoSizer = new wxBoxSizer(wxHORIZONTAL);
+	topButtonsSizer = new wxBoxSizer(wxVERTICAL);
 
 	closeButton = new wxButton(this, wxID_CANCEL, wxT(STR_CLOSE));
 	reloadButton = new wxButton(this, wxID_ANY, wxT(STR_RELOAD));
+
+	topButtonsSizer->Add(closeButton);
+	topButtonsSizer->Add(reloadButton);
 
 	wxString stype = type==FTYPE_Scenario ? wxT(STR_SCENARIO) : wxT(STR_SCRIPT);
 	numTriggersLabelText = new wxStaticText(this, wxID_ANY, stype+wxT(" ")+wxT(STR_FILE_TRIGCNT)+wxT(" "));
@@ -28,8 +32,7 @@ LTPage_FileBase::LTPage_FileBase(LTFrame *frame, wxNotebook *parent, int type, w
 	mainSizer->Add(infoSizer);
 
 	masterSizer->AddSpacer(15);
-	masterSizer->Add(closeButton);
-	masterSizer->Add(reloadButton);
+	masterSizer->Add(topButtonsSizer);
 	masterSizer->AddSpacer(10);
 	masterSizer->Add(mainSizer);
 

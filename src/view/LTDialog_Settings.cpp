@@ -47,6 +47,7 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 
 	mainSizer->SetMinSize(wxSize(500, 1)); //only care about width
 	SetSizerAndFit(mainSizer);
+	Center();
 }
 
 void LTDialog_Settings::onDefaults(wxCommandEvent& event)
