@@ -1,14 +1,14 @@
 
 #include "LuaFile.h"
 #include "../genie/Trigger.h"
-#include "../defines.h"
-#include "../util/aokutil.h"
 #include "../genie/aok_types.h"
 #include <lua.hpp>
 #include <string.h>
 
 /* the SWIG wrappered library */
-extern "C" int luaopen_Scenario(lua_State*L);
+extern "C" int luaopen_Scenario(lua_State* L);
+extern "C" int luaopen_LCondition(lua_State* L);
+extern "C" int luaopen_LEffect(lua_State *L);
 
 LuaFile *LuaFile::currentLuaFile = NULL;
 
@@ -28,6 +28,8 @@ bool LuaFile::read()
 	// load the libs
 	luaL_openlibs(L);
 	luaopen_Scenario(L);
+	luaopen_LCondition(L);
+	luaopen_LEffect(L);
 
 	//clear triggers before reading them again
 	triggers.clear();
@@ -113,7 +115,7 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		//resource type
 		if (c->resource_type!=-1 && c->valid_property(CONDITIONP_ResourceType)) 
 			fprintf(out, "\t\t%s:resource(\"%s\") --aka resource(%d)\n",
-				condvar, aokutil::get_res_str(c->resource_type), c->resource_type);
+				condvar, genieResources->nameFromId(c->resource_type), c->resource_type);
 		//unit object
 		if (c->uid_object!=-1 && c->valid_property(CONDITIONP_UIDObject))
 			fprintf(out, "\t\t%s:unit_object(%d)\n", condvar, c->uid_object);
@@ -129,9 +131,9 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		//technology
 		if (c->technology!=-1 && c->valid_property(CONDITIONP_Technology))
 			fprintf(out, "\t\t%s:technology(%d)\n", condvar, c->technology);
-		//timer (uses amount() function in lua)
+		//timer
 		if (c->timer!=-1 && c->valid_property(CONDITIONP_Timer))
-			fprintf(out, "\t\t%s:amount(%d)\n", condvar, c->timer);
+			fprintf(out, "\t\t%s:timer(%d)\n", condvar, c->timer);
 		//area
 		if (c->area.ur.x!=-1 && c->area.ll.x!=-1 && c->valid_property(CONDITIONP_Area))  
 			fprintf(out, "\t\t%s:area(%d,%d, %d,%d) --(lowerleft, upperright)\n", 
@@ -139,11 +141,11 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		//unit group
 		if (c->unit_group!=-1 && c->valid_property(CONDITIONP_UnitGroup))
 			fprintf(out, "\t\t%s:unit_group(\"%s\") --aka unit_group(%d)\n",
-				 condvar, aokutil::get_ugroup_str(c->unit_group), c->unit_group); 
+				 condvar, genieUnitGroups->nameFromId(c->unit_group), c->unit_group); 
 		//unit type
 		if (c->unit_type!=-1 && c->valid_property(CONDITIONP_UnitType))
 			fprintf(out, "\t\t%s:unit_type(\"%s\") --aka unit_type(%d)\n",
-				condvar, aokutil::get_utype_str(c->unit_type), c->unit_type);
+				condvar, genieUnitTypes->nameFromId(c->unit_type), c->unit_type);
 		//ai signal
 		if (c->ai_signal!=-1 && c->valid_property(CONDITIONP_AISignal))
 			fprintf(out, "\t\t%s:ai_signal(%d)\n", condvar, c->ai_signal);
@@ -168,11 +170,11 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		//resource
 		if (e->resource!=-1 && e->valid_property(EFFECTP_Resource))
 			fprintf(out, "\t\t%s:resource(\"%s\") --aka resource(%d)\n",
-				effectvar, aokutil::get_res_str(e->resource), e->resource);
+				effectvar, genieResources->nameFromId(e->resource), e->resource);
 		//diplomacy
 		if (e->diplomacy!=-1 && e->valid_property(EFFECTP_Diplomacy))
 			fprintf(out, "\t\t%s:diplomacy(\"%s\") --aka diplomacy(%d)\n",
-				effectvar, aokutil::get_diplomacy_str(e->diplomacy), e->diplomacy);
+				effectvar, genieDiplomacies->nameFromId(e->diplomacy), e->diplomacy);
 		//unit location
 		if (e->uid_location!=-1 && e->valid_property(EFFECTP_UIDLocation))
 			fprintf(out, "\t\t%s:unit_location(%d)\n", effectvar, e->uid_location);
@@ -193,7 +195,7 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		}
 		//player_source
 		if (e->player_source!=-1 && e->valid_property(EFFECTP_PlayerSource))
-			fprintf(out, "\t\t%s:player(%d)\n", effectvar, e->player_source);
+			fprintf(out, "\t\t%s:player_source(%d)\n", effectvar, e->player_source);
 		//player_target
 		if (e->player_target!=-1 && e->valid_property(EFFECTP_PlayerTarget))
 			fprintf(out, "\t\t%s:player_target(%d)\n", effectvar, e->player_target);
@@ -216,11 +218,11 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		//unit group
 		if (e->unit_group!=-1 && e->valid_property(EFFECTP_UnitGroup))
 			fprintf(out, "\t\t%s:unit_group(\"%s\") --aka unit_group(%d)\n",
-				 effectvar, aokutil::get_ugroup_str(e->unit_group), e->unit_group); 
+				 effectvar, genieUnitGroups->nameFromId(e->unit_group), e->unit_group); 
 		//unit type
 		if (e->unit_type!=-1 && e->valid_property(EFFECTP_UnitType))
 			fprintf(out, "\t\t%s:unit_type(\"%s\") --aka unit_type(%d)\n",
-				effectvar, aokutil::get_utype_str(e->unit_type), e->unit_type); 
+				effectvar, genieUnitTypes->nameFromId(e->unit_type), e->unit_type); 
 		//panel
 		if (e->panel!=-1 && e->valid_property(EFFECTP_Panel))
 			fprintf(out, "\t\t%s:panel(%d)\n", effectvar, e->panel);

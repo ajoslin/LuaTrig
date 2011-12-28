@@ -73,6 +73,6 @@
 //LUA FRAME
 #define STR_LUA_BASE		"Scenario this script is based from:"
 #define STR_LUA_TARGET		"Select target location for scenario:"
-#define STR_LUA_OVERWRITE	"Set target scenario to overwrite base scenario"
+#define STR_LUA_OVERWRITE	"target scenario is same as base scenario (overwrite)"
 #define STR_LUA_WRITE		"Write Scenario"
 #define STR_LUA_OPEN		"Open File"

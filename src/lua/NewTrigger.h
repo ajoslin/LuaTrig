@@ -1,14 +1,16 @@
 #ifndef LTRIGGER_H_
 #define LTRIGGER_H_
 
-class Trigger; //fwd here so no need to include
-class LEffect;
+#include "../genie/Trigger.h"
+
+class LEffect; //fwd so we don't have to include
 class LCondition;
 
 class NewTrigger 
 {
 private:
 	Trigger *trig;
+	int id;
 public:
 	NewTrigger(int id) throw(char *);
 
@@ -22,8 +24,8 @@ public:
 	void objective(int isobjective);
 	void desc_order(int order) throw(char *);
 
-	Condition *condition(int type) throw(char *);
-	Effect *effect(int type) throw(char *);
+	LCondition *condition(int type) throw(char *);
+	LEffect *effect(int type) throw(char *);
 
 	LCondition *condition_None() { return condition(CONDITION_None); };
 	LCondition *condition_BringObjectToArea() { return condition(CONDITION_BringObjectToArea); };
@@ -46,36 +48,36 @@ public:
 	LCondition *condition_UnitsGarrisoned() { return condition(CONDITION_UnitsGarrisoned); };
 	LCondition *condition_DifficultyLevel() { return condition(CONDITION_DifficultyLevel); };
 
-	Effect *effect_None() { return effect(EFFECT_None); };
-	Effect *effect_ChangeDiplomacy() { return effect(EFFECT_ChangeDiplomacy); };
-	Effect *effect_ResearchTechnology() { return effect(EFFECT_ResearchTechnology); };
-	Effect *effect_SendChat() { return effect(EFFECT_SendChat); };
-	Effect *effect_PlaySound() { return effect(EFFECT_PlaySound); };
-	Effect *effect_SendTribute() { return effect(EFFECT_SendTribute); };
-	Effect *effect_UnlockGate() { return effect(EFFECT_UnlockGate); };
-	Effect *effect_LockGate() { return effect(EFFECT_LockGate); };
-	Effect *effect_ActivateTrigger() { return effect(EFFECT_ActivateTrigger); };
-	Effect *effect_DeactivateTrigger() { return effect(EFFECT_DeactivateTrigger); };
-	Effect *effect_AIScriptGoal() { return effect(EFFECT_AIScriptGoal); };
-	Effect *effect_CreateObject() { return effect(EFFECT_CreateObject); };
-	Effect *effect_TaskObject() { return effect(EFFECT_TaskObject); };
-	Effect *effect_DeclareVictory() { return effect(EFFECT_DeclareVictory); };
-	Effect *effect_KillObject() { return effect(EFFECT_KillObject); };
-	Effect *effect_RemoveObject() { return effect(EFFECT_RemoveObject); };
-	Effect *effect_ChangeView() { return effect(EFFECT_ChangeView); };
-	Effect *effect_Unload() { return effect(EFFECT_Unload); };
-	Effect *effect_ChangeOwnership() { return effect(EFFECT_ChangeOwnership); };
-	Effect *effect_Patrol() { return effect(EFFECT_Patrol); };
-	Effect *effect_DisplayInstructions() { return effect(EFFECT_DisplayInstructions); };
-	Effect *effect_ClearInstructions() { return effect(EFFECT_ClearInstructions); };
-	Effect *effect_FreezeUnit() { return effect(EFFECT_FreezeUnit); };
-	Effect *effect_UseAdvancedButtons() { return effect(EFFECT_UseAdvancedButtons); };
-	Effect *effect_DamageObject() { return effect(EFFECT_DamageObject); };
-	Effect *effect_PlaceFoundation() { return effect(EFFECT_PlaceFoundation); };
-	Effect *effect_ChangeObjectName() { return effect(EFFECT_ChangeObjectName); };
-	Effect *effect_ChangeObjectHP() { return effect(EFFECT_ChangeObjectHP); };
-	Effect *effect_ChangeObjectAttack() { return effect(EFFECT_ChangeObjectAttack); };
-	Effect *effect_StopUnit() { return effect(EFFECT_StopUnit); };
+	LEffect *effect_None() { return effect(EFFECT_None); };
+	LEffect *effect_ChangeDiplomacy() { return effect(EFFECT_ChangeDiplomacy); };
+	LEffect *effect_ResearchTechnology() { return effect(EFFECT_ResearchTechnology); };
+	LEffect *effect_SendChat() { return effect(EFFECT_SendChat); };
+	LEffect *effect_PlaySound() { return effect(EFFECT_PlaySound); };
+	LEffect *effect_SendTribute() { return effect(EFFECT_SendTribute); };
+	LEffect *effect_UnlockGate() { return effect(EFFECT_UnlockGate); };
+	LEffect *effect_LockGate() { return effect(EFFECT_LockGate); };
+	LEffect *effect_ActivateTrigger() { return effect(EFFECT_ActivateTrigger); };
+	LEffect *effect_DeactivateTrigger() { return effect(EFFECT_DeactivateTrigger); };
+	LEffect *effect_AIScriptGoal() { return effect(EFFECT_AIScriptGoal); };
+	LEffect *effect_CreateObject() { return effect(EFFECT_CreateObject); };
+	LEffect *effect_TaskObject() { return effect(EFFECT_TaskObject); };
+	LEffect *effect_DeclareVictory() { return effect(EFFECT_DeclareVictory); };
+	LEffect *effect_KillObject() { return effect(EFFECT_KillObject); };
+	LEffect *effect_RemoveObject() { return effect(EFFECT_RemoveObject); };
+	LEffect *effect_ChangeView() { return effect(EFFECT_ChangeView); };
+	LEffect *effect_Unload() { return effect(EFFECT_Unload); };
+	LEffect *effect_ChangeOwnership() { return effect(EFFECT_ChangeOwnership); };
+	LEffect *effect_Patrol() { return effect(EFFECT_Patrol); };
+	LEffect *effect_DisplayInstructions() { return effect(EFFECT_DisplayInstructions); };
+	LEffect *effect_ClearInstructions() { return effect(EFFECT_ClearInstructions); };
+	LEffect *effect_FreezeUnit() { return effect(EFFECT_FreezeUnit); };
+	LEffect *effect_UseAdvancedButtons() { return effect(EFFECT_UseAdvancedButtons); };
+	LEffect *effect_DamageObject() { return effect(EFFECT_DamageObject); };
+	LEffect *effect_PlaceFoundation() { return effect(EFFECT_PlaceFoundation); };
+	LEffect *effect_ChangeObjectName() { return effect(EFFECT_ChangeObjectName); };
+	LEffect *effect_ChangeObjectHP() { return effect(EFFECT_ChangeObjectHP); };
+	LEffect *effect_ChangeObjectAttack() { return effect(EFFECT_ChangeObjectAttack); };
+	LEffect *effect_StopUnit() { return effect(EFFECT_StopUnit); };
 };
 
 #endif

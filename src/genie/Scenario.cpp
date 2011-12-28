@@ -117,6 +117,7 @@ bool Scenario::read(bool save_triggers)
 			triggers.push_back(t);
 	}
 	trigger_skip = ftell(scx) - bytes_read;
+	trigger_skip = 0;
 	bytes_read+=trigger_skip;
 
 	//at the end is numtriggers longs representing order of triggers.

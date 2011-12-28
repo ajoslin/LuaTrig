@@ -11,21 +11,19 @@ genie=$(src)genie/
 libs=-llua `wx-config --cxxflags --libs`
 
 #C++ Source Files
-genieFiles=$(genie)Condition.cpp $(genie)Effect.cpp $(genie)Trigger.cpp $(genie)Scenario.cpp $(genie)aok_types.cpp $(genie)util_file.cpp $(genie)aok_types.cpp
+genieFiles=$(genie)aok_types.cpp $(genie)Condition.cpp $(genie)Effect.cpp $(genie)Trigger.cpp $(genie)Scenario.cpp $(genie)util_file.cpp
 
-luaFiles=$(lua)NewTrigger.cpp $(lua)LuaFile.cpp
-
-utilFiles=$(util)aokutil.cpp
+luaFiles=$(lua)NewTrigger.cpp $(lua)LCondition.cpp $(lua)LEffect.cpp $(lua)LuaFile.cpp
 
 viewFiles=$(view)LTMain.cpp $(view)LTFrame.cpp $(view)LTDialog_Settings.cpp $(view)LTDialog_About.cpp $(view)LTDialog_TriggerGen.cpp $(view)LTDialog_ChooseScen.cpp $(view)LTPage_FileBase.cpp $(view)LTPage_Script.cpp $(view)LTPage_Scen.cpp
 
-srcFiles=$(genieFiles) $(luaFiles) $(utilFiles) $(viewFiles)
+srcFiles=$(genieFiles) $(luaFiles) $(viewFiles)
 
 #Compiled source files
 objFiles=$(subst $(src),$(objs),$(srcFiles:.cpp=.o))
 
 #Swig header files
-swigFiles=$(lua)NewTriggerSwig.i
+swigFiles=$(lua)NewTriggerSwig.i $(lua)LEffectSwig.i $(lua)LConditionSwig.i
 
 #Swig wrapper files
 swigWrapperFiles=$(subst $(src),$(src),$(swigFiles:.i=.cxx))

@@ -41,10 +41,12 @@ void Trigger::read(FILE *scx)
 	long effect_count;
 	fread(&effect_count, sizeof(long), 1, scx);
 
-	effects.resize(effect_count);
+	effects.clear();
 	for (int i=0; i<effect_count; i++)
 	{
-		effects[i]->read(scx);
+		Effect *e=new Effect;
+		e->read(scx);
+		effects.push_back(e);
 	}
 	//skip effect_count longs representing effect order
 	//this order doesn't matter, is only display order and not execution order
@@ -54,10 +56,12 @@ void Trigger::read(FILE *scx)
 	long condition_count;
 	fread(&condition_count, sizeof(long), 1, scx);
 	
-	conds.resize(condition_count);
+	conds.clear();
 	for (int i=0; i<condition_count; i++)
 	{
-		conds[i]->read(scx);
+		Condition *c=new Condition;
+		c->read(scx);
+		conds.push_back(c);
 	}
 	//skip condition order, condition_count longs
 	for (int i=0; i<4*condition_count; i++) fgetc(scx);

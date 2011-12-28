@@ -104,8 +104,8 @@ void LTPage_Script::onPickBaseButtonPressed(wxCommandEvent &event)
 
 void LTPage_Script::onPickTargetButtonPressed(wxCommandEvent &event)
 {
-	if (targetScenario->FileExists())
-		pickTargetDialog->SetPath(targetScenario->GetFullPath());
+	//if (targetScenario->FileExists())
+	//	pickTargetDialog->SetPath(targetScenario->GetFullPath());
 
 	int id=pickTargetDialog->ShowModal();
 	if (id==wxID_OK)
