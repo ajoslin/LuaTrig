@@ -6,7 +6,7 @@ A program to write Age of Empires II triggers in Lua scripting language.
 Credits
 -------
 
-The sources for these programs helped me out a ton when making LuaTrig.
+The sources for the following programs helped me out a ton when making LuaTrig.
 
 [AoK Trigger Studio, by DiGiT](http://sourceforge.net/projects/aokts/)
 
