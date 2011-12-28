@@ -1,1 +1,8 @@
-Read this. or else
+Credits:
+AoK Trigger Studio sources. Created by DiGiT, http://sourceforge.net/projects/aokts/
+Trigger Script Editor sources. Created by Jatayu, http://aok.heavengames.com/blacksmith/showfile.php?fileid=10278
+
+Dependencies:
+Swig - http://www.swig.org/ - Lua wrapper
+wxWidgets - http://wxwidgets.org/ - GUI library
+zlib - http://zlib.net/ - Compression/decompression
