@@ -4,6 +4,7 @@
 #include "../genie/Scenario.h"
 #include "LTDialog_ChooseScen.h"
 #include "../defines.h"
+#include "wx/msgdlg.h"
 
 LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fname)
 	: LTPage_FileBase(frame, parent, FTYPE_Script, fname)
@@ -74,44 +75,55 @@ void LTPage_Script::onPickBaseButtonPressed(wxCommandEvent &event)
 	for (int i=0; i<frame->openFiles.size(); i++)
 		if (frame->openFiles[i]->type==FTYPE_Scenario) 
 			len++;
-	
-	//create array of len, and fill it with scens
-	wxString choices[len];
-	wxString choicePaths[len];
-	int idx=0;
-	for (int i=0; i<frame->openFiles.size(); i++)
+		
+	//if len is 0, no scns opened
+	if (len==0)
 	{
-		if (frame->openFiles[i]->type==FTYPE_Scenario)
-		{
-			wxFileName *file=frame->openFiles[i]->file;
-			choices[idx]=/*file->GetDirs().Last() + wxT("/") + */file->GetFullName();
-			choicePaths[idx]=file->GetFullPath();
-			idx++;
-		}
+		wxMessageDialog *msg = new wxMessageDialog(this, wxT(STR_LUA_BASE_ERR), wxT(STR_ERROR), wxOK);
+		msg->ShowModal();
+		delete msg;
 	}
-	
-	//finally create the dialog
-	LTDialog_ChooseScen *chooseScnDialog = new LTDialog_ChooseScen(this, choices, len);
-	int choice=chooseScnDialog->ShowModal();
-	delete chooseScnDialog;
-	
-	if (choice != wxNOT_FOUND)
+	else
 	{
-		baseScenario->Assign(choicePaths[choice]);
-		setBaseScenario(baseScenario);
+		//create array of len, and fill it with scens
+		wxString choices[len];
+		wxString choicePaths[len];
+
+		int idx=0;
+		for (int i=0; i<frame->openFiles.size(); i++)
+		{
+			if (frame->openFiles[i]->type==FTYPE_Scenario)
+			{
+				wxFileName *file=frame->openFiles[i]->file;
+				choices[idx]=/*file->GetDirs().Last() + wxT("/") + */file->GetFullName();
+				choicePaths[idx]=file->GetFullPath();
+				idx++;
+			}
+		}
+		
+		//finally create the dialog
+		LTDialog_ChooseScen *chooseScnDialog = new LTDialog_ChooseScen(this, choices, len);
+		int choice=chooseScnDialog->ShowModal();
+		delete chooseScnDialog;
+		
+		if (choice != wxNOT_FOUND)
+		{
+			baseScenario->Assign(choicePaths[choice]);
+			setBaseScenario(baseScenario);
+		}
 	}
 }
 
 void LTPage_Script::onPickTargetButtonPressed(wxCommandEvent &event)
 {
-	//if (targetScenario->FileExists())
-	//	pickTargetDialog->SetPath(targetScenario->GetFullPath());
+	if (targetScenario->FileExists())
+		pickTargetDialog->SetPath(targetScenario->GetFullPath());
 
 	int id=pickTargetDialog->ShowModal();
 	if (id==wxID_OK)
 	{
 		targetScenario->Assign(pickTargetDialog->GetPath());
-		setTargetScenario(baseScenario);
+		setTargetScenario(targetScenario);
 	}
 }
 
