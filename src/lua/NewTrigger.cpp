@@ -27,13 +27,17 @@ void NewTrigger::name(const char *name) throw(char *)
 	} 
 	else
 	{
+		trig->name.resize(strlen(name)+1);
 		trig->name.assign(name);
+		trig->name+='\0';
 	}
 }
 
 void NewTrigger::description(const char *description)
 {
+	trig->description.resize(strlen(description)+1);
 	trig->description.assign(description);
+	trig->description+='\0';
 }
 
 void NewTrigger::on(bool ison)

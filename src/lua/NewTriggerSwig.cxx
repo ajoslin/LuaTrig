@@ -2041,19 +2041,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_None(lua_State* L) {
+static int _wrap_NewTrigger_ConditionNone(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_None",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_None",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionNone",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionNone",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_None",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionNone",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_None();
+  result = (LCondition *)(arg1)->ConditionNone();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2065,19 +2065,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_BringObjectToArea(lua_State* L) {
+static int _wrap_NewTrigger_ConditionBringObjectToArea(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_BringObjectToArea",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_BringObjectToArea",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionBringObjectToArea",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionBringObjectToArea",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_BringObjectToArea",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionBringObjectToArea",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_BringObjectToArea();
+  result = (LCondition *)(arg1)->ConditionBringObjectToArea();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2089,19 +2089,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_BringObjectToObject(lua_State* L) {
+static int _wrap_NewTrigger_ConditionBringObjectToObject(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_BringObjectToObject",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_BringObjectToObject",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionBringObjectToObject",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionBringObjectToObject",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_BringObjectToObject",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionBringObjectToObject",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_BringObjectToObject();
+  result = (LCondition *)(arg1)->ConditionBringObjectToObject();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2113,19 +2113,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_OwnObjects(lua_State* L) {
+static int _wrap_NewTrigger_ConditionOwnObjects(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_OwnObjects",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_OwnObjects",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionOwnObjects",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionOwnObjects",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_OwnObjects",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionOwnObjects",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_OwnObjects();
+  result = (LCondition *)(arg1)->ConditionOwnObjects();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2137,19 +2137,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_OwnFewerObjects(lua_State* L) {
+static int _wrap_NewTrigger_ConditionOwnFewerObjects(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_OwnFewerObjects",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_OwnFewerObjects",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionOwnFewerObjects",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionOwnFewerObjects",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_OwnFewerObjects",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionOwnFewerObjects",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_OwnFewerObjects();
+  result = (LCondition *)(arg1)->ConditionOwnFewerObjects();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2161,19 +2161,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_ObjectsInArea(lua_State* L) {
+static int _wrap_NewTrigger_ConditionObjectsInArea(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_ObjectsInArea",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_ObjectsInArea",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionObjectsInArea",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionObjectsInArea",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_ObjectsInArea",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionObjectsInArea",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_ObjectsInArea();
+  result = (LCondition *)(arg1)->ConditionObjectsInArea();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2185,19 +2185,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_DestroyObject(lua_State* L) {
+static int _wrap_NewTrigger_ConditionDestroyObject(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_DestroyObject",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_DestroyObject",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionDestroyObject",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionDestroyObject",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_DestroyObject",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionDestroyObject",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_DestroyObject();
+  result = (LCondition *)(arg1)->ConditionDestroyObject();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2209,19 +2209,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_CaptureObject(lua_State* L) {
+static int _wrap_NewTrigger_ConditionCaptureObject(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_CaptureObject",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_CaptureObject",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionCaptureObject",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionCaptureObject",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_CaptureObject",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionCaptureObject",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_CaptureObject();
+  result = (LCondition *)(arg1)->ConditionCaptureObject();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2233,19 +2233,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_AccumulateAttribute(lua_State* L) {
+static int _wrap_NewTrigger_ConditionAccumulateAttribute(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_AccumulateAttribute",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_AccumulateAttribute",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionAccumulateAttribute",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionAccumulateAttribute",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_AccumulateAttribute",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionAccumulateAttribute",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_AccumulateAttribute();
+  result = (LCondition *)(arg1)->ConditionAccumulateAttribute();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2257,19 +2257,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_ResearchTechnology(lua_State* L) {
+static int _wrap_NewTrigger_ConditionResearchTechnology(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_ResearchTechnology",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_ResearchTechnology",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionResearchTechnology",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionResearchTechnology",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_ResearchTechnology",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionResearchTechnology",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_ResearchTechnology();
+  result = (LCondition *)(arg1)->ConditionResearchTechnology();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2281,19 +2281,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_Timer(lua_State* L) {
+static int _wrap_NewTrigger_ConditionTimer(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_Timer",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_Timer",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionTimer",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionTimer",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_Timer",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionTimer",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_Timer();
+  result = (LCondition *)(arg1)->ConditionTimer();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2305,19 +2305,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_ObjectSelected(lua_State* L) {
+static int _wrap_NewTrigger_ConditionObjectSelected(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_ObjectSelected",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_ObjectSelected",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionObjectSelected",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionObjectSelected",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_ObjectSelected",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionObjectSelected",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_ObjectSelected();
+  result = (LCondition *)(arg1)->ConditionObjectSelected();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2329,19 +2329,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_AISignal(lua_State* L) {
+static int _wrap_NewTrigger_ConditionAISignal(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_AISignal",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_AISignal",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionAISignal",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionAISignal",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_AISignal",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionAISignal",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_AISignal();
+  result = (LCondition *)(arg1)->ConditionAISignal();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2353,19 +2353,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_PlayerDefeated(lua_State* L) {
+static int _wrap_NewTrigger_ConditionPlayerDefeated(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_PlayerDefeated",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_PlayerDefeated",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionPlayerDefeated",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionPlayerDefeated",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_PlayerDefeated",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionPlayerDefeated",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_PlayerDefeated();
+  result = (LCondition *)(arg1)->ConditionPlayerDefeated();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2377,19 +2377,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_ObjectHasTarget(lua_State* L) {
+static int _wrap_NewTrigger_ConditionObjectHasTarget(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_ObjectHasTarget",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_ObjectHasTarget",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionObjectHasTarget",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionObjectHasTarget",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_ObjectHasTarget",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionObjectHasTarget",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_ObjectHasTarget();
+  result = (LCondition *)(arg1)->ConditionObjectHasTarget();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2401,19 +2401,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_ObjectVisible(lua_State* L) {
+static int _wrap_NewTrigger_ConditionObjectVisible(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_ObjectVisible",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_ObjectVisible",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionObjectVisible",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionObjectVisible",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_ObjectVisible",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionObjectVisible",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_ObjectVisible();
+  result = (LCondition *)(arg1)->ConditionObjectVisible();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2425,19 +2425,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_ObjectNotVisible(lua_State* L) {
+static int _wrap_NewTrigger_ConditionObjectNotVisible(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_ObjectNotVisible",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_ObjectNotVisible",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionObjectNotVisible",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionObjectNotVisible",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_ObjectNotVisible",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionObjectNotVisible",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_ObjectNotVisible();
+  result = (LCondition *)(arg1)->ConditionObjectNotVisible();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2449,19 +2449,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_ResearchingTechnology(lua_State* L) {
+static int _wrap_NewTrigger_ConditionResearchingTechnology(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_ResearchingTechnology",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_ResearchingTechnology",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionResearchingTechnology",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionResearchingTechnology",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_ResearchingTechnology",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionResearchingTechnology",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_ResearchingTechnology();
+  result = (LCondition *)(arg1)->ConditionResearchingTechnology();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2473,19 +2473,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_UnitsGarrisoned(lua_State* L) {
+static int _wrap_NewTrigger_ConditionUnitsGarrisoned(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_UnitsGarrisoned",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_UnitsGarrisoned",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionUnitsGarrisoned",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionUnitsGarrisoned",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_UnitsGarrisoned",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionUnitsGarrisoned",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_UnitsGarrisoned();
+  result = (LCondition *)(arg1)->ConditionUnitsGarrisoned();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2497,19 +2497,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_condition_DifficultyLevel(lua_State* L) {
+static int _wrap_NewTrigger_ConditionDifficultyLevel(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LCondition *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::condition_DifficultyLevel",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::condition_DifficultyLevel",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::ConditionDifficultyLevel",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::ConditionDifficultyLevel",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_condition_DifficultyLevel",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_ConditionDifficultyLevel",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LCondition *)(arg1)->condition_DifficultyLevel();
+  result = (LCondition *)(arg1)->ConditionDifficultyLevel();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LCondition,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2521,19 +2521,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_None(lua_State* L) {
+static int _wrap_NewTrigger_EffectNone(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_None",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_None",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectNone",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectNone",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_None",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectNone",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_None();
+  result = (LEffect *)(arg1)->EffectNone();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2545,19 +2545,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_ChangeDiplomacy(lua_State* L) {
+static int _wrap_NewTrigger_EffectChangeDiplomacy(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_ChangeDiplomacy",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_ChangeDiplomacy",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectChangeDiplomacy",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectChangeDiplomacy",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_ChangeDiplomacy",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectChangeDiplomacy",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_ChangeDiplomacy();
+  result = (LEffect *)(arg1)->EffectChangeDiplomacy();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2569,19 +2569,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_ResearchTechnology(lua_State* L) {
+static int _wrap_NewTrigger_EffectResearchTechnology(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_ResearchTechnology",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_ResearchTechnology",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectResearchTechnology",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectResearchTechnology",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_ResearchTechnology",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectResearchTechnology",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_ResearchTechnology();
+  result = (LEffect *)(arg1)->EffectResearchTechnology();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2593,19 +2593,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_SendChat(lua_State* L) {
+static int _wrap_NewTrigger_EffectSendChat(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_SendChat",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_SendChat",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectSendChat",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectSendChat",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_SendChat",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectSendChat",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_SendChat();
+  result = (LEffect *)(arg1)->EffectSendChat();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2617,19 +2617,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_PlaySound(lua_State* L) {
+static int _wrap_NewTrigger_EffectPlaySound(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_PlaySound",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_PlaySound",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectPlaySound",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectPlaySound",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_PlaySound",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectPlaySound",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_PlaySound();
+  result = (LEffect *)(arg1)->EffectPlaySound();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2641,19 +2641,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_SendTribute(lua_State* L) {
+static int _wrap_NewTrigger_EffectSendTribute(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_SendTribute",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_SendTribute",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectSendTribute",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectSendTribute",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_SendTribute",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectSendTribute",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_SendTribute();
+  result = (LEffect *)(arg1)->EffectSendTribute();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2665,19 +2665,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_UnlockGate(lua_State* L) {
+static int _wrap_NewTrigger_EffectUnlockGate(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_UnlockGate",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_UnlockGate",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectUnlockGate",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectUnlockGate",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_UnlockGate",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectUnlockGate",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_UnlockGate();
+  result = (LEffect *)(arg1)->EffectUnlockGate();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2689,19 +2689,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_LockGate(lua_State* L) {
+static int _wrap_NewTrigger_EffectLockGate(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_LockGate",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_LockGate",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectLockGate",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectLockGate",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_LockGate",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectLockGate",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_LockGate();
+  result = (LEffect *)(arg1)->EffectLockGate();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2713,19 +2713,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_ActivateTrigger(lua_State* L) {
+static int _wrap_NewTrigger_EffectActivateTrigger(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_ActivateTrigger",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_ActivateTrigger",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectActivateTrigger",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectActivateTrigger",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_ActivateTrigger",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectActivateTrigger",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_ActivateTrigger();
+  result = (LEffect *)(arg1)->EffectActivateTrigger();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2737,19 +2737,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_DeactivateTrigger(lua_State* L) {
+static int _wrap_NewTrigger_EffectDeactivateTrigger(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_DeactivateTrigger",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_DeactivateTrigger",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectDeactivateTrigger",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectDeactivateTrigger",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_DeactivateTrigger",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectDeactivateTrigger",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_DeactivateTrigger();
+  result = (LEffect *)(arg1)->EffectDeactivateTrigger();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2761,19 +2761,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_AIScriptGoal(lua_State* L) {
+static int _wrap_NewTrigger_EffectAIScriptGoal(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_AIScriptGoal",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_AIScriptGoal",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectAIScriptGoal",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectAIScriptGoal",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_AIScriptGoal",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectAIScriptGoal",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_AIScriptGoal();
+  result = (LEffect *)(arg1)->EffectAIScriptGoal();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2785,19 +2785,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_CreateObject(lua_State* L) {
+static int _wrap_NewTrigger_EffectCreateObject(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_CreateObject",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_CreateObject",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectCreateObject",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectCreateObject",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_CreateObject",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectCreateObject",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_CreateObject();
+  result = (LEffect *)(arg1)->EffectCreateObject();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2809,19 +2809,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_TaskObject(lua_State* L) {
+static int _wrap_NewTrigger_EffectTaskObject(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_TaskObject",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_TaskObject",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectTaskObject",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectTaskObject",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_TaskObject",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectTaskObject",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_TaskObject();
+  result = (LEffect *)(arg1)->EffectTaskObject();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2833,19 +2833,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_DeclareVictory(lua_State* L) {
+static int _wrap_NewTrigger_EffectDeclareVictory(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_DeclareVictory",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_DeclareVictory",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectDeclareVictory",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectDeclareVictory",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_DeclareVictory",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectDeclareVictory",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_DeclareVictory();
+  result = (LEffect *)(arg1)->EffectDeclareVictory();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2857,19 +2857,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_KillObject(lua_State* L) {
+static int _wrap_NewTrigger_EffectKillObject(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_KillObject",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_KillObject",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectKillObject",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectKillObject",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_KillObject",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectKillObject",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_KillObject();
+  result = (LEffect *)(arg1)->EffectKillObject();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2881,19 +2881,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_RemoveObject(lua_State* L) {
+static int _wrap_NewTrigger_EffectRemoveObject(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_RemoveObject",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_RemoveObject",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectRemoveObject",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectRemoveObject",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_RemoveObject",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectRemoveObject",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_RemoveObject();
+  result = (LEffect *)(arg1)->EffectRemoveObject();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2905,19 +2905,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_ChangeView(lua_State* L) {
+static int _wrap_NewTrigger_EffectChangeView(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_ChangeView",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_ChangeView",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectChangeView",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectChangeView",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_ChangeView",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectChangeView",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_ChangeView();
+  result = (LEffect *)(arg1)->EffectChangeView();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2929,19 +2929,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_Unload(lua_State* L) {
+static int _wrap_NewTrigger_EffectUnload(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_Unload",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_Unload",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectUnload",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectUnload",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_Unload",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectUnload",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_Unload();
+  result = (LEffect *)(arg1)->EffectUnload();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2953,19 +2953,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_ChangeOwnership(lua_State* L) {
+static int _wrap_NewTrigger_EffectChangeOwnership(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_ChangeOwnership",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_ChangeOwnership",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectChangeOwnership",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectChangeOwnership",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_ChangeOwnership",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectChangeOwnership",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_ChangeOwnership();
+  result = (LEffect *)(arg1)->EffectChangeOwnership();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -2977,19 +2977,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_Patrol(lua_State* L) {
+static int _wrap_NewTrigger_EffectPatrol(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_Patrol",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_Patrol",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectPatrol",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectPatrol",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_Patrol",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectPatrol",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_Patrol();
+  result = (LEffect *)(arg1)->EffectPatrol();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3001,19 +3001,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_DisplayInstructions(lua_State* L) {
+static int _wrap_NewTrigger_EffectDisplayInstructions(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_DisplayInstructions",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_DisplayInstructions",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectDisplayInstructions",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectDisplayInstructions",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_DisplayInstructions",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectDisplayInstructions",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_DisplayInstructions();
+  result = (LEffect *)(arg1)->EffectDisplayInstructions();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3025,19 +3025,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_ClearInstructions(lua_State* L) {
+static int _wrap_NewTrigger_EffectClearInstructions(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_ClearInstructions",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_ClearInstructions",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectClearInstructions",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectClearInstructions",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_ClearInstructions",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectClearInstructions",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_ClearInstructions();
+  result = (LEffect *)(arg1)->EffectClearInstructions();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3049,19 +3049,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_FreezeUnit(lua_State* L) {
+static int _wrap_NewTrigger_EffectFreezeUnit(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_FreezeUnit",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_FreezeUnit",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectFreezeUnit",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectFreezeUnit",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_FreezeUnit",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectFreezeUnit",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_FreezeUnit();
+  result = (LEffect *)(arg1)->EffectFreezeUnit();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3073,19 +3073,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_UseAdvancedButtons(lua_State* L) {
+static int _wrap_NewTrigger_EffectUseAdvancedButtons(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_UseAdvancedButtons",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_UseAdvancedButtons",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectUseAdvancedButtons",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectUseAdvancedButtons",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_UseAdvancedButtons",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectUseAdvancedButtons",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_UseAdvancedButtons();
+  result = (LEffect *)(arg1)->EffectUseAdvancedButtons();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3097,19 +3097,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_DamageObject(lua_State* L) {
+static int _wrap_NewTrigger_EffectDamageObject(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_DamageObject",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_DamageObject",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectDamageObject",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectDamageObject",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_DamageObject",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectDamageObject",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_DamageObject();
+  result = (LEffect *)(arg1)->EffectDamageObject();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3121,19 +3121,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_PlaceFoundation(lua_State* L) {
+static int _wrap_NewTrigger_EffectPlaceFoundation(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_PlaceFoundation",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_PlaceFoundation",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectPlaceFoundation",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectPlaceFoundation",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_PlaceFoundation",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectPlaceFoundation",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_PlaceFoundation();
+  result = (LEffect *)(arg1)->EffectPlaceFoundation();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3145,19 +3145,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_ChangeObjectName(lua_State* L) {
+static int _wrap_NewTrigger_EffectChangeObjectName(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_ChangeObjectName",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_ChangeObjectName",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectChangeObjectName",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectChangeObjectName",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_ChangeObjectName",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectChangeObjectName",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_ChangeObjectName();
+  result = (LEffect *)(arg1)->EffectChangeObjectName();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3169,19 +3169,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_ChangeObjectHP(lua_State* L) {
+static int _wrap_NewTrigger_EffectChangeObjectHP(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_ChangeObjectHP",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_ChangeObjectHP",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectChangeObjectHP",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectChangeObjectHP",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_ChangeObjectHP",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectChangeObjectHP",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_ChangeObjectHP();
+  result = (LEffect *)(arg1)->EffectChangeObjectHP();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3193,19 +3193,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_ChangeObjectAttack(lua_State* L) {
+static int _wrap_NewTrigger_EffectChangeObjectAttack(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_ChangeObjectAttack",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_ChangeObjectAttack",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectChangeObjectAttack",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectChangeObjectAttack",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_ChangeObjectAttack",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectChangeObjectAttack",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_ChangeObjectAttack();
+  result = (LEffect *)(arg1)->EffectChangeObjectAttack();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3217,19 +3217,19 @@ fail:
 }
 
 
-static int _wrap_NewTrigger_effect_StopUnit(lua_State* L) {
+static int _wrap_NewTrigger_EffectStopUnit(lua_State* L) {
   int SWIG_arg = 0;
   NewTrigger *arg1 = (NewTrigger *) 0 ;
   LEffect *result = 0 ;
   
-  SWIG_check_num_args("NewTrigger::effect_StopUnit",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::effect_StopUnit",1,"NewTrigger *");
+  SWIG_check_num_args("NewTrigger::EffectStopUnit",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("NewTrigger::EffectStopUnit",1,"NewTrigger *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_NewTrigger,0))){
-    SWIG_fail_ptr("NewTrigger_effect_StopUnit",1,SWIGTYPE_p_NewTrigger);
+    SWIG_fail_ptr("NewTrigger_EffectStopUnit",1,SWIGTYPE_p_NewTrigger);
   }
   
-  result = (LEffect *)(arg1)->effect_StopUnit();
+  result = (LEffect *)(arg1)->EffectStopUnit();
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_LEffect,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -3254,56 +3254,56 @@ static swig_lua_method swig_NewTrigger_methods[] = {
     {"desc_order", _wrap_NewTrigger_desc_order}, 
     {"condition", _wrap_NewTrigger_condition}, 
     {"effect", _wrap_NewTrigger_effect}, 
-    {"condition_None", _wrap_NewTrigger_condition_None}, 
-    {"condition_BringObjectToArea", _wrap_NewTrigger_condition_BringObjectToArea}, 
-    {"condition_BringObjectToObject", _wrap_NewTrigger_condition_BringObjectToObject}, 
-    {"condition_OwnObjects", _wrap_NewTrigger_condition_OwnObjects}, 
-    {"condition_OwnFewerObjects", _wrap_NewTrigger_condition_OwnFewerObjects}, 
-    {"condition_ObjectsInArea", _wrap_NewTrigger_condition_ObjectsInArea}, 
-    {"condition_DestroyObject", _wrap_NewTrigger_condition_DestroyObject}, 
-    {"condition_CaptureObject", _wrap_NewTrigger_condition_CaptureObject}, 
-    {"condition_AccumulateAttribute", _wrap_NewTrigger_condition_AccumulateAttribute}, 
-    {"condition_ResearchTechnology", _wrap_NewTrigger_condition_ResearchTechnology}, 
-    {"condition_Timer", _wrap_NewTrigger_condition_Timer}, 
-    {"condition_ObjectSelected", _wrap_NewTrigger_condition_ObjectSelected}, 
-    {"condition_AISignal", _wrap_NewTrigger_condition_AISignal}, 
-    {"condition_PlayerDefeated", _wrap_NewTrigger_condition_PlayerDefeated}, 
-    {"condition_ObjectHasTarget", _wrap_NewTrigger_condition_ObjectHasTarget}, 
-    {"condition_ObjectVisible", _wrap_NewTrigger_condition_ObjectVisible}, 
-    {"condition_ObjectNotVisible", _wrap_NewTrigger_condition_ObjectNotVisible}, 
-    {"condition_ResearchingTechnology", _wrap_NewTrigger_condition_ResearchingTechnology}, 
-    {"condition_UnitsGarrisoned", _wrap_NewTrigger_condition_UnitsGarrisoned}, 
-    {"condition_DifficultyLevel", _wrap_NewTrigger_condition_DifficultyLevel}, 
-    {"effect_None", _wrap_NewTrigger_effect_None}, 
-    {"effect_ChangeDiplomacy", _wrap_NewTrigger_effect_ChangeDiplomacy}, 
-    {"effect_ResearchTechnology", _wrap_NewTrigger_effect_ResearchTechnology}, 
-    {"effect_SendChat", _wrap_NewTrigger_effect_SendChat}, 
-    {"effect_PlaySound", _wrap_NewTrigger_effect_PlaySound}, 
-    {"effect_SendTribute", _wrap_NewTrigger_effect_SendTribute}, 
-    {"effect_UnlockGate", _wrap_NewTrigger_effect_UnlockGate}, 
-    {"effect_LockGate", _wrap_NewTrigger_effect_LockGate}, 
-    {"effect_ActivateTrigger", _wrap_NewTrigger_effect_ActivateTrigger}, 
-    {"effect_DeactivateTrigger", _wrap_NewTrigger_effect_DeactivateTrigger}, 
-    {"effect_AIScriptGoal", _wrap_NewTrigger_effect_AIScriptGoal}, 
-    {"effect_CreateObject", _wrap_NewTrigger_effect_CreateObject}, 
-    {"effect_TaskObject", _wrap_NewTrigger_effect_TaskObject}, 
-    {"effect_DeclareVictory", _wrap_NewTrigger_effect_DeclareVictory}, 
-    {"effect_KillObject", _wrap_NewTrigger_effect_KillObject}, 
-    {"effect_RemoveObject", _wrap_NewTrigger_effect_RemoveObject}, 
-    {"effect_ChangeView", _wrap_NewTrigger_effect_ChangeView}, 
-    {"effect_Unload", _wrap_NewTrigger_effect_Unload}, 
-    {"effect_ChangeOwnership", _wrap_NewTrigger_effect_ChangeOwnership}, 
-    {"effect_Patrol", _wrap_NewTrigger_effect_Patrol}, 
-    {"effect_DisplayInstructions", _wrap_NewTrigger_effect_DisplayInstructions}, 
-    {"effect_ClearInstructions", _wrap_NewTrigger_effect_ClearInstructions}, 
-    {"effect_FreezeUnit", _wrap_NewTrigger_effect_FreezeUnit}, 
-    {"effect_UseAdvancedButtons", _wrap_NewTrigger_effect_UseAdvancedButtons}, 
-    {"effect_DamageObject", _wrap_NewTrigger_effect_DamageObject}, 
-    {"effect_PlaceFoundation", _wrap_NewTrigger_effect_PlaceFoundation}, 
-    {"effect_ChangeObjectName", _wrap_NewTrigger_effect_ChangeObjectName}, 
-    {"effect_ChangeObjectHP", _wrap_NewTrigger_effect_ChangeObjectHP}, 
-    {"effect_ChangeObjectAttack", _wrap_NewTrigger_effect_ChangeObjectAttack}, 
-    {"effect_StopUnit", _wrap_NewTrigger_effect_StopUnit}, 
+    {"ConditionNone", _wrap_NewTrigger_ConditionNone}, 
+    {"ConditionBringObjectToArea", _wrap_NewTrigger_ConditionBringObjectToArea}, 
+    {"ConditionBringObjectToObject", _wrap_NewTrigger_ConditionBringObjectToObject}, 
+    {"ConditionOwnObjects", _wrap_NewTrigger_ConditionOwnObjects}, 
+    {"ConditionOwnFewerObjects", _wrap_NewTrigger_ConditionOwnFewerObjects}, 
+    {"ConditionObjectsInArea", _wrap_NewTrigger_ConditionObjectsInArea}, 
+    {"ConditionDestroyObject", _wrap_NewTrigger_ConditionDestroyObject}, 
+    {"ConditionCaptureObject", _wrap_NewTrigger_ConditionCaptureObject}, 
+    {"ConditionAccumulateAttribute", _wrap_NewTrigger_ConditionAccumulateAttribute}, 
+    {"ConditionResearchTechnology", _wrap_NewTrigger_ConditionResearchTechnology}, 
+    {"ConditionTimer", _wrap_NewTrigger_ConditionTimer}, 
+    {"ConditionObjectSelected", _wrap_NewTrigger_ConditionObjectSelected}, 
+    {"ConditionAISignal", _wrap_NewTrigger_ConditionAISignal}, 
+    {"ConditionPlayerDefeated", _wrap_NewTrigger_ConditionPlayerDefeated}, 
+    {"ConditionObjectHasTarget", _wrap_NewTrigger_ConditionObjectHasTarget}, 
+    {"ConditionObjectVisible", _wrap_NewTrigger_ConditionObjectVisible}, 
+    {"ConditionObjectNotVisible", _wrap_NewTrigger_ConditionObjectNotVisible}, 
+    {"ConditionResearchingTechnology", _wrap_NewTrigger_ConditionResearchingTechnology}, 
+    {"ConditionUnitsGarrisoned", _wrap_NewTrigger_ConditionUnitsGarrisoned}, 
+    {"ConditionDifficultyLevel", _wrap_NewTrigger_ConditionDifficultyLevel}, 
+    {"EffectNone", _wrap_NewTrigger_EffectNone}, 
+    {"EffectChangeDiplomacy", _wrap_NewTrigger_EffectChangeDiplomacy}, 
+    {"EffectResearchTechnology", _wrap_NewTrigger_EffectResearchTechnology}, 
+    {"EffectSendChat", _wrap_NewTrigger_EffectSendChat}, 
+    {"EffectPlaySound", _wrap_NewTrigger_EffectPlaySound}, 
+    {"EffectSendTribute", _wrap_NewTrigger_EffectSendTribute}, 
+    {"EffectUnlockGate", _wrap_NewTrigger_EffectUnlockGate}, 
+    {"EffectLockGate", _wrap_NewTrigger_EffectLockGate}, 
+    {"EffectActivateTrigger", _wrap_NewTrigger_EffectActivateTrigger}, 
+    {"EffectDeactivateTrigger", _wrap_NewTrigger_EffectDeactivateTrigger}, 
+    {"EffectAIScriptGoal", _wrap_NewTrigger_EffectAIScriptGoal}, 
+    {"EffectCreateObject", _wrap_NewTrigger_EffectCreateObject}, 
+    {"EffectTaskObject", _wrap_NewTrigger_EffectTaskObject}, 
+    {"EffectDeclareVictory", _wrap_NewTrigger_EffectDeclareVictory}, 
+    {"EffectKillObject", _wrap_NewTrigger_EffectKillObject}, 
+    {"EffectRemoveObject", _wrap_NewTrigger_EffectRemoveObject}, 
+    {"EffectChangeView", _wrap_NewTrigger_EffectChangeView}, 
+    {"EffectUnload", _wrap_NewTrigger_EffectUnload}, 
+    {"EffectChangeOwnership", _wrap_NewTrigger_EffectChangeOwnership}, 
+    {"EffectPatrol", _wrap_NewTrigger_EffectPatrol}, 
+    {"EffectDisplayInstructions", _wrap_NewTrigger_EffectDisplayInstructions}, 
+    {"EffectClearInstructions", _wrap_NewTrigger_EffectClearInstructions}, 
+    {"EffectFreezeUnit", _wrap_NewTrigger_EffectFreezeUnit}, 
+    {"EffectUseAdvancedButtons", _wrap_NewTrigger_EffectUseAdvancedButtons}, 
+    {"EffectDamageObject", _wrap_NewTrigger_EffectDamageObject}, 
+    {"EffectPlaceFoundation", _wrap_NewTrigger_EffectPlaceFoundation}, 
+    {"EffectChangeObjectName", _wrap_NewTrigger_EffectChangeObjectName}, 
+    {"EffectChangeObjectHP", _wrap_NewTrigger_EffectChangeObjectHP}, 
+    {"EffectChangeObjectAttack", _wrap_NewTrigger_EffectChangeObjectAttack}, 
+    {"EffectStopUnit", _wrap_NewTrigger_EffectStopUnit}, 
     {0,0}
 };
 static swig_lua_attribute swig_NewTrigger_attributes[] = {

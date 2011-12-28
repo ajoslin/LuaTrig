@@ -24,7 +24,7 @@ bool LCondition::checkParam(ConditionProperty p)
 
 void LCondition::paramError(ConditionProperty p) throw(char *)
 {
-	throwCondError("condition_%s cannot have parameter %s.", cId, trigId, cond->types[cond->type], cond->partypes[p]);
+	throwCondError("Condition%s cannot have parameter %s.", cId, trigId, cond->types[cond->type], cond->partypes[p]);
 }
 
 void LCondition::area(int llX, int llY, int urX, int urY) throw(char *)

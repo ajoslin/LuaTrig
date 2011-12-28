@@ -7,7 +7,7 @@ LTDialog_ChooseScen::LTDialog_ChooseScen(wxWindow *parent, wxString choices[], i
 	mainSizer = new wxBoxSizer(wxVERTICAL);
 	buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	radioBox = new wxRadioBox(this, wxID_ANY, wxT(STR_CHSSCN_RADIO), wxDefaultPosition, wxDefaultSize, nChoices, choices, 1, wxRA_SPECIFY_ROWS);
+	radioBox = new wxRadioBox(this, wxID_ANY, wxT(STR_CHSSCN_RADIO), wxDefaultPosition, wxDefaultSize, nChoices, choices, 0, wxRA_SPECIFY_ROWS);
 
 	mainSizer->AddSpacer(10);
 	mainSizer->Add(radioBox, 1, wxALIGN_CENTER);

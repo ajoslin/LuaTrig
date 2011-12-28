@@ -12,7 +12,7 @@ Scenario::Scenario(const char *_path, int len)
 	path = new char[len+1];
 	for (int i=0; i<len; i++)
 		path[i] = _path[i];
-	path[len+1]='\0';
+	path[len]='\0';
 }
 
 Scenario::~Scenario()
@@ -34,7 +34,7 @@ void Scenario::cleanup()
 
 bool Scenario::open()
 {
-	printf("opening scenario %s\n", path);
+	printf("[O] Opening scenario %s\n", path);
 
 	FILE *scx = fopen(path, "rb");
 	if (scx==NULL)
@@ -60,16 +60,16 @@ bool Scenario::open()
 	fclose(headerfile);
 
 
-	printf("headerlength: %d\n", headerlength);
+	printf("\t[O] headerlength: %d\n", headerlength);
 
-	printf("bytes_read: %d\n", bytes_read);
+	printf("\t[O] bytes_read: %d\n", bytes_read);
 
 	//COMPRESSED DATA
 	//get length of compressed data
 	long clen = scx_filesize - bytes_read;
 
-	printf("scx_filesize: %d\n", scx_filesize);
-	printf("clen: %d\n", clen);
+	printf("\t[O] scx_filesize: %d\n", scx_filesize);
+	printf("\t[O] clen: %d\n", clen);
 
 	Bytef *cdata = new Bytef[clen];
 	READ(cdata, sizeof(char), clen, scx);
@@ -81,14 +81,14 @@ bool Scenario::open()
 	fclose(scx);
 	fclose(out);
 
-	printf("open done\n");
+	printf("\t[O] End open\n");
 
 	return true;
 }
 
 bool Scenario::read(bool save_triggers)
 {
-	printf("reading scenario\n");
+	printf("[R] Reading scenario\n");
 
 	FILE *scx=fopen("scndata.hex", "rb");
 	if (scx==NULL)
@@ -103,12 +103,13 @@ bool Scenario::read(bool save_triggers)
 	int numtriggers;
 	READ(&numtriggers, sizeof(long), 1, scx);
 
-	printf("numtriggers=%d\n",numtriggers);
+	printf("\t[R] numtriggers=%d\n",numtriggers);
 	
 	long trigger_skip=0;
 	bool displayed=0;
 
-	triggers.clear();
+	if (save_triggers)
+		triggers.clear();
 	for (int i=0; i<numtriggers; i++)
 	{
 		Trigger *t = new Trigger;
@@ -117,7 +118,6 @@ bool Scenario::read(bool save_triggers)
 			triggers.push_back(t);
 	}
 	trigger_skip = ftell(scx) - bytes_read;
-	trigger_skip = 0;
 	bytes_read+=trigger_skip;
 
 	//at the end is numtriggers longs representing order of triggers.
@@ -129,11 +129,11 @@ bool Scenario::read(bool save_triggers)
 	scenario_end = skiptoscenarioend("scndata.hex");
 
 	long filesize=fsize("scndata.hex");
-	printf("trigger start=%d, trigger end=%d\n", trigger_start, trigger_end);
-	printf("scenario_end=%d\n", scenario_end);
-	printf("scndata.hex size: %d, size without triggers: %d\n", filesize, filesize-trigger_skip-4*numtriggers-4);
+	printf("\t[R] trigger start=%d, trigger end=%d\n", trigger_start, trigger_end);
+	printf("\t[R] scenario_end=%d\n", scenario_end);
+	printf("\t[R] scndata.hex size: %d, size without triggers: %d\n", filesize, filesize-trigger_skip-4*numtriggers-4);
 
-	printf("read done\n");
+	printf("\t[R] Read done\n");
 
 	fclose(scx);
 
@@ -142,9 +142,13 @@ bool Scenario::read(bool save_triggers)
 
 bool Scenario::write(const char *new_path)
 {
+	printf("[W] Writing scenario %s to %s\n", path, new_path);
+
 	//open creates header.hex and scndata.hex
 	int success=open();
 	if (!success) return false;
+
+	printf("\t[W] Open successful\n");
 
 	//read sets trigger_start and trigger_end
 	read(false);
@@ -160,9 +164,13 @@ bool Scenario::write(const char *new_path)
 		fputc(fgetc(olddata), newdata);
 	fclose(olddata);
 
+	printf("\t[W] wrote trigger_start=%d bytes of pre-triggers data\n", trigger_start);
+
 	//write trigger count
 	long numtriggers = triggers.size();
 	fwrite(&numtriggers, sizeof(long), 1, newdata);
+
+	printf("\t[W] numtriggers=%d. fpos=%d\n", numtriggers, ftell(newdata));	
 
 	//write triggers
 	for (int i=0; i<numtriggers; i++) 
@@ -171,7 +179,8 @@ bool Scenario::write(const char *new_path)
 	//write trigger order
 	for (int i=0; i<numtriggers; i++)
 		fwrite(&i, sizeof(long), 1, newdata);
-
+	
+	printf("\t[W] wrote triggers. fpos=%d, triggerbytes=%d\n", ftell(newdata), ftell(newdata)-trigger_start-4);
 		
 	//write after triggers data
 	olddata = fopen("scndata.hex", "rb");
@@ -185,6 +194,8 @@ bool Scenario::write(const char *new_path)
 		fputc(fgetc(olddata), newdata);
 	fclose(olddata);
 
+	printf("\t[W] wrote after triggers data. len=%d\n", restlen);
+
 	//close and reopen newdata, then write it to a byte array
 	fclose(newdata);
 	newdata = fopen("out.hex", "rb");
@@ -193,7 +204,7 @@ bool Scenario::write(const char *new_path)
 	Bytef *uncompr_data = new Bytef[newdata_len];
 	fread(uncompr_data, sizeof(char), newdata_len, newdata);	
 
-	printf("out.hex size: %d\n", newdata_len);
+	printf("\t[W] Wrote new data, out.hex, to byte array. size: %d\n", newdata_len);
 
 	//open new scx file
 	FILE *scx=fopen(new_path, "wb");
@@ -205,14 +216,14 @@ bool Scenario::write(const char *new_path)
 		fputc(fgetc(header), scx);
 	fclose(header);
 
-	printf("headerlen=%d\n", headerlen);
+	printf("\t[W] headerlen: %d\n", headerlen);
 
 	//compress new data and write it to new scx
 	deflate_file(uncompr_data, newdata_len, scx);
 
 	//done!
 	fclose(scx);
-	printf("write done!\n");
+	printf("\t[W] Write done!\n");
 	
 	return true;
 }

@@ -52,22 +52,24 @@ void Effect::read(FILE *scx)
 	long textlen;
 	fread(&textlen, sizeof(long), 1, scx);
 
+	char c;
+
 	text.resize(textlen);
 	for (int i=0; i<textlen; i++) {
-		char c=text.at(i);
 		fread(&c, 1, 1, scx);
+		text[i]=c;
 	}
-	//text.at(textlen)='\0'; //make sure it's null terminated
+	text[textlen]='\0';
 
 	long soundlen;
 	fread(&soundlen, sizeof(long), 1, scx);
 
 	sound.resize(soundlen);
 	for (int i=0; i<soundlen; i++) {
-		char c=sound.at(i);
 		fread(&c, 1, 1, scx);
+		sound[i]=c;
 	}
-	//sound.at(soundlen)='\0'; //make sure it's null terminated
+	sound[soundlen]='\0';
 
 	if (num_selected!=-1)
 	{

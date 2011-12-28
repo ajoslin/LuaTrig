@@ -6,6 +6,7 @@
 #include "../res/gear.xpm"
 #include "../res/aoc_16.xpm"
 #include "../res/lua_16.xpm"
+#include "../res/appicon.xpm"
 #include "LTPage_Scen.h"
 #include "LTPage_Script.h"
 #include "LTPage_FileBase.h"
@@ -18,6 +19,8 @@
 LTFrame::LTFrame(const wxString& title)
 	: wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxDefaultSize)
 {
+	SetIcon(wxIcon(appicon_xpm));
+
 	//Get config settings (if they exist)
 	config = new wxFileConfig(wxT(STR_LUATRIG), wxEmptyString, wxT(STR_CFG_FNAME), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
 	config->Read(wxT(STR_CFG_SCNDIR), &scenarioDir, wxT(""));

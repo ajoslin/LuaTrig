@@ -28,7 +28,7 @@ LTPage_Script::LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fna
 	pickTargetCheckBox = new wxCheckBox(this, wxID_ANY, wxT(STR_LUA_OVERWRITE));
 
 	pickTargetSizer->Add(pickTargetButton, 1, wxALIGN_CENTER_VERTICAL);
-	pickTargetSizer->AddSpacer(5);
+	//pickTargetSizer->AddSpacer(5);
 	pickTargetSizer->Add(pickTargetCheckBox, 1, wxALIGN_CENTER_VERTICAL);
 
 	writeButton = new wxButton(this, wxID_ANY, wxT(STR_LUA_WRITE));
@@ -160,6 +160,7 @@ void LTPage_Script::onTimer(wxTimerEvent &event)
 	{
 		wxCommandEvent cmdClose(wxEVT_COMMAND_BUTTON_CLICKED, wxID_CANCEL);
 		ProcessEvent(cmdClose);
+		hasError=false;
 	}
 	else
 		successText->SetLabel(wxT(""));
@@ -217,6 +218,10 @@ void LTPage_Script::write(wxFileName *fname)
 	Scenario *out = new Scenario(baseScenario->GetFullPath().mb_str().data(), baseScenario->GetFullPath().Len());
 	out->triggers=luaFile->triggers;
 	out->write(fname->GetFullPath().mb_str().data());
+	out->cleanup();
+	delete out;
+
+	frame->openScenario(fname, true);
 
 	wxEndBusyCursor();
 }
@@ -230,11 +235,11 @@ void LTPage_Script::read()
 	{
 		wxString err=wxString::FromUTF8(luaFile->error());
 
-		//replace filename:linenum:error with filename: Line linenum:error for readability
+		//replace 'filename:linenum:error' with 'filename: line linenum:error' for readability
 		err.Replace(wxT(".lua:"), wxT(".lua: line "), false); 
 		frame->onError(err);
 
-		//close after an ms, it doesn't want to close immediately
+		//close after 1 ms, it doesn't want to close immediately
 		timer->Start(1, wxTIMER_ONE_SHOT);
 		hasError=true;
 	}

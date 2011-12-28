@@ -15,6 +15,7 @@ private:
 	std::string read_error;
 
 	void writeTrigger(FILE *out, int id);
+	void writeLuaString(FILE *out, const char *str);
 
 public:
 	LuaFile(const char *path, int len);

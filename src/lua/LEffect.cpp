@@ -23,7 +23,7 @@ bool LEffect::checkParam(EffectProperty p)
 
 void LEffect::paramError(EffectProperty p) throw(char *)
 {
-	throwEffectError("effect_%s cannot have parameter %s.", eId, trigId, effect->types[effect->type], effect->partypes[p]);
+	throwEffectError("Effect%s cannot have parameter %s.", eId, trigId, effect->types[effect->type], effect->partypes[p]);
 }
 
 void LEffect::location(int x, int y) throw(char *)
@@ -316,7 +316,9 @@ void LEffect::text(const char *text) throw(char *)
 	if (!checkParam(EFFECTP_Text))
 		return paramError(EFFECTP_Text);
 	
+	effect->text.resize(strlen(text)+1);
 	effect->text.assign(text);
+	effect->text+='\0';
 }
 
 void LEffect::sound(const char *sound) throw(char *)
@@ -324,5 +326,7 @@ void LEffect::sound(const char *sound) throw(char *)
 	if (!checkParam(EFFECTP_Sound))
 		return paramError(EFFECTP_Sound);
 	
+	effect->sound.resize(strlen(sound)+1);
 	effect->sound.assign(sound);
+	effect->text+='\0';
 }

@@ -17,7 +17,7 @@ LuaFile::LuaFile(const char *_path, int len)
 	path = new char[len+1];
 	for (int i=0; i<len; i++)
 	path[i] = _path[i];
-	path[len+1]='\0';
+	path[len]='\0';
 }
 
 bool LuaFile::read()
@@ -74,6 +74,41 @@ void LuaFile::write(const char *new_path)
 	fclose(out);
 }
 
+void LuaFile::writeLuaString(FILE *out, const char *str)
+{
+	std::string fix(str);
+	int i;
+
+	i=fix.find("\\", 0);
+	while (i!=std::string::npos)
+	{
+		fix.replace(i, 1, "/");
+		i=fix.find("\\", i+1);
+	}
+
+	i=fix.find("\"", 0);
+	while (i!=std::string::npos)
+	{
+		fix.replace(i, 1, "\\\"");
+		i=fix.find("\"", i+2);
+	}
+
+	i=fix.find("\n", 0);
+	while (i!=std::string::npos)
+	{
+		fix.replace(i, 1, "\\n");
+		i=fix.find("\n", i+2);
+	}
+
+	i=fix.find("\r", 0);
+	while (i!=std::string::npos)
+	{
+		fix.replace(i, 1, "\\r");
+		i=fix.find("\r", i+2);
+	}
+	fprintf(out, "\"%s\"", fix.c_str());
+}
+
 void LuaFile::writeTrigger(FILE *out, int id)
 {
 	const char *trigvar="trigger";
@@ -85,9 +120,13 @@ void LuaFile::writeTrigger(FILE *out, int id)
 	//declaration
 	fprintf(out, "%s = Scenario.NewTrigger(%d)\n", trigvar, id);
 	//name (always write)
-	fprintf(out, "\t%s:name(\"%s\")\n", trigvar, t->name.c_str());
+	fprintf(out, "\t%s:name(", trigvar);
+	writeLuaString(out, t->name.c_str());
+	fprintf(out, ")\n");
 	//description (always write)
-	fprintf(out, "\t%s:description(\"%s\")\n", trigvar, t->description.c_str());
+	fprintf(out, "\t%s:description(", trigvar);
+	writeLuaString(out, t->description.c_str());
+	fprintf(out, ")\n");
 	//on
 	fprintf(out, "\t%s:on(%s)\n", trigvar, t->state ? "true" : "false");
 	//loop
@@ -98,7 +137,9 @@ void LuaFile::writeTrigger(FILE *out, int id)
 	//objective order
 	if (t->obj || t->obj_order)
 		fprintf(out, "\t%s:desc_order(%d)\n", trigvar, t->obj_order);
-
+	
+	printf("cond count: %d\n", t->conds.size());
+	
 	//Conditions
 	const char *condvar = "cond";
 	for (int i=0; i<t->conds.size(); i++)
@@ -108,7 +149,7 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		//comment
 		fprintf(out, "\t--Condition %d %s\n", i, c->getName());
 		//declaration
-		fprintf(out, "\t%s = %s:condition_%s()\n", condvar, trigvar, c->getName());
+		fprintf(out, "\t%s = %s:Condition%s()\n", condvar, trigvar, c->getName());
 		//amount
 		if (c->amount!=-1 && c->valid_property(CONDITIONP_Amount))
 			fprintf(out, "\t\t%s:amount(%d)\n", condvar, c->amount);
@@ -160,7 +201,7 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		//comment
 		fprintf(out, "\t--Effect %d %s\n", i, e->getName());
 		//declaration
-		fprintf(out, "\t%s = %s:effect_%s()\n", effectvar, trigvar, e->getName());
+		fprintf(out, "\t%s = %s:Effect%s()\n", effectvar, trigvar, e->getName());
 		//ai goal
 		if (e->ai_goal!=-1 && e->valid_property(EFFECTP_AIGoal))
 			fprintf(out, "\t\t%s:ai_goal(%d)\n", effectvar, e->ai_goal);
@@ -228,14 +269,22 @@ void LuaFile::writeTrigger(FILE *out, int id)
 			fprintf(out, "\t\t%s:panel(%d)\n", effectvar, e->panel);
 		//text
 		if (e->text.length()>1 && e->valid_property(EFFECTP_Text))
-			fprintf(out, "\t\t%s:text(\"%s\")\n", effectvar, e->text.c_str());
+		{
+			fprintf(out, "\t\t%s:text(", effectvar);
+			writeLuaString(out, e->text.c_str());
+			fprintf(out, ")\n");
+		}
 		//sound
 		if (e->sound.length()>1 && e->valid_property(EFFECTP_Sound))
-			fprintf(out, "\t\t%s:sound(\"%s\")\n", effectvar, e->sound.c_str());	
+		{
+			fprintf(out, "\t\t%s:sound(", effectvar);
+			writeLuaString(out, e->sound.c_str());
+			fprintf(out, ")\n");	
+		}
 	}
 	//ending \n for two lines between each trigger
-	fprintf(out, "\n"); 
-
+	//fprintf(out, "\n"); 
+	//*/
 }
 
 LuaFile *LuaFile::current()

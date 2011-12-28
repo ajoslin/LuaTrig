@@ -21,21 +21,25 @@ void Trigger::read(FILE *scx)
 
 	long desclen;
 	fread(&desclen, sizeof(long), 1, scx); 
+
+	char c;
+
 	description.resize(desclen);
 	for (int i=0; i<desclen; i++) {
-		char c=description.at(i);
 		fread(&c, sizeof(char), 1, scx);
+		description[i]=c;
 	}
-	//description.at(desclen)='\0'; //make sure it's null terminated
+	description[desclen]='\0';
 
 	long namelen;
 	fread(&namelen, sizeof(long), 1, scx); 
+
 	name.resize(namelen);
 	for (int i=0; i<namelen; i++) {
-		char c=name.at(i);
 		fread(&c, sizeof(char), 1, scx);
+		name[i]=c;
 	}
-	//name.at(namelen)='\0'; //make sure it's null terminated
+	name[namelen]='\0';
 	
 	//Effects
 	long effect_count;

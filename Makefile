@@ -1,6 +1,6 @@
 
 CC=gcc
-outName=program/LuaTrig
+outName=LuaTrig
 bin=bin/
 src=src/
 objs=objs/

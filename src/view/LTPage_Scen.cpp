@@ -86,7 +86,7 @@ void LTPage_Scen::write(wxFileName *fname)
 	lf->write(fname->GetFullPath().mb_str().data());
 	delete lf;
 
-	//frame->openScript(fname, false);
+	frame->openScript(fname, true);
 
 	wxEndBusyCursor();
 }
