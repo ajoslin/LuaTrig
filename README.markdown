@@ -31,12 +31,4 @@ These libraries are necessary to compile and develop LuaTrig.
 Operating Systems
 -----------------
 
-### Windows ### 
-LuaTrig is made for Windows, and will compile and run on Windows.
-
-### Linux ###
-To make LuaTrig compile on Linux, mention of resources.rc must be removed from the Makefile. Also, zlib (-lz) must be added to the libs variable in the Makefile.
-Once you can get LuaTrig to compile, it will run on Linux.
-
-### Mac ###
-LuaTrig will not work on Mac.
+LuaTrig will only compile on Windows in the current verison.  It may compile on Linux if you mess with it a little bit.
