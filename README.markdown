@@ -17,6 +17,8 @@ The sources for the following programs were immensely helpful in developing LuaT
 
 [Trigger Script Editor, by Jatayu](http://aok.heavengames.com/blacksmith/showfile.php?fileid=10278)
 
+Compressed with UPX executable packer: [link](http://upx.sourceforge.net/)
+
 Dependencies
 ------------
 
