@@ -9,6 +9,7 @@ LTDialog_About::LTDialog_About(wxWindow *parent)
 	title1 = new wxStaticText(this, wxID_ANY, wxT(STR_LUATRIG));
 	title2 = new wxStaticText(this, wxID_ANY, wxT(STR_ABT_ANDY));
 	title3 = new wxStaticText(this, wxID_ANY, wxT(STR_ABT_DATE));
+	title4 = new wxHyperlinkCtrl(this, wxID_ANY, wxT("https://github.com/andy-joslin/LuaTrig/"), wxT("https://github.com/andy-joslin/LuaTrig/"));
 	ref = new wxStaticText(this, wxID_ANY, wxT(STR_ABT_REFTITLE));
 	aoktsLink = new wxHyperlinkCtrl(this, wxID_ANY, wxT(STR_ABT_AOKTS), wxT(STR_ABT_AOKTS_LINK));
 	tseLink = new wxHyperlinkCtrl(this, wxID_ANY, wxT(STR_ABT_TSE), wxT(STR_ABT_TSE_LINK));
@@ -19,7 +20,8 @@ LTDialog_About::LTDialog_About(wxWindow *parent)
 	mainSizer->Add(title1, 0, wxALIGN_CENTER);
 	mainSizer->Add(title2, 0, wxALIGN_CENTER);
 	mainSizer->Add(title3, 0, wxALIGN_CENTER);
-	mainSizer->AddSpacer(10);
+	mainSizer->Add(title4, 0, wxALIGN_CENTER);
+	mainSizer->AddSpacer(20);
 	mainSizer->Add(ref, 0, wxALIGN_CENTER);
 	mainSizer->Add(aoktsLink, 0, wxALIGN_CENTER);
 	mainSizer->Add(tseLink, 0, wxALIGN_CENTER);
@@ -29,7 +31,7 @@ LTDialog_About::LTDialog_About(wxWindow *parent)
 
 	Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LTDialog_About::onDone));
 
-	mainSizer->SetMinSize(wxSize(285, 1)); //only care about width
+	mainSizer->SetMinSize(wxSize(300, 200));
 	SetSizerAndFit(mainSizer);
 	SetDefaultItem(doneButton);
 	Center();

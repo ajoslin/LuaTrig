@@ -24,6 +24,7 @@ public:
 	void unit_location(int uid) throw(char *);
 	void player(int p) throw(char *);
 	void technology(int tech) throw(char *);
+	void tech(int tech) throw(char *);
 	void timer(int time) throw(char *);
 	void unit_group(int group) throw(char *);
 	void unit_group(const char *group) throw(char *);

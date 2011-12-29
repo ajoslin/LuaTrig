@@ -43,8 +43,8 @@
 #define STR_STGS_DEFAULT	"Set Default Folders"
 #define STR_STGS_SCN_TITLE	"Scenario folder:"
 #define STR_STGS_LUA_TITLE	"Lua Scripts folder:"
-#define STR_STGS_SCN_DIR64	"c:/Program Files (x86)/Microsoft Games/Age of Empires II/Scenario"
-#define STR_STGS_SCN_DIR32	"c:/Program Files/Microsoft Games/Age of Empires II/Scenario"
+#define STR_STGS_SCN_DIR64	"c:\\Program Files (x86)\\Microsoft Games\\Age of Empires II\\Scenario"
+#define STR_STGS_SCN_DIR32	"c:\\Program Files\\Microsoft Games\\Age of Empires II\\Scenario"
 #define STR_STGS_LUA_DIR	"scripts"
 
 //TRIGGERGEN DIALOG

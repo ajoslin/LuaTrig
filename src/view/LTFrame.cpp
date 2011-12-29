@@ -19,8 +19,6 @@
 LTFrame::LTFrame(const wxString& title)
 	: wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxDefaultSize)
 {
-	SetIcon(wxIcon(appicon_xpm));
-
 	//Get config settings (if they exist)
 	config = new wxFileConfig(wxT(STR_LUATRIG), wxEmptyString, wxT(STR_CFG_FNAME), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
 	config->Read(wxT(STR_CFG_SCNDIR), &scenarioDir, wxT(""));

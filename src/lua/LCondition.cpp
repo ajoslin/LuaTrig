@@ -122,6 +122,11 @@ void LCondition::technology(int tech) throw(char *)
 	cond->technology = tech;
 }
 
+void LCondition::tech(int t) throw(char *)
+{
+	technology(t);
+}
+
 void LCondition::timer(int time) throw(char *)
 {
 	if (!checkParam(CONDITIONP_Timer))

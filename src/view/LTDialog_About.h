@@ -12,6 +12,7 @@ private:
 	wxStaticText *title1;
 	wxStaticText *title2;
 	wxStaticText *title3;
+	wxHyperlinkCtrl *title4;
 
 	wxStaticText *ref;
 	wxHyperlinkCtrl *aoktsLink;

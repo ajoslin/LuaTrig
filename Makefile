@@ -1,6 +1,6 @@
 
 CC=gcc
-outName=LuaTrig
+outName=program/LuaTrig
 bin=bin/
 src=src/
 objs=objs/
@@ -11,6 +11,7 @@ genie=$(src)genie/
 libs=-llua `wx-config --cxxflags --libs`
 
 #C++ Source Files
+
 genieFiles=$(genie)aok_types.cpp $(genie)Condition.cpp $(genie)Effect.cpp $(genie)Trigger.cpp $(genie)Scenario.cpp $(genie)util_file.cpp
 
 luaFiles=$(lua)NewTrigger.cpp $(lua)LCondition.cpp $(lua)LEffect.cpp $(lua)LuaFile.cpp
@@ -33,8 +34,11 @@ swigObjFiles=$(subst $(src),$(objs),$(swigFiles:.i=.o))
 
 #main compilation, final linking
 .PHONY: $(outName)
-$(outName): $(objFiles) $(swigWrapperFiles) $(swigObjFiles)
-	g++ $(objFiles) $(swigObjFiles) $(libs) -o $(outName)
+$(outName): $(objFiles) $(swigWrapperFiles) $(swigObjFiles) $(objs)resource.o
+	g++ $(objFiles) $(swigObjFiles) $(objs)resource.o $(libs) -o $(outName)
+
+$(objs)resource.o: $(src)resource.rc
+	windres $(src)resource.rc -o coff -o $(objs)resource.o
 
 #Uses makefiles created by dependency generation for source files
 -include $(objFiles:.o=.d)
