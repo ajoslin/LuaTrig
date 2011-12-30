@@ -16,12 +16,9 @@ Download / Usage
 
 To use, just download the executable and run it. That's all.
 
+You can clone the git repository if you want the source.
+
 See the [LuaTrig Wiki](https://github.com/andy-joslin/LuaTrig/wiki) for help.
-
-Getting the Source Code
------------------------
-
-* Download the source from the [git repository](https://github.com/andy-joslin/LuaTrig/).
 
 Credits
 -------
