@@ -11,6 +11,7 @@
 #define STR_RELOAD			"Reload"
 #define STR_ERROR 			"Error"
 
+#define STR_CFG_INSTRUCT	"Set your Age of Empires II scenario folder and the folder you would like your scripts to be in.\nUse the Set Defaults button to just use the default folders."
 #define STR_CFG_FNAME		"config.ini"
 #define STR_CFG_SCNDIR		"DefaultScenarioDir"
 #define STR_CFG_LUADIR		"DefaultScriptsDir"

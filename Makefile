@@ -1,6 +1,9 @@
 
+#dir where wxwidgets is; if it's in your local bin just leave it blank
+wxdir=
+
 CC=gcc
-outName=program/LuaTrig
+outName=LuaTrig
 bin=bin/
 src=src/
 objs=objs/
@@ -8,7 +11,8 @@ lua=$(src)lua/
 view=$(src)view/
 util=$(src)util/
 genie=$(src)genie/
-libs=-llua `wx-config --cxxflags --libs`
+objlibs=`$(wxdir)wx-config --cxxflags`
+linkerlibs=-llua51 `$(wxdir)wx-config --libs --static` -static-libgcc -static
 
 #C++ Source Files
 
@@ -32,10 +36,25 @@ swigWrapperFiles=$(subst $(src),$(src),$(swigFiles:.i=.cxx))
 #Swig obj files
 swigObjFiles=$(subst $(src),$(objs),$(swigFiles:.i=.o))
 
+#declare these as phony so they can be run anytime
+.PHONY: $(outName) upx release
+
 #main compilation, final linking
-.PHONY: $(outName)
 $(outName): $(objFiles) $(swigWrapperFiles) $(swigObjFiles) $(objs)resource.o
-	g++ $(objFiles) $(swigObjFiles) $(objs)resource.o $(libs) -o $(outName)
+	g++ $(objFiles) $(swigObjFiles) $(objs)resource.o $(linkerlibs) -o program/$(outName)
+
+#compress program using upx - windows only
+upx:
+	upx --best program/$(outName).exe
+
+#put all files in folder for release
+release:
+	mkdir -p release
+	rm release/*.*
+	mkdir -p release/scripts
+	cp program/LuaTrig.exe release/LuaTrig.exe
+	cp bin/*.dll release/
+	cp README.markdown release/README.txt
 
 $(objs)resource.o: $(src)resource.rc
 	windres $(src)resource.rc -o coff -o $(objs)resource.o
@@ -45,13 +64,13 @@ $(objs)resource.o: $(src)resource.rc
 
 #Dependency generation for source files 
 $(objs)%.d:$(src)%.cpp 
-	$(CC) -MM $(libs) $(CPPFLAGS) $< -o $(objs)$*.P;
+	$(CC) -MM $(objlibs) $(CPPFLAGS) $< -o $(objs)$*.P;
 	sed -r 's/$(notdir $*.o)/objs\/$(subst /,\/,$*.o)/g' < $(objs)$*.P > $(objs)$*.d;
 	rm $(objs)$*.P
 
 #Compile instructions for source files
 $(objs)%.o:$(src)%.cpp 
-	g++ -c $(DEFINES) $(libs) $< -o $@
+	g++ -c $(DEFINES) $(objlibs) $< -o $@
 
 #include dependency generation for swig files
 -include $(swigObjFiles:.o=.d)
@@ -59,14 +78,14 @@ $(objs)%.o:$(src)%.cpp
 #dependency gen for swig files
 $(objs)%.d:$(src)%.cxx
 	mkdir -p $(dir $@) 
-	$(CC) -MM $(libs) $(CPPFLAGS) $< -o $(objs)$*.P;
+	$(CC) -MM $(objlibs) $(CPPFLAGS) $< -o $(objs)$*.P;
 	sed -r 's/$(notdir $*.o)/objs\/$(subst /,\/,$*.o)/g' < $(objs)$*.P > $(objs)$*.d;
 	rm $(objs)$*.P
 
 #compilation for swig files
 $(objs)%.o:$(src)%.cxx
 	mkdir -p $(dir $@)
-	g++ -c $(DEFINES) $(libs) $< -o $@
+	g++ -c $(DEFINES) $(objlibs) $< -o $@
 
 #swig header generation, .i -> .cxx
 $(swigFiles:.i=.cxx):%.cxx:%.i;

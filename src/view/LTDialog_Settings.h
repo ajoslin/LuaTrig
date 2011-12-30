@@ -17,6 +17,7 @@ private:
 	wxFlexGridSizer *gridSizer;
 	wxBoxSizer *okBtnSizer;
 
+	wxStaticText *instructionsText;
 	wxButton *defaultsButton;
 
 	wxStaticText *scenarioText;

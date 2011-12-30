@@ -17,6 +17,8 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 		
 	defaultBtnSizer->Add(defaultsButton, wxEXPAND);
 
+	instructionsText = new wxStaticText(this, wxID_ANY, wxT(STR_CFG_INSTRUCT));
+
 	scenarioText = new wxStaticText(this, wxID_ANY, wxT(STR_STGS_SCN_TITLE));
 	scenarioDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScenarioDir(), wxT(STR_DIR_SELECT), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
 	scriptText = new wxStaticText(this, wxID_ANY, wxT(STR_STGS_LUA_TITLE));
@@ -33,6 +35,8 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 	okBtnSizer->Add(okButton, wxEXPAND);
 	okBtnSizer->Add(cancelButton, wxEXPAND);
 
+	mainSizer->AddSpacer(10);
+	mainSizer->Add(instructionsText);
 	mainSizer->AddSpacer(10);
 	mainSizer->Add(defaultBtnSizer, 0, wxALIGN_CENTER);
 	mainSizer->AddSpacer(10);
