@@ -29,24 +29,24 @@ Compressed with [UPX executable packer](http://upx.sourceforge.net/).
 
 The sources for the following programs were immensely helpful in developing LuaTrig:
 
-[AoK Trigger Studio, by DiGiT](http://sourceforge.net/projects/aokts/)
+* [AoK Trigger Studio, by DiGiT](http://sourceforge.net/projects/aokts/)
 
-[Trigger Script Editor, by Jatayu](http://aok.heavengames.com/blacksmith/showfile.php?fileid=10278)
+* [Trigger Script Editor, by Jatayu](http://aok.heavengames.com/blacksmith/showfile.php?fileid=10278)
 
 Dependencies
 ------------
 
 These libraries are necessary to compile and develop LuaTrig.
 
-[Swig](http://www.swig.org/)
+* [Swig](http://www.swig.org/)
 
-[wxWidgets](http://wxwidgets.org/)
+* [wxWidgets](http://wxwidgets.org/)
 
-[zlib](http://zlib.net/)
+* [zlib](http://zlib.net/)
 
 Operating Systems
 -----------------
 
-LuaTrig will only compile on Windows with the included makefile.
+* LuaTrig will only compile on Windows with the included makefile.
 
-It could compile on linux with some tweaking, but it would take a little bit of messing around.
+* It could compile on linux with some tweaking, but it would take a little bit of messing around.
