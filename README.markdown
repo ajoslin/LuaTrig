@@ -5,21 +5,23 @@ LuaTrig
 
 LuaTrig is a program to write Age of Empires II triggers in Lua scripting language. 
 
-Download
---------
+Download / Usage
+----------------
 
 * Current Version: **1.0**
 
 * Date:  **December 30 2011**
 
-* Executable download [from GitHub](https://github.com/andy-joslin/LuaTrig/downloads).
+* Download executable [from GitHub](https://github.com/andy-joslin/LuaTrig/downloads).
 
-* Source download from the [git repository](https://github.com/andy-joslin/LuaTrig/).
+To use, just download the executable and run it. That's all.
 
-Usage
------
+See the [LuaTrig Wiki](https://github.com/andy-joslin/LuaTrig/wiki) for help.
 
-See the [LuaTrig Wiki](https://github.com/andy-joslin/LuaTrig/wiki) for usage instructions.
+Getting the Source Code
+-----------------------
+
+* Download the source from the [git repository](https://github.com/andy-joslin/LuaTrig/).
 
 Credits
 -------
@@ -35,6 +37,8 @@ The sources for the following programs were immensely helpful in developing LuaT
 
 Dependencies
 ------------
+
+Disregard this section unless you plan on editing the source.
 
 These libraries are necessary to compile and develop LuaTrig.
 
