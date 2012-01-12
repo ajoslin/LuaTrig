@@ -29,6 +29,7 @@ public:
 	void cleanup();
 
 	std::vector<Trigger *> triggers;
+	std::vector<AOKUNIT *> units;
 };
 
 #endif

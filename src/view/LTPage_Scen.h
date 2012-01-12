@@ -20,6 +20,7 @@ private:
 	wxStaticText *saveScriptText;
 	wxFileDialog *saveScriptDialog;
 	wxButton *saveScriptButton;
+	wxButton *saveUnitsScriptButton;
 
 	wxButton *writeButton;
 	wxStaticText *successText;

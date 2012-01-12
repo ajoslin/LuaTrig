@@ -54,7 +54,7 @@ release:
 	mkdir -p release/scripts
 	cp program/LuaTrig.exe release/LuaTrig.exe
 	cp bin/*.dll release/
-	cp README.markdown release/README.txt
+	cp README.markdown release/readme.txt
 
 $(objs)resource.o: $(src)resource.rc
 	windres $(src)resource.rc -o coff -o $(objs)resource.o

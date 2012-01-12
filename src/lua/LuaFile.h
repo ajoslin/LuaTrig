@@ -5,8 +5,9 @@
 #include <vector>
 #include <string>
 
-class lua_State; //fwd it here so we don't have to include
+class lua_State; //fwd these here so we don't have to include
 class Trigger;
+class AOKUNIT;
 
 class LuaFile
 {
@@ -19,6 +20,8 @@ private:
 
 public:
 	LuaFile(const char *path, int len);
+
+	void write_units(std::vector<AOKUNIT *> units, const char *path);
 
 	//returns whether has errors
 	bool read();

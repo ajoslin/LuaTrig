@@ -5,8 +5,8 @@
 //throw an error with cond prefix and given text
 #define throwEffectError(...) \
 	char *err = new char[100]; \
-	sprintf(err, "Error in Trigger %d, Effect %d: ", trigId, eId); \
-	sprintf(err, __VA_ARGS__); \
+	sprintf(err, "Error in Trigger %d, Effect %d %s: ", trigId, eId, effect->types[effect->type]); \
+	//sprintf(err, __VA_ARGS__); \
 	throw(err)
 
 LEffect::LEffect(Effect *e, int eId, int trigId)
@@ -241,6 +241,8 @@ void LEffect::units(int u1,int u2,int u3,int u4,int u5,int u6,int u7,
 	unitcheck(u20, 19);
 	unitcheck(u21, 20);
 	unitcheck(u22, 21);	
+
+	effect->num_selected = num_sel;
 }
 
 void LEffect::unit_location(int uid) throw(char *)

@@ -40,6 +40,17 @@ public:
 	}
 };
 
+class AOKUNIT
+{
+	public:
+		AOKPT loc;
+		long id;
+	AOKUNIT(long i, long x, long y)
+	: id(i), loc(x,y)
+	{
+	}
+};
+
 class GeniePair 
 {
 public:

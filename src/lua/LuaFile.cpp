@@ -20,6 +20,20 @@ LuaFile::LuaFile(const char *_path, int len)
 	path[len]='\0';
 }
 
+void LuaFile::write_units(std::vector<AOKUNIT *> units, const char *path)
+{
+	FILE *out = fopen(path, "w");
+
+	fprintf(out, "local units={\n");
+	for (int i=0; i<units.size(); i++)
+	{
+		fprintf(out, "\t[%d] = {loc={%d,%d}, id=%d},\n", i, units[i]->loc.x, units[i]->loc.y, units[i]->id);
+	}
+	fprintf(out, "}");
+
+	fclose(out);
+}
+
 bool LuaFile::read()
 {
 	currentLuaFile = this;
@@ -223,7 +237,7 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		if (e->unit_const!=-1 && e->valid_property(EFFECTP_UnitConst))
 			fprintf(out, "\t\t%s:unit_const(%d)\n", effectvar, e->unit_const);
 		//selected unit(s)
-		if (e->num_selected!=-1 && e->valid_property(EFFECTP_UnitConst))
+		if (e->num_selected!=-1 && e->valid_property(EFFECTP_UIDs))
 		{
 			fprintf(out, "\t\t%s:units(", effectvar);
 			for (int i=0; i<e->num_selected; i++)

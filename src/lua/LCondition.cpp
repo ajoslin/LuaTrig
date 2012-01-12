@@ -5,9 +5,9 @@
 
 //throw an error with cond prefix and given text
 #define throwCondError(...) \
-	char *err = new char[100]; \
-	sprintf(err, "Error in Trigger %d, Condition %d: ", trigId, cId); \
-	sprintf(err, __VA_ARGS__); \
+	char *err = new char[150]; \
+	sprintf(err, "Error in Trigger %d, Condition %d %s: ", trigId, cId, cond->types[cond->type]); \
+	//sprintf(err, __VA_ARGS__); \
 	throw(err)
 
 LCondition::LCondition(Condition *c, int cId, int trigId)

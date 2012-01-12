@@ -81,9 +81,15 @@ void LTPage_Scen::write(wxFileName *fname)
 
 	//copy triggers from scn to luafile
 	LuaFile *lf = new LuaFile(fname->GetFullPath().mb_str().data(), fname->GetFullPath().Len());
-	lf->triggers=scenario->triggers;
-	
-	lf->write(fname->GetFullPath().mb_str().data());
+
+	//if (true)
+	//	lf->write_units(scenario->units, fname->GetFullPath().mb_str().data());
+	//else
+	//{
+		lf->triggers=scenario->triggers;
+		lf->write(fname->GetFullPath().mb_str().data());
+	//}
+
 	delete lf;
 
 	frame->openScript(fname, true);
