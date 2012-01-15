@@ -36,7 +36,7 @@ enum ConditionType
 enum ConditionProperty
 {
 	CONDITIONP_Amount,
-	CONDITIONP_ResourceType,
+	CONDITIONP_Resource,
 	CONDITIONP_UIDObject,
 	CONDITIONP_UIDLocation,
 	CONDITIONP_Player,
@@ -51,20 +51,12 @@ enum ConditionProperty
 
 class Condition 
 {
-public:
-	Condition();
-
-	const char *getName();
-
-	void read(FILE *in);
-	void write(FILE *out);
-
-	bool check();
-	bool valid_property(ConditionProperty);
-	
-	AOKRECT area;
+private:
 	long type;
 	long check_value;
+
+	AOKRECT area;
+	
 	long amount;
 	long resource_type;
 	long uid_object;
@@ -78,10 +70,33 @@ public:
 	long unit_const;
 	long ai_signal;
 
-//internal
+public:
+	Condition(long type);
+
+	const char *getName();
+
+	void read(FILE *in);
+	void write(FILE *out);
+
+	bool check();
+
+	virtual long getType() { return type; }
+
+	virtual long getAmount() { return -1; }
+	virtual long getResource() { return -1; }
+	virtual long getUidObject() { return -1; }
+	virtual long getUidLocation() { return -1; }
+	virtual long getPlayer() { return -1; }
+	virtual long getTechnology() { return -1; }
+	virtual long getTimer() { return -1; }
+	virtual AOKRECT getArea() { return AOKRECT(); }
+	virtual long getUnitGroup() { return -1; }
+	virtual long getUnitType() { return -1; }
+	virtual long getUnitConst() { return -1; }
+	virtual long getAISignal() { return -1; }
 
 	static const char* types[NUM_CONDS];
-	static const char* partypes[NUM_COND_PARAMS];
+	static const char* propertyTypes[NUM_COND_PARAMS];
 };
 
 #endif

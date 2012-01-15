@@ -24,7 +24,7 @@ bool LCondition::checkParam(ConditionProperty p)
 
 void LCondition::paramError(ConditionProperty p) throw(char *)
 {
-	throwCondError("Condition%s cannot have parameter %s.", cId, trigId, cond->types[cond->type], cond->partypes[p]);
+	throwCondError("Condition%s cannot have parameter %s.", cId, trigId, cond->types[cond->type], cond->propertyTypes[p]);
 }
 
 void LCondition::area(int llX, int llY, int urX, int urY) throw(char *)
@@ -54,8 +54,8 @@ void LCondition::amount(int amt) throw(char *)
 
 void LCondition::resource(int res) throw(char *)
 {
-	if (!checkParam(CONDITIONP_ResourceType))
-		return paramError(CONDITIONP_ResourceType);
+	if (!checkParam(CONDITIONP_Resource))
+		return paramError(CONDITIONP_Resource);
 	
 	if (!genieResources->has(res))
 	{
@@ -68,8 +68,8 @@ void LCondition::resource(int res) throw(char *)
 
 void LCondition::resource(const char *res) throw(char *)
 {
-	if (!checkParam(CONDITIONP_ResourceType))
-		return paramError(CONDITIONP_ResourceType);
+	if (!checkParam(CONDITIONP_Resource))
+		return paramError(CONDITIONP_Resource);
 	
 	if (!genieResources->has(res))
 	{

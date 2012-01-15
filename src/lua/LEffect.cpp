@@ -2,13 +2,6 @@
 #include "../genie/Effect.h"
 #include <algorithm>
 
-//throw an error with cond prefix and given text
-#define throwEffectError(...) \
-	char *err = new char[100]; \
-	sprintf(err, "Error in Trigger %d, Effect %d %s: ", trigId, eId, effect->types[effect->type]); \
-	//sprintf(err, __VA_ARGS__); \
-	throw(err)
-
 LEffect::LEffect(Effect *e, int eId, int trigId)
 {
 	this->eId=eId;
@@ -23,7 +16,7 @@ bool LEffect::checkParam(EffectProperty p)
 
 void LEffect::paramError(EffectProperty p) throw(char *)
 {
-	throwEffectError("Effect%s cannot have parameter %s.", eId, trigId, effect->types[effect->type], effect->partypes[p]);
+	throwEffectError("Effect%s cannot have parameter %s.", eId, trigId, effect->types[effect->type], effect->propertyTypes[p]);
 }
 
 void LEffect::location(int x, int y) throw(char *)

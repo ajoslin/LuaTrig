@@ -1,14 +1,10 @@
 #include "Effect.h"
 #include <string.h>
 
-Effect::Effect()
+Effect::Effect(long t)
 {
 	check_value=0x17;
-	ai_goal;
-	amount = diplomacy = display_time = num_selected = panel = player_source = -1;
-	player_target = resource = stableid = technology = trigger_index = type = uid_location = -1;
-	unit_group = unit_type = unit_const = unknown = -1;
-	memset(uids, -1, sizeof(uids));
+	type=t;
 }
 
 const char *Effect::getName()
@@ -220,96 +216,6 @@ bool Effect::check()
 	}
 }
 
-bool Effect::valid_property(EffectProperty p)
-{
-	switch (type)
-	{
-	case EFFECT_None:
-		return false;
-
-	case EFFECT_ChangeDiplomacy:
-		return (EFFECTP_PlayerSource==p || EFFECTP_PlayerTarget==p || EFFECTP_Diplomacy==p);
-
-	case EFFECT_ResearchTechnology:
-		return (EFFECTP_PlayerSource==p || EFFECTP_Technology==p);
-
-	case EFFECT_SendChat:
-		return (EFFECTP_PlayerSource==p || EFFECTP_Text==p || EFFECTP_Sound==p);
-
-	case EFFECT_PlaySound:
-		return (EFFECTP_PlayerSource==p || EFFECTP_Sound==p);
-
-	case EFFECT_SendTribute:
-		return (EFFECTP_PlayerSource==p || EFFECTP_PlayerTarget==p || EFFECTP_Amount==p || EFFECTP_Resource==p);
-
-	case EFFECT_UnlockGate:
-	case EFFECT_LockGate:
-		return (EFFECTP_UIDs==p);
-
-	case EFFECT_ActivateTrigger:
-	case EFFECT_DeactivateTrigger:
-		return (EFFECTP_TriggerIndex==p);
-
-	case EFFECT_AIScriptGoal:
-		return (EFFECTP_PlayerSource==p || EFFECTP_AIGoal==p);
-
-	case EFFECT_CreateObject:
-		return (EFFECTP_PlayerSource==p || EFFECTP_Location==p || EFFECTP_UnitConst==p);
-
-	case EFFECT_TaskObject:
-	case EFFECT_KillObject:
-	case EFFECT_RemoveObject:
-	case EFFECT_FreezeUnit:
-	case EFFECT_StopUnit:
-		return (EFFECTP_UIDs==p || EFFECTP_UIDLocation==p || EFFECTP_UnitGroup==p || EFFECTP_Location==p || EFFECTP_UIDs==p || EFFECTP_PlayerSource==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
-
-	case EFFECT_DeclareVictory:
-		return (EFFECTP_PlayerSource==p);
-
-	//EFFECT_KillObject, EFFECT_RemoveObject above.
-
-	case EFFECT_ChangeView:
-		return (EFFECTP_PlayerSource==p || EFFECTP_Location==p);
-
-	case EFFECT_Unload:
-		return (EFFECTP_UIDs || EFFECTP_UnitGroup==p || EFFECTP_PlayerSource==p || EFFECTP_Location==p || EFFECTP_UIDLocation==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
-
-	case EFFECT_ChangeOwnership:
-		return (EFFECTP_UIDs==p || EFFECTP_PlayerSource==p || EFFECTP_PlayerTarget==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
-
-	case EFFECT_Patrol:
-		return (EFFECTP_UIDs==p || EFFECTP_Location==p);
-
-	case EFFECT_DisplayInstructions:
-		return (EFFECTP_Panel==p || EFFECTP_DisplayTime==p || EFFECTP_Text==p || EFFECTP_Sound==p);
-
-	case EFFECT_ClearInstructions:
-		return (EFFECTP_Panel==p);
-
-	//EFFECT_FreezeUnit above
-
-	case EFFECT_UseAdvancedButtons:
-		return false;	//no properties to set
-
-	case EFFECT_DamageObject:
-	case EFFECT_ChangeObjectHP:
-	case EFFECT_ChangeObjectAttack:
-		return (EFFECTP_UnitGroup==p || EFFECTP_UIDs==p || EFFECTP_Amount==p || EFFECTP_PlayerSource==p || EFFECTP_PlayerTarget==p || EFFECTP_Area==p || EFFECTP_UnitConst==p || EFFECTP_UnitType==p);
-
-	case EFFECT_PlaceFoundation:
-		return (EFFECTP_UnitConst==p || EFFECTP_PlayerSource==p || EFFECTP_UnitConst==p);
-
-	case EFFECT_ChangeObjectName:
-		return (EFFECTP_UIDs==p || EFFECTP_Text==p);	//no text check
-
-	//EFFECT_ChangeObjectHP, EFFECT_ChangeObjectAttack, EFFECT_StopUnit above
-
-	//EFFECT_SnapView shares with EFFECT_ChangeView above
-
-	default:
-		return false;	//unknown effect type
-	}
-}
 
 const char *Effect::types[] =
 {
@@ -346,7 +252,7 @@ const char *Effect::types[] =
 };
 
 
-const char *Effect::partypes[] =
+const char *Effect::propertyTypes[] =
 {
 	"Amount",
 	"Location",

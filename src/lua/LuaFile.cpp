@@ -168,7 +168,7 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		if (c->amount!=-1 && c->valid_property(CONDITIONP_Amount))
 			fprintf(out, "\t\t%s:amount(%d)\n", condvar, c->amount);
 		//resource type
-		if (c->resource_type!=-1 && c->valid_property(CONDITIONP_ResourceType)) 
+		if (c->resource_type!=-1 && c->valid_property(CONDITIONP_Resource)) 
 			fprintf(out, "\t\t%s:resource(\"%s\") --aka resource(%d)\n",
 				condvar, genieResources->nameFromId(c->resource_type), c->resource_type);
 		//unit object

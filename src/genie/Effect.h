@@ -71,8 +71,16 @@ enum EffectProperty
 
 class Effect
 {
+private:
+	//miscellaneous value needed by scenario
+	long check_value;
+	long type;
+
+	//stableid is a misnomer, it's never used anymore except in super old scenarios made by ES. so it can be private in effect
+	long stableid;
+
 public:
-	Effect();
+	Effect(long type);
 
 	const char *getName();
 
@@ -80,36 +88,31 @@ public:
 	void write(FILE *out);
 
 	bool check();
-	bool valid_property(EffectProperty);
 
-	AOKPT location;
-	AOKRECT area;
-	long ai_goal;
-	long amount;
-	long check_value;
-	long diplomacy;
-	long display_time;
-	long num_selected;
-	long panel;
-	long player_source;
-	long player_target;
-	long resource;
-	long stableid;         // string table for text
-	long technology;
-	long trigger_index;
-	long type;
-	long uids[MAX_UNITSEL];		//array of selected units
-	long uid_location;
-	long unit_group;
-	long unit_type;
-	long unit_const;
-	long unknown;
+	virtual long getType() { return type; }
 
-	std::string text;
-	std::string sound;
+	virtual long getAmount() { return -1; }
+	virtual AOKPT getLocation() { return AOKPT(); }
+	virtual AOKRECT getArea() { return AOKRECT(); }
+	virtual long getAiGoal() { return -1; }
+	virtual long getDiplomacy() { return -1; }
+	virtual long getDisplayTime() { return -1; }
+	virtual long getNumSelected() { return -1; }
+	virtual long getPanel() { return -1; }
+	virtual long getPlayerSource() { return -1; }
+	virtual long getPlayerTarget() { return -1; }
+	virtual long getResource() { return -1; }
+	virtual long getTriggerIndex() { return -1; }
+	virtual long getUid(int i) { return -1; }
+	virtual long getUidLocation() { return -1; }
+	virtual long getUnitGroup() { return -1; }
+	virtual long getUnitType() { return -1; }
+	virtual long getUnitConst() { return -1; }
+	virtual std::string getSound() { return std::string(); }
+	virtual std::string getText() { return std::string(); }	
 
-	static const char* types[NUM_EFFECTS];
-	static const char* partypes[NUM_EFFECT_PARAMS];
+	static const char *types[NUM_EFFECTS];
+	static const char *propertyTypes[NUM_EFFECT_PARAMS];
 };
 
 #endif
