@@ -1,5 +1,5 @@
 
-#dir where wxwidgets is; if it's in your local bin just leave it blank
+#wxdir where wxwidgets is; if it's in your path just leave this blank
 wxdir=
 
 CC=gcc
@@ -12,11 +12,11 @@ view=$(src)view/
 util=$(src)util/
 genie=$(src)genie/
 objlibs=`$(wxdir)wx-config --cxxflags`
-linkerlibs=-llua51 `$(wxdir)wx-config --libs --static` -static-libgcc -static
+linkerlibs=-llua51 `$(wxdir)wx-config --libs --static` -static-libgcc -static -lz
 
 #C++ Source Files
 
-genieFiles=$(genie)aok_types.cpp $(genie)Condition.cpp $(genie)Effect.cpp $(genie)Trigger.cpp $(genie)Scenario.cpp $(genie)util_file.cpp
+genieFiles=$(genie)aok_types.cpp $(genie)Condition.cpp $(genie)ConditionTypes.cpp $(genie)Effect.cpp $(genie)EffectTypes.cpp $(genie)Trigger.cpp $(genie)Scenario.cpp $(genie)util_file.cpp
 
 luaFiles=$(lua)NewTrigger.cpp $(lua)LCondition.cpp $(lua)LEffect.cpp $(lua)LuaFile.cpp
 
@@ -93,5 +93,6 @@ $(swigFiles:.i=.cxx):%.cxx:%.i;
 	swig -lua -c++ -o $@ $<
 
 clean:
-	rm $(objFiles)
-	rm $(objFiles:.o=.d)
+	rm -f $(objFiles)
+	rm -f $(objFiles:.o=.d)
+	rm -f $(objFiles:.o=.P)

@@ -2,6 +2,7 @@
 #define CONDITION_TYPES_H_
 
 #include "Condition.h"
+#include "ECTypes.h"
 
 class Condition_None : public Condition
 {
@@ -10,214 +11,184 @@ class Condition_None : public Condition
 class Condition_BringObjectToArea : public Condition
 {
 private:
-	AOKRECT ar;
-	long uid;
+	AREA_H_FIELD;
+	UIDOBJECT_H_FIELD;
 public:	
-	void uid_object(int);
-	void area(int, int, int, int);
+	AREA_H_FUNC;
+	UIDOBJECT_H_FUNC;
 };
 
 class Condition_BringObjectToObject : public Condition
 {
 private:
-	long uid_o;
-	long uid_l;
+	UIDOBJECT_H_FIELD;
+	UIDLOCATION_H_FIELD;
 public:	
 	void uid_object(int);
 	void uid_location(int);
 };
 
+#define OWNOBJECTS_FIELDS \
+	PLAYER_H_FIELD; \
+	AMOUNT_H_FIELD; \
+	UCONST_H_FIELD; \
+	UTYPE_H_FIELD; \
+	UGROUP_H_FIELD
+#define OWNOBJECTS_FUNCS \
+	PLAYER_H_FUNC; \
+	AMOUNT_H_FUNC; \
+	UCONST_H_FUNC; \
+	UTYPE_H_FUNC; \
+	UGROUP_H_FUNC
+
 class Condition_OwnObjects : public Condition
 {
 private:
-	long pl;
-	long amt;
-	long uconst;
-	long utype;
-	long ugroup;
-public:	
-	void player(int);
-	void amount(int);
-	void unit_const(int);
-	void unit_type(int);
-	void unit_type(const char *);
-	void unit_group(int);
-	void unit_group(const char *);
+	OWNOBJECTS_FIELDS;
+public:
+	OWNOBJECTS_FUNCS;
 };
 
 class Condition_OwnFewerObjects : public Condition
 {
 private:
-	long pl;
-	long amt;
-	long uconst;
-	long utype;
-	long ugroup;
-public:	
-	void player(int);
-	void amount(int);
-	void unit_const(int);
-	void unit_type(int);
-	void unit_type(const char *);
-	void unit_group(int);
-	void unit_group(const char *);
+	OWNOBJECTS_FIELDS;
+public:
+	OWNOBJECTS_FUNCS;
 };
 
 class Condition_ObjectsInArea : Condition_OwnObjects_OwnFewerObjects
 {
 private:
-	AOKRECT ar;
-	long pl;
-	long amt;
-	long uconst;
-	long utype;
-	long ugroup;
-public:	
-	void area(int, int, int, int);
-	void player(int);
-	void amount(int);
-	void unit_const(int);
-	void unit_type(int);
-	void unit_type(const char *);
-	void unit_group(int);
-	void unit_group(const char *);
+	OWNOBJECTS_FIELDS;
+	AREA_H_FIELD;
+public:
+	OWNOBJECTS_FUNCS;
+	AREA_H_FUNC;
 };
 
 class Condition_DestroyObject : public Condition
 {
 private:
-	long uid;
+	UIDOBJECT_H_FIELD;
 public:	
-	void uid_object(int);
+	UIDOBJECT_H_FUNC;
 };
 
 class Condition_CaptureObject : public Condition
 {
 private:
-	long uid;
-	long pl;
+	UIDOBJECT_H_FIELD;
+	PLAYER_H_FIELD;
 public:	
-	void uid_object(int);
-	void player(int);
+	UIDOBJECT_H_FUNC;
+	PLAYER_H_FUNC;
 };
 
 class Condition_AccumulateAttribute : public Condition
 {
 private:
-	long pl;
-	long res;
-	long amt;
+	PLAYER_H_FIELD;
+	RESOURCE_H_FIELD;
+	AMOUNT_H_FIELD;
 public:	
-	void player(int);
-	void resource(int);
-	void resource(const char *);
-	void amount(int);
+	PLAYER_H_FUNC;
+	RESOURCE_H_FUNC;
+	AMOUNT_H_FUNC;
 };
 
 class Condition_ResearchTechnology : public Condition
 {
 private:
-	long pl;
-	long tech;
+	PLAYER_H_FIELD;
+	TECH_H_FIELD;
 public:	
-	void player(int);
-	void technology(int);
-	void tech(int);
+	PLAYER_H_FUNC;
+	TECH_H_FUNC;
 };
 
 class Condition_Timer : public Condition
 {
 private:
-	long time;
+	TIMER_H_FIELD;
 public:	
-	void time(int);
-	void amount(int);
+	TIMER_H_FUNC;
 };
 
 class Condition_ObjectSelected : public Condition
 {
 private:
-	long uid;
+	UIDOBJECT_H_FIELD;
 public:	
-	void uid_object(int);
+	UIDOBJECT_H_FUNC;
 };
 
 class Condition_AISignal : public Condition
 {
 private:
-	long signal;
+	AISIGNAL_H_FIELD;
 public:	
-	void ai_signal(int);
+	AISIGNAL_H_FUNC;
 };
 
 class Condition_PlayerDefeated : public Condition
 {
 private:
-	long pl;
+	PLAYER_H_FIELD;
 public:	
-	void player(int);
+	PLAYER_H_FUNC;
 };
 
 class Condition_ObjectHasTarget : public Condition
 {
 private:
-	long uid_o;
-	long uid_l;
-	long uconst;
-	long utype;
-	long ugroup;
+	UIDOBJECT_H_FIELD;
+	UIDLOCATION_H_FIELD;
 public:	
-	void uid_object(int);
-	void uid_location(int);
-	void unit_type(int);
-	void unit_type(const char *);
-	void unit_group(int);
-	void unit_group(const char *);
+	UIDOBJECT_H_FUNC;
+	UIDLOCATION_H_FUNC;
 };
 
 class Condition_ObjectVisible : public Condition
 {
 private:
-	long uid;
+	UIDOBJECT_H_FIELD;
 public:	
-	void uid_object(int);
+	UIDOBJECT_H_FUNC;
 };
 
 class Condition_ObjectNotVisible : public Condition
 {
 private:
-	long uid;
+	UIDOBJECT_H_FIELD;
 public:	
-	void uid_object(int);
+	UIDOBJECT_H_FUNC;
 };
 
 class Condition_ResearchTechnology : public Condition
 {
 private:
-	long pl;
-	long tech;
+	TECH_H_FIELD;
 public:	
-	void player(int);
-	void technology(int);
-	void tech(int);
+	TECH_H_FUNC;
 };
 
 class Condition_UnitsGarrisoned : public Condition
 {
 private:
-	long uid;
-	long amt;
+	UIDOBJECT_H_FUNC;
+	AMOUNT_H_FUNC;
 public:	
-	void uid_object(int);
-	void amount(int);
+	UIDOBJECT_H_FIELD;
+	AMOUNT_H_FIELD;
 };
 
 class Condition_DifficultyLevel : public Condition
 {
 private:
-	long amt;
+	AMOUNT_H_FUNC;
 public:	
-	void amount(int);
+	AMOUNT_H_FIELD;
 };
 
 

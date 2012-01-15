@@ -1,10 +1,24 @@
 #include "Effect.h"
+#include "util_file.h"
+#include "EffectTypes.h"
 #include <string.h>
 
 Effect::Effect(long t)
 {
-	check_value=0x17;
-	type=t;
+	check_value = 0x17;
+	unknown = -1;
+	type = t;
+}
+
+Effect *Effect::createType(long type)
+{
+	switch(type)
+	{
+	case EFFECT_None: 
+		return new Effect_None(type);
+	case EFFECT_ChangeDiplomacy:
+		return new Effect_ChangeDiplomacy(type);
+	}
 }
 
 const char *Effect::getName()
@@ -15,110 +29,99 @@ const char *Effect::getName()
 
 void Effect::read(FILE *scx)
 {
-	//these are all longs
+	//type was read by the trigger, to create the effect
 	fread(&type, sizeof(long), 1, scx);
 	fread(&check_value, sizeof(long), 1, scx);
-	fread(&ai_goal, sizeof(long), 1, scx);
-	fread(&amount, sizeof(long), 1, scx);
-	fread(&resource, sizeof(long), 1, scx);
-	fread(&diplomacy, sizeof(long), 1, scx);
-	fread(&num_selected, sizeof(long), 1, scx);
-	fread(&uid_location, sizeof(long), 1, scx);
-	fread(&unit_const, sizeof(long), 1, scx);
-	fread(&player_source, sizeof(long), 1, scx);
-	fread(&player_target, sizeof(long), 1, scx);
-	fread(&technology, sizeof(long), 1, scx);
+	readAiGoal(scx);
+	readAmount(scx);
+	readResource(scx);
+	readDiplomacy(scx);
+	readUids(scx);
+	readUidLocation(scx);
+	readUnitConst(scx);
+	readPlayerSource(scx);
+	readPlayerTarget(scx);
+	readTechnology(scx);
 	fread(&stableid, sizeof(long), 1, scx);
 	fread(&unknown, sizeof(long), 1, scx);
-	fread(&display_time, sizeof(long), 1, scx);
-	fread(&trigger_index, sizeof(long), 1, scx);
+	readDisplayTime(scx);
+	readTriggerIndex(scx);
+	readLocation(scx);
+	readArea(scx);
+	readUnitGroup(scx);
+	readUnitType(scx);
+	readPanel(scx);
+	readText(scx);
+	readSound(scx);
+	readUids(scx);
+}
 
-	//it's y then x for some reason
-	fread(&location.y, sizeof(long), 1, scx);
-	fread(&location.x, sizeof(long), 1, scx);
-	fread(&area.ur.y, sizeof(long), 1, scx);
-	fread(&area.ur.x, sizeof(long), 1, scx);
-	fread(&area.ll.y, sizeof(long), 1, scx);
-	fread(&area.ll.x, sizeof(long), 1, scx);
-
-	fread(&unit_group, sizeof(long), 1, scx);
-	fread(&unit_type, sizeof(long), 1, scx);
-	fread(&panel, sizeof(long), 1, scx);
-
-	long textlen;
-	fread(&textlen, sizeof(long), 1, scx);
-
-	char c;
-
-	text.resize(textlen);
-	for (int i=0; i<textlen; i++) {
-		fread(&c, 1, 1, scx);
-		text[i]=c;
-	}
-	text[textlen]='\0';
-
-	long soundlen;
-	fread(&soundlen, sizeof(long), 1, scx);
-
-	sound.resize(soundlen);
-	for (int i=0; i<soundlen; i++) {
-		fread(&c, 1, 1, scx);
-		sound[i]=c;
-	}
-	sound[soundlen]='\0';
-
-	if (num_selected!=-1)
-	{
-		for (int i=0; i<num_selected; i++)
-			fread(&uids[i], sizeof(long), 1, scx);
-	}
+//this isn't defined in the header because it's too long
+void Effect::readUids(FILE *in)
+{
+	long len;
+	fread(&len, sizeof(long), 1, in);
+	fskip(in, 4*len);
 }
 
 void Effect::write(FILE *scx)
 {
+	long aigoal=getAiGoal();
+	long amount=getAmount();
+	long res=getResource();
+	long diplo=getDiplomacy();
+	std::vector<int> uids=getUids();
+	long numselected=uids.size();
+	long uid_loc=getUidLocation();
+	long uconst=getUnitConst();
+	long p_source=getPlayerSource();
+	long p_target=getPlayerTarget();
+	long tech=getTechnology();
+	long disptime=getDisplayTime();
+	long trig=getTriggerIndex();
+	AOKPT loc=getLocation();
+	AOKRECT area=getArea();
+	long ugroup=getUnitGroup();
+	long utype=getUnitType();
+	long panel=getPanel();
+	std::string text=getText();
+	long textlen=text.size();
+	std::string sound=getSound();
+	long soundlen=sound.size();
+
 	//these are all longs
 	fwrite(&type, sizeof(long), 1, scx);
 	fwrite(&check_value, sizeof(long), 1, scx);
-	fwrite(&ai_goal, sizeof(long), 1, scx);
+	fwrite(&aigoal, sizeof(long), 1, scx);
 	fwrite(&amount, sizeof(long), 1, scx);
-	fwrite(&resource, sizeof(long), 1, scx);
-	fwrite(&diplomacy, sizeof(long), 1, scx);
-	fwrite(&num_selected, sizeof(long), 1, scx);
-	fwrite(&uid_location, sizeof(long), 1, scx);
-	fwrite(&unit_const, sizeof(long), 1, scx);
-	fwrite(&player_source, sizeof(long), 1, scx);
-	fwrite(&player_target, sizeof(long), 1, scx);
-	fwrite(&technology, sizeof(long), 1, scx);
+	fwrite(&res, sizeof(long), 1, scx);
+	fwrite(&diplo, sizeof(long), 1, scx);
+	fwrite(&numselected, sizeof(long), 1, scx);
+	fwrite(&uid_loc, sizeof(long), 1, scx);
+	fwrite(&uconst, sizeof(long), 1, scx);
+	fwrite(&p_source, sizeof(long), 1, scx);
+	fwrite(&p_target, sizeof(long), 1, scx);
+	fwrite(&tech, sizeof(long), 1, scx);
 	fwrite(&stableid, sizeof(long), 1, scx);
 	fwrite(&unknown, sizeof(long), 1, scx);
-	fwrite(&display_time, sizeof(long), 1, scx);
-	fwrite(&trigger_index, sizeof(long), 1, scx);
-
-	//it's y then x for some reason
-	fwrite(&location.y, sizeof(long), 1, scx);
-	fwrite(&location.x, sizeof(long), 1, scx);
-	fwrite(&area.ur.y, sizeof(long), 1, scx);
-	fwrite(&area.ur.x, sizeof(long), 1, scx);
+	fwrite(&disptime, sizeof(long), 1, scx);
+	fwrite(&trig, sizeof(long), 1, scx);
+	fwrite(&loc.y, sizeof(long), 1, scx);//it's y then x for some reason
+	fwrite(&loc.x, sizeof(long), 1, scx);
 	fwrite(&area.ll.y, sizeof(long), 1, scx);
 	fwrite(&area.ll.x, sizeof(long), 1, scx);
-
-	fwrite(&unit_group, sizeof(long), 1, scx);
-	fwrite(&unit_type, sizeof(long), 1, scx);
+	fwrite(&area.ur.y, sizeof(long), 1, scx);
+	fwrite(&area.ur.x, sizeof(long), 1, scx);
+	fwrite(&ugroup, sizeof(long), 1, scx);
+	fwrite(&utype, sizeof(long), 1, scx);
 	fwrite(&panel, sizeof(long), 1, scx);
-
-	long textlen=text.length();
 	fwrite(&textlen, sizeof(long), 1, scx);
-	fwrite(text.c_str(), sizeof(char), text.length(), scx);
-
-	long soundlen=sound.length();
+	fwrite(text.c_str(), sizeof(char), textlen, scx);
 	fwrite(&soundlen, sizeof(long), 1, scx);
-	fwrite(sound.c_str(), sizeof(char), sound.length(), scx);
-
-	if (num_selected>0)
-	{
-		for (int i=0; i<num_selected; i++)
+	fwrite(sound.c_str(), sizeof(char), soundlen, scx);
+	if (numselected>0)
+		for (int i=0; i<numselected; i++)
 			fwrite(&uids[i], sizeof(long), 1, scx);
-	}
 }
 
 bool Effect::check()
@@ -126,68 +129,68 @@ bool Effect::check()
 	switch (type)
 	{
 	case EFFECT_ChangeDiplomacy:
-		return (player_source >= 0 && player_target >= 0 && diplomacy >= 0);
+		return (getPlayerSource() >= 0 && getPlayerTarget() >= 0 && getDiplomacy() >= 0);
 
 	case EFFECT_ResearchTechnology:
-		return (player_source >= 0 && technology >= 0);
+		return (getPlayerSource() >= 0 && getTechnology() >= 0);
 
 	case EFFECT_SendChat:
-		return (player_source >= 0 && text.length()>1);	//AOK missing text check
+		return (getPlayerSource() >= 0 && getText().length()>1);	//AOK missing getText() check
 
 	case EFFECT_PlaySound:
-		return (player_source >= 0 && sound.length()>1);	//AOK missing sound check
+		return (getPlayerSource() >= 0 && getSound().length()>1);	//AOK missing getSound() check
 
 	case EFFECT_SendTribute:
-		return (player_source >= 0 && player_source >= 0 && resource >= 0);
+		return (getPlayerSource() >= 0 && getPlayerSource() >= 0 && getResource() >= 0);
 
 	case EFFECT_UnlockGate:
 	case EFFECT_LockGate:
-		return (num_selected >= 0);
+		return (getUids().size() >= 0);
 
 	case EFFECT_ActivateTrigger:
 	case EFFECT_DeactivateTrigger:
-		return (trigger_index >= 0);
+		return (getTriggerIndex() >= 0);
 
 	case EFFECT_AIScriptGoal:
-		return (player_source >= 0 && ai_goal >= 0);
+		return (getPlayerSource() >= 0 && getAiGoal() >= 0);
 
 	case EFFECT_CreateObject:
-		return (player_source >= 0 &&
-			location.x >= 0 && location.y >= 0 && unit_const>=0);
+		return (getPlayerSource() >= 0 &&
+			getLocation().x >= 0 && getLocation().y >= 0 && getUnitConst()>=0);
 
 	case EFFECT_TaskObject:
 	case EFFECT_KillObject:
 	case EFFECT_RemoveObject:
 	case EFFECT_FreezeUnit:
 	case EFFECT_StopUnit:
-		return (num_selected >= 0 || area.ll.x >= 0 || unit_const >= 0);	//AOK missing this
+		return (getUids().size() >= 0 || getArea().ll.x >= 0 || getUnitConst() >= 0);	//AOK missing this
 
 	case EFFECT_DeclareVictory:
-		return (player_source >= 0);
+		return (getPlayerSource() >= 0);
 
 	//EFFECT_KillObject, EFFECT_RemoveObject above.
 
 	case EFFECT_ChangeView:
-		return (player_source >= 0 && location.x >= 0 && location.y >= 0);
+		return (getPlayerSource() >= 0 && getLocation().x >= 0 && getLocation().y >= 0);
 
 	case EFFECT_Unload:
-		return (player_source >= 0
-			&& (num_selected >= 0 || area.ll.x >= 0 || unit_const >= 0)	//AOK missing this
-			&& location.x >=0 && location.y >= 0);
+		return (getPlayerSource() >= 0
+			&& (getUids().size() >= 0 || getArea().ll.x >= 0 || getUnitConst() >= 0)	//AOK missing this
+			&& getLocation().x >=0 && getLocation().y >= 0);
 
 	case EFFECT_ChangeOwnership:
-		return (player_source >= 0 && player_target >= 0
-			&& (num_selected >= 0 || area.ll.x >= 0 || unit_type >= 0 || unit_const>=0));	//AOK missing this
+		return (getPlayerSource() >= 0 && getPlayerTarget() >= 0
+			&& (getUids().size() >= 0 || getArea().ll.x >= 0 || getUnitType() >= 0 || getUnitConst()>=0));	//AOK missing this
 
 	case EFFECT_Patrol:
-		return (num_selected >= 0 && location.x >= 0 && location.y >= 0);
+		return (getUids().size() >= 0 && getLocation().x >= 0 && getLocation().y >= 0);
 
 	case EFFECT_DisplayInstructions:
-		return (panel >= 0 && display_time >= 0
-			&& (text.length()>1 || stableid));	//AOK missing text
+		return (getPanel() >= 0 && getDisplayTime() >= 0
+			&& (getText().length()>1 || stableid));	//AOK missing getText()
 
 	case EFFECT_ClearInstructions:
-		return (panel >= 0);
+		return (getPanel() >= 0);
 
 	//EFFECT_FreezeUnit above
 
@@ -197,15 +200,15 @@ bool Effect::check()
 	case EFFECT_DamageObject:
 	case EFFECT_ChangeObjectHP:
 	case EFFECT_ChangeObjectAttack:
-		return (amount != 0 && amount!=-1		//amount can be negative, cannot be -1
-			&& (num_selected >= 0 || area.ll.x >= 0));	//AOK missing this
+		return (getAmount() != 0 && getAmount()!=-1		//getAmount() can be negative, cannot be -1
+			&& (getUids().size() >= 0 || getArea().ll.x >= 0));	//AOK missing this
 
 	case EFFECT_PlaceFoundation:
-		return (player_source >= 0 && unit_const>=0
-			&& location.x >= 0 && location.y >= 0);
+		return (getPlayerSource() >= 0 && getUnitConst()>=0
+			&& getLocation().x >= 0 && getLocation().y >= 0);
 
 	case EFFECT_ChangeObjectName:
-		return (num_selected >= 0);	//no text check
+		return (getUids().size() >= 0);	//no getText() check
 
 	//EFFECT_ChangeObjectHP, EFFECT_ChangeObjectAttack, EFFECT_StopUnit above
 

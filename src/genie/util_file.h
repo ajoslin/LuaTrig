@@ -3,6 +3,7 @@
 
 #include <zlib.h>	//for the zlib errors & types
 #include <stdio.h>
+#include <string>
 
 /**
 	zlibfile.h -- Deflation/Inflation of DEFLATE streams to a FILE.
@@ -12,7 +13,11 @@
 	These files (zlibfile.h and zlibfile.cpp) may be freely distributed as long as the above notice remains intact.
 **/
 
-//Not efrom andy: all three of these functions are written by DiGiT
+int readstr(FILE *in, std::string str);
+
+extern "C" int fskip(FILE *f, int bytes);
+
+//Note from andy: all three of these functions are written by DiGiT
 
 extern "C" int fsize(const char *path);
 

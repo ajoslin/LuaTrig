@@ -39,7 +39,7 @@ public:
 	LCondition *ConditionResearchTechnology() { return condition(CONDITION_ResearchTechnology); };
 	LCondition *ConditionTimer() { return condition(CONDITION_Timer); };
 	LCondition *ConditionObjectSelected() { return condition(CONDITION_ObjectSelected); };
-	LCondition *ConditionAISignal() { return condition(CONDITION_AISignal); };
+	LCondition *ConditionAiSignal() { return condition(CONDITION_AISignal); };
 	LCondition *ConditionPlayerDefeated() { return condition(CONDITION_PlayerDefeated); };
 	LCondition *ConditionObjectHasTarget() { return condition(CONDITION_ObjectHasTarget); };
 	LCondition *ConditionObjectVisible() { return condition(CONDITION_ObjectVisible); };

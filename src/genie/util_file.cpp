@@ -6,8 +6,27 @@
 
 /* Functions */
 
+void readstr(FILE *in, std::string str)
+{
+	long len;
+	fread(&len, sizeof(long), 1, in);
+
+	str.resize(len);
+	char c;
+	for (int i=0; i<len; i++) {
+		fread(&c, 1, 1, in);
+		str[i]=c;
+	}
+	str[len]='\0';
+}
+
 extern "C"
 {
+
+void fskip(FILE *f, int bytes)
+{
+	for (int i=0; i<bytes; i++) fgetc(f);
+}
 
 int fsize(const char *path) 
 {

@@ -1,9 +1,10 @@
 #ifndef CONDITION_H_
 #define CONDITION_H_ 
 
+#include "aok_types.h"
+#include "util_file.h"
 #include <stdio.h>
 #include <string>
-#include "aok_types.h"
 
 #define MAX_CONDITION 	CONDITION_DifficultyLevel
 #define NUM_CONDS		20
@@ -54,24 +55,12 @@ class Condition
 private:
 	long type;
 	long check_value;
-
-	AOKRECT area;
-	
-	long amount;
-	long resource_type;
-	long uid_object;
-	long uid_location;
-	long player;
-	long technology;
-	long timer;
+	//always -1
 	long unknown;
-	long unit_group;
-	long unit_type;
-	long unit_const;
-	long ai_signal;
 
 public:
 	Condition(long type);
+	static Condition *createType(long type=0);
 
 	const char *getName();
 
@@ -80,20 +69,34 @@ public:
 
 	bool check();
 
-	virtual long getType() { return type; }
+	//getters: return null values by default. inherited condition types override these as appropriate
+	virtual long getAmount() { return -1; };
+	virtual long getResource() { return -1; };
+	virtual long getUidObject() { return -1; };
+	virtual long getUidLocation() { return -1; };
+	virtual long getPlayer() { return -1; };
+	virtual long getTechnology() { return -1; };
+	virtual long getTimer() { return -1; };
+	virtual AOKRECT getArea() { return AOKRECT(); };
+	virtual long getUnitGroup() { return -1; };
+	virtual long getUnitType() { return -1; };
+	virtual long getUnitConst() { return -1; };
+	virtual long getAiSignal() { return -1; };
 
-	virtual long getAmount() { return -1; }
-	virtual long getResource() { return -1; }
-	virtual long getUidObject() { return -1; }
-	virtual long getUidLocation() { return -1; }
-	virtual long getPlayer() { return -1; }
-	virtual long getTechnology() { return -1; }
-	virtual long getTimer() { return -1; }
-	virtual AOKRECT getArea() { return AOKRECT(); }
-	virtual long getUnitGroup() { return -1; }
-	virtual long getUnitType() { return -1; }
-	virtual long getUnitConst() { return -1; }
-	virtual long getAISignal() { return -1; }
+	//readers: return null values by default. also overridden by inherited condition types.
+	//these are not virtual because inherited classes simply override and don't want the above functionality
+	void readAmount(FILE *in) { fskip(in, 4); };
+	void readResource(FILE *in) { fskip(in, 4); };
+	void readUidObject(FILE *in) { fskip(in, 4); };
+	void readUidLocation(FILE *in) { fskip(in, 4); };
+	void readPlayer(FILE *in) { fskip(in, 4); };
+	void readTechnology(FILE *in) { fskip(in, 4); };
+	void readTimer(FILE *in) { fskip(in, 4); };
+	void readArea(FILE *in) { fskip(in, 16); };
+	void readUnitGroup(FILE *in) { fskip(in, 4); };
+	void readUnitType(FILE *in) { fskip(in, 4); };
+	void readUnitConst(FILE *in) { fskip(in, 4); };
+	void readAiSignal(FILE *in) { fskip(in, 4); };
 
 	static const char* types[NUM_CONDS];
 	static const char* propertyTypes[NUM_COND_PARAMS];

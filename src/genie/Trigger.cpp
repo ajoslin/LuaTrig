@@ -19,27 +19,8 @@ void Trigger::read(FILE *scx)
 	//skip zeroes data (4 bytes)
 	for (int i=0; i<4; i++) fgetc(scx);
 
-	long desclen;
-	fread(&desclen, sizeof(long), 1, scx); 
-
-	char c;
-
-	description.resize(desclen);
-	for (int i=0; i<desclen; i++) {
-		fread(&c, sizeof(char), 1, scx);
-		description[i]=c;
-	}
-	description[desclen]='\0';
-
-	long namelen;
-	fread(&namelen, sizeof(long), 1, scx); 
-
-	name.resize(namelen);
-	for (int i=0; i<namelen; i++) {
-		fread(&c, sizeof(char), 1, scx);
-		name[i]=c;
-	}
-	name[namelen]='\0';
+	readstr(scx, description);
+	readstr(scx, name);
 	
 	//Effects
 	long effect_count;
