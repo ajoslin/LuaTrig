@@ -9,7 +9,8 @@
 #define STR_CANCEL			"Cancel"
 #define STR_CLOSE			"Close"
 #define STR_RELOAD			"Reload"
-#define STR_ERROR 			"Error"
+#define STR_ERROR 			"Error!"
+#define STR_OPEN			"Open File"
 
 #define STR_CFG_INSTRUCT	"Set your Age of Empires II scenario folder and the folder you would like your scripts to be in.\nUse the Set Defaults button to just use the default folders."
 #define STR_CFG_FNAME		"config.ini"
@@ -64,7 +65,6 @@
 
 //FILE FRAME
 #define STR_FILE_TRIGCNT	"Trigger Count:"
-#define STR_FILE_ERROR		"Script Read Error!"
 
 //SCEN FRAME
 #define STR_SCEN_SAVETITLE	"Select target location for triggers script:"
@@ -73,7 +73,7 @@
 
 //LUA FRAME
 #define STR_LUA_BASE		"Scenario this script is based from:"
-#define STR_LUA_BASE_ERR	"No scenarios opened. Open a scenario to continue."
+#define STR_LUA_BASE_ERR	"No scenarios opened. Open a scenario to continue, using the button on the toolbar."
 #define STR_LUA_TARGET		"Select target location for scenario:"
 #define STR_LUA_OVERWRITE	"Target scenario is same as base scenario (overwrite)"
 #define STR_LUA_WRITE		"Write Scenario"

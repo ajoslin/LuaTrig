@@ -3,17 +3,11 @@
 
 #include "wx/wx.h"
 #include "wx/filedlg.h"
-#include "wx/timer.h"
-#include "LTPage_FileBase.h"
+#include "LTPage_File.h"
 
-class LTFrame; //fwd here so we don't have to include
-class Scenario;
-
-class LTPage_Scen : public LTPage_FileBase
+class LTPage_Scen : public LTPage_File
 {
-private:
-	Scenario *scenario;
-	
+private:	
 	wxBoxSizer *pickSizer;
 	wxBoxSizer *writeSizer;
 
@@ -23,19 +17,16 @@ private:
 	wxButton *saveUnitsScriptButton;
 
 	wxButton *writeButton;
-	wxStaticText *successText;
-	wxTimer *timer;
-
 
 public:	
-	LTPage_Scen(LTFrame *frame, wxNotebook *parent, wxFileName *fname);
+	LTPage_Scen(wxWindow *parent);
 
 	void onSaveButtonPressed(wxCommandEvent &event);
-	void onExportPressed(wxCommandEvent &event);
-	void onTimer(wxTimerEvent &event);
+	void onWriteButtonPressed(wxCommandEvent &event);
 
-	virtual void write(wxFileName *fname);
-	virtual void read();
+	void write(wxFileName fname);
+	void open(wxFileName fname);
+	void read();
 };
 
 #endif

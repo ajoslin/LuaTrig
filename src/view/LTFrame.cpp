@@ -2,198 +2,188 @@
 #include "../res/info.xpm"
 #include "../res/aoc.xpm"
 #include "../res/lua.xpm"
-#include "../res/brain.xpm"
 #include "../res/gear.xpm"
 #include "../res/aoc_16.xpm"
 #include "../res/lua_16.xpm"
 #include "../res/appicon.xpm"
 #include "LTPage_Scen.h"
 #include "LTPage_Script.h"
-#include "LTPage_FileBase.h"
+#include "LTPage_File.h"
 #include "LTDialog_About.h"
 #include "LTDialog_Settings.h"
-#include "LTDialog_TriggerGen.h"
+#include "LuaTrigMain.h"
 #include "../defines.h"
 
+#define FILEBOOK_IMAGE_SCEN 	0
+#define FILEBOOK_IMAGE_SCRIPT 	1
 
-LTFrame::LTFrame(const wxString& title)
+LTFrame *LTFrame::__instance = NULL;
+
+LTFrame *LTFrame::instance(wxString title)
+{
+	if (__instance==NULL)
+		__instance = new LTFrame(title);
+	return __instance;
+}
+
+LTFrame::LTFrame(wxString title)
 	: wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxDefaultSize)
 {
-	//Get config settings (if they exist)
-	config = new wxFileConfig(wxT(STR_LUATRIG), wxEmptyString, wxT(STR_CFG_FNAME), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	config->Read(wxT(STR_CFG_SCNDIR), &scenarioDir, wxT(""));
-	config->Read(wxT(STR_CFG_LUADIR), &scriptDir, wxT(""));
-	bool openSettings=scenarioDir == wxT(""); //if scndir is blank (aka not set in config), open settings on startup
-	delete config;
+	__instance = this;
+
+	//Get config settings (if they exist
+	currentScenarioDir=LuaTrigMain::configRead(wxT(STR_CFG_SCNDIR));
+	currentScriptDir=LuaTrigMain::configRead(wxT(STR_CFG_LUADIR));
+	bool openSettings=currentScenarioDir == wxT(""); //if scndir is blank (aka not set in config), open settings on startup
 
 	CreateStatusBar();
 
 	toolBar = CreateToolBar(wxTB_TEXT | wxTB_HORIZONTAL);
-	toolBar->AddTool(ICHOICE_About, wxT(STR_TOOLBAR_ABT), wxBitmap(info_xpm));
-	toolBar->AddTool(ICHOICE_Settings, wxT(STR_TOOLBAR_STGS), wxBitmap(gear_xpm));
+	toolBar->AddTool(TOOLBAR_About, wxT(STR_TOOLBAR_ABT), wxBitmap(info_xpm));
+	toolBar->AddTool(TOOLBAR_Settings, wxT(STR_TOOLBAR_STGS), wxBitmap(gear_xpm));
 	toolBar->AddSeparator();
-	toolBar->AddTool(ICHOICE_OpenScenario, wxT(STR_TOOLBAR_SCN), wxBitmap(aoc_xpm));
-	toolBar->AddTool(ICHOICE_OpenScript, wxT(STR_TOOLBAR_LUA), wxBitmap(lua_xpm));
-	toolBar->AddSeparator();
-	toolBar->AddTool(ICHOICE_TriggerGen, wxT(STR_TOOLBAR_TGEN), wxBitmap(brain_xpm));
-	toolBar->ToggleTool(ICHOICE_TriggerGen, false); //disabled - not done yet
+	toolBar->AddTool(TOOLBAR_OpenScenario, wxT(STR_TOOLBAR_SCN), wxBitmap(aoc_xpm));
+	toolBar->AddTool(TOOLBAR_OpenScript, wxT(STR_TOOLBAR_LUA), wxBitmap(lua_xpm));
 	toolBar->Realize();
 
 	//Tab Bar
-	tabBarImageList = new wxImageList(16, 16, false, 0);
-	tabBarImageList->Add(wxBitmap(aoc_16_xpm));
-	tabBarImageList->Add(wxBitmap(lua_16_xpm));
+	openFilesImageList = new wxImageList(16, 16, false, 0);
+	openFilesImageList->Add(wxBitmap(aoc_16_xpm));
+	openFilesImageList->Add(wxBitmap(lua_16_xpm));
 
-	tabBarMain = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-	tabBarMain->SetImageList(tabBarImageList);
+	openFilesBook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+	openFilesBook->SetImageList(openFilesImageList);
 
-	//Connect menu events
-	Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(LTFrame::onExit));
-	Connect(ICHOICE_About, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onAbout));
-	Connect(ICHOICE_Settings, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onSettings));
-	Connect(ICHOICE_OpenScenario, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onOpenDialogScenario));
-	Connect(ICHOICE_OpenScript, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onOpenDialogScript));
-	Connect(ICHOICE_TriggerGen, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onTriggerGen));
-
-	scenarioFile = wxT("");
-	scriptFile = wxT("");
-
+	//Dialogs
 	aboutDialog = new LTDialog_About(this);
 	settingsDialog = new LTDialog_Settings(this);
 	openScenarioDialog = new wxFileDialog(this, wxT(STR_FILE_SELECT), wxT(""), wxT(""), wxT(STR_EXT_SCX), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	openScriptDialog = new wxFileDialog(this, wxT(STR_FILE_SELECT), wxT(""), wxT(""), wxT(STR_EXT_LUA), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-	triggerGenDialog = new LTDialog_TriggerGen(this);
+
+	//Connect menu events
+	Connect(TOOLBAR_About, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onToolbarAbout));
+	Connect(TOOLBAR_Settings, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onToolbarSettings));
+	Connect(TOOLBAR_OpenScenario, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onToolbarOpenScenario));
+	Connect(TOOLBAR_OpenScript, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(LTFrame::onToolbarOpenScript));
 
 	if (openSettings)
 	{
-		wxCommandEvent settingsCmd(wxEVT_COMMAND_MENU_SELECTED, ICHOICE_Settings);
+		wxCommandEvent settingsCmd(wxEVT_COMMAND_MENU_SELECTED, TOOLBAR_Settings);
 		ProcessEvent(settingsCmd);
 	}
 }
 
-void LTFrame::onExit(wxCloseEvent& event)
-{
-	tabBarMain->Show(false);
-	tabBarMain->Destroy();
-	Destroy();
-}
-
-void LTFrame::onAbout(wxCommandEvent& event)
+void LTFrame::onToolbarAbout(wxCommandEvent& event)
 {
 	aboutDialog->ShowModal();
 }
 
-void LTFrame::onSettings(wxCommandEvent& event)
+void LTFrame::onToolbarSettings(wxCommandEvent& event)
 {
+	settingsDialog->loadDirs();
 	settingsDialog->ShowModal();
 }
 
-void LTFrame::onOpenDialogScenario(wxCommandEvent& event)
+void LTFrame::onToolbarOpenScenario(wxCommandEvent& event)
 {
-	openScenarioDialog->SetDirectory(scenarioDir);
+	openScenarioDialog->SetDirectory(currentScenarioDir);
 	int id=openScenarioDialog->ShowModal();
 	
 	if (id==wxID_OK)
 	{
-		openScenario(new wxFileName(openScenarioDialog->GetPath()));
+		wxFileName fname(openScenarioDialog->GetPath());
+		openFile(fname, FTYPE_Scenario);
 	}
 }
 
-void LTFrame::onOpenDialogScript(wxCommandEvent& event)
+void LTFrame::onToolbarOpenScript(wxCommandEvent& event)
 {
-	openScriptDialog->SetDirectory(scriptDir);
+	openScriptDialog->SetDirectory(currentScriptDir);
 	int id=openScriptDialog->ShowModal();
 	
 	if (id==wxID_OK)
 	{
-		openScript(new wxFileName(openScriptDialog->GetPath()));
+		wxFileName fname(openScriptDialog->GetPath());
+		openFile(fname, FTYPE_Script);
 	}
 }
 
-void LTFrame::onTriggerGen(wxCommandEvent& event)
+int LTFrame::typeFromFileName(wxFileName fname)
 {
-	triggerGenDialog->ShowModal();
+	wxString path(fname.GetFullPath());
+	wxString ext=path.Right(4);
+
+	if (ext==wxT(".scx") || ext==wxT(".scn"))
+		return FTYPE_Scenario;
+
+	return FTYPE_Script;
 }
 
 
-//return index of open file
-int LTFrame::fileIndex(wxFileName *fname)
+void LTFrame::openFile(wxFileName fname, int type, bool select)
 {
-	for (int i=0; i<openFiles.size(); i++)
-		if (openFiles[i]->file->GetFullPath()==fname->GetFullPath())
+	//if file is open, just go to it and read it
+	int openIndex = indexOfFile(fname);
+	if (openIndex!=-1)
+	{
+		( (LTPage_File *)openFilesBook->GetPage(openIndex) )->read();
+		openFilesBook->ChangeSelection(openIndex);
+	}
+	else
+	{
+		if (type==-1)
+			type=typeFromFileName(fname);
+
+		LTPage_File *newPage;
+		if (type==FTYPE_Scenario)
+			newPage = new LTPage_Scen(openFilesBook);
+		else
+			newPage = new LTPage_Script(openFilesBook);
+		newPage->open(fname);
+
+		openFilesBook->AddPage(
+			newPage, 
+			fname.GetFullName(), 
+			select, 
+			type==FTYPE_Scenario ? FILEBOOK_IMAGE_SCEN : FILEBOOK_IMAGE_SCRIPT
+		);
+	}
+}
+
+void LTFrame::closeFile(wxFileName fname)
+{
+	for (int i=0; i<openFilesBook->GetPageCount(); i++)
+	{
+		LTPage_File *page = (LTPage_File *)openFilesBook->GetPage(i);
+		if (page!=NULL)
+		{
+			wxFileName pageFile = page->getCurrentFileName();
+			if (pageFile==fname)
+			{
+				openFilesBook->DeletePage(i);
+				break;
+			}
+		}
+	}
+}
+
+int LTFrame::indexOfFile(wxFileName fname)
+{
+	for (int i=0; i<openFilesBook->GetPageCount(); i++)
+	{
+		LTPage_File *page = (LTPage_File *)openFilesBook->GetPage(i);
+		if (page!=NULL && page->getCurrentFileName()==fname)
 			return i;
+	}
 	return -1;
 }
 
-void LTFrame::openScenario(wxFileName *fname, bool select)
+LTPage_File * LTFrame::getFileBookPage(int i)
 {
-	//if file already is open, just read it again and return
-	int index=fileIndex(fname);
-	if (index!=-1)
-	{
-		openFiles[index]->read();
-		delete fname;
-		return;
-	}
-
-	LTPage_Scen *newPage = new LTPage_Scen(this, tabBarMain, fname);
-	tabBarMain->AddPage(newPage, fname->GetFullName(), select, 0);
-	openFiles.push_back(newPage);
+	return (LTPage_File *)openFilesBook->GetPage(i);
 }
 
-void LTFrame::openScript(wxFileName *fname, bool select)
+int LTFrame::getFileBookPageCount()
 {
-	//if file already is open, just read it again and return
-	int index=fileIndex(fname);
-	if (index!=-1)
-	{
-		openFiles[index]->read();
-		delete fname;
-		return;
-	}
-
-	LTPage_Script *newPage = new LTPage_Script(this, tabBarMain, fname);
-	tabBarMain->AddPage(newPage, fname->GetFullName(), select, 1);
-	openFiles.push_back(newPage);
+	return openFilesBook->GetPageCount();
 }
-
-bool LTFrame::closeFile(wxFileName *fname)
-{
-	for (int i=0; i<openFiles.size(); i++)
-	{
-		if (openFiles[i]->file==fname)
-		{
-			tabBarMain->RemovePage(i);
-			openFiles.erase(openFiles.begin()+i);
-		}
-	}
-	return false;
-}
-
-void LTFrame::onError(wxString err)
-{
-	wxString str(wxT(STR_FILE_ERROR));
-	str+=wxT("\n");
-	str+=err;
-	wxMessageDialog *errDialog = new wxMessageDialog(this, str, wxT(STR_ERROR), wxOK);
-	errDialog->ShowModal();
-	delete errDialog;
-}
-
-
-void LTFrame::setScenarioDir(wxString path)
-{
-	scenarioDir=path;
-	config = new wxFileConfig(wxT(STR_LUATRIG), wxEmptyString, wxT(STR_CFG_FNAME), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	config->Write(wxT(STR_CFG_SCNDIR), path);
-	delete config;
-}
-
-void LTFrame::setScriptDir(wxString path)
-{
-	scriptDir=path;
-	config = new wxFileConfig(wxT(STR_LUATRIG), wxEmptyString, wxT(STR_CFG_FNAME), wxEmptyString, wxCONFIG_USE_LOCAL_FILE | wxCONFIG_USE_RELATIVE_PATH);
-	config->Write(wxT(STR_CFG_LUADIR), path);
-	delete config;
-}
-

@@ -1,5 +1,8 @@
 #include "ConditionTypes.h"
 #include "ECTypesCpp.h"
+#include "aok_types.h"
+#include <math.h>
+#include <stdio.h>
 
 //almost all of the classes are fully defined in the .h file, but a few have some functions in cpp too.
 //we use macros to define these functions
@@ -21,3 +24,4 @@ UTYPE_CPP(Condition_ObjectsInArea);
 UGROUP_CPP(Condition_ObjectsInArea);
 
 RESOURCE_CPP(Condition_AccumulateAttribute);
+

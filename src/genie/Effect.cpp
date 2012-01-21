@@ -1,5 +1,4 @@
 #include "Effect.h"
-#include "util_file.h"
 #include "EffectTypes.h"
 #include <string.h>
 
@@ -14,10 +13,66 @@ Effect *Effect::createType(long type)
 {
 	switch(type)
 	{
-	case EFFECT_None: 
-		return new Effect_None(type);
 	case EFFECT_ChangeDiplomacy:
-		return new Effect_ChangeDiplomacy(type);
+		return new Effect_ChangeDiplomacy();
+	case EFFECT_ResearchTechnology:
+		return new Effect_ResearchTechnology();
+	case EFFECT_SendChat:
+		return new Effect_SendChat();
+	case EFFECT_PlaySound:
+		return new Effect_PlaySound();
+	case EFFECT_SendTribute:
+		return new Effect_SendTribute();
+	case EFFECT_UnlockGate:
+		return new Effect_UnlockGate();
+	case EFFECT_LockGate:
+		return new Effect_LockGate();
+	case EFFECT_ActivateTrigger:
+		return new Effect_ActivateTrigger();
+	case EFFECT_DeactivateTrigger:
+		return new Effect_DeactivateTrigger();
+	case EFFECT_AIScriptGoal:
+		return new Effect_AIScriptGoal();
+	case EFFECT_CreateObject:
+		return new Effect_CreateObject();
+	case EFFECT_TaskObject:
+		return new Effect_TaskObject();
+	case EFFECT_DeclareVictory:
+		return new Effect_DeclareVictory();
+	case EFFECT_KillObject:
+		return new Effect_KillObject();
+	case EFFECT_RemoveObject:
+		return new Effect_RemoveObject();
+	case EFFECT_ChangeView:
+		return new Effect_ChangeView();
+	case EFFECT_Unload:
+		return new Effect_Unload();
+	case EFFECT_ChangeOwnership:
+		return new Effect_ChangeOwnership();
+	case EFFECT_Patrol:
+		return new Effect_Patrol();
+	case EFFECT_DisplayInstructions:
+		return new Effect_DisplayInstructions();
+	case EFFECT_ClearInstructions:
+		return new Effect_ClearInstructions();
+	case EFFECT_FreezeUnit:
+		return new Effect_FreezeUnit();
+	case EFFECT_UseAdvancedButtons:
+		return new Effect_UseAdvancedButtons();
+	case EFFECT_DamageObject:
+		return new Effect_DamageObject();
+	case EFFECT_PlaceFoundation:
+		return new Effect_PlaceFoundation();
+	case EFFECT_ChangeObjectName:
+		return new Effect_ChangeObjectName();
+	case EFFECT_ChangeObjectHP:
+		return new Effect_ChangeObjectHP();
+	case EFFECT_ChangeObjectAttack:
+		return new Effect_ChangeObjectAttack();
+	case EFFECT_StopUnit:
+		return new Effect_StopUnit();
+	default:
+		return new Effect_None();
 	}
 }
 
@@ -29,14 +84,13 @@ const char *Effect::getName()
 
 void Effect::read(FILE *scx)
 {
-	//type was read by the trigger, to create the effect
-	fread(&type, sizeof(long), 1, scx);
 	fread(&check_value, sizeof(long), 1, scx);
 	readAiGoal(scx);
 	readAmount(scx);
 	readResource(scx);
 	readDiplomacy(scx);
-	readUids(scx);
+	long uids_size;
+	fread(&uids_size, 4, 1, scx);
 	readUidLocation(scx);
 	readUnitConst(scx);
 	readPlayerSource(scx);
@@ -53,15 +107,7 @@ void Effect::read(FILE *scx)
 	readPanel(scx);
 	readText(scx);
 	readSound(scx);
-	readUids(scx);
-}
-
-//this isn't defined in the header because it's too long
-void Effect::readUids(FILE *in)
-{
-	long len;
-	fread(&len, sizeof(long), 1, in);
-	fskip(in, 4*len);
+	readUids(scx, uids_size);
 }
 
 void Effect::write(FILE *scx)
@@ -279,3 +325,5 @@ const char *Effect::propertyTypes[] =
 	"Sound",
 	"Text",
 };
+
+

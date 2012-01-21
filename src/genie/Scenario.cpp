@@ -7,12 +7,9 @@
 #define READ(readin, typelen, len, file) fread(readin, typelen, len, file); \
 	bytes_read+=typelen*len
 
-Scenario::Scenario(const char *_path, int len)
+Scenario::Scenario(const char *path)
 {
-	path = new char[len+1];
-	for (int i=0; i<len; i++)
-		path[i] = _path[i];
-	path[len]='\0';
+	this->path.assign(path);
 }
 
 Scenario::~Scenario()
@@ -30,17 +27,18 @@ void Scenario::cleanup()
 	remove("header.hex");
 	remove("compressed_out.hex");
 	remove("out.hex");
+	remove("scripts/out.hex");
 }
 
 bool Scenario::open()
 {
-	printf("[O] Opening scenario %s\n", path);
+	printf("[O] Opening scenario %s\n", path.c_str());
 
-	FILE *scx = fopen(path, "rb");
+	FILE *scx = fopen(path.c_str(), "rb");
 	if (scx==NULL)
 		return false;
 
-	long scx_filesize = fsize(path);
+	long scx_filesize = fsize(path.c_str());
 
 	long bytes_read = 0;
 
@@ -108,15 +106,20 @@ bool Scenario::read(bool save_triggers)
 	long trigger_skip=0;
 	bool displayed=0;
 
-	if (save_triggers)
-		triggers.clear();
+	std::vector<Trigger *> scen_triggers;
 	for (int i=0; i<numtriggers; i++)
 	{
+		//printf("[R] TRIGGER %d\n", i);
 		Trigger *t = new Trigger;
 		t->read(scx);
-		if (save_triggers)
-			triggers.push_back(t);
+		scen_triggers.push_back(t);
+		//printf("[R] END TRIGGER %d. triggerskip=%d\n", i, ftell(scx)-bytes_read);
 	}
+	if (save_triggers)
+		triggers = scen_triggers;
+	
+	printf("\t[R] Done reading triggers\n");
+	
 	trigger_skip = ftell(scx) - bytes_read;
 	bytes_read+=trigger_skip;
 
@@ -142,7 +145,7 @@ bool Scenario::read(bool save_triggers)
 
 bool Scenario::write(const char *new_path)
 {
-	printf("[W] Writing scenario %s to %s\n", path, new_path);
+	printf("[W] Writing scenario %s to %s\n", path.c_str(), new_path);
 
 	//open creates header.hex and scndata.hex
 	int success=open();
@@ -150,7 +153,7 @@ bool Scenario::write(const char *new_path)
 
 	printf("\t[W] Open successful\n");
 
-	//read sets trigger_start and trigger_end
+	//read sets trigger_start and trigger_end, but don't write triggers
 	read(false);
 	
 	//prepare to write uncompressed new scn data to out.hex
@@ -228,12 +231,12 @@ bool Scenario::write(const char *new_path)
 	return true;
 }
 
-int Scenario::skiptotriggers(const char *path)
+int Scenario::skiptotriggers(const char *filepath)
 {
 
-	long scx_filesize=fsize(path);
+	long scx_filesize=fsize(filepath);
 
-	FILE *scx = fopen(path, "rb");
+	FILE *scx = fopen(filepath, "rb");
 
 	long bytes_read=0;
 	//skip 4433 bytes - size of CHeader until scn filename
@@ -525,9 +528,9 @@ int Scenario::skiptotriggers(const char *path)
 	return bytes_read;	
 }
 
-int Scenario::skiptoscenarioend(const char *path)
+int Scenario::skiptoscenarioend(const char *filepath)
 {
-	FILE *scx = fopen(path, "rb");
+	FILE *scx = fopen(filepath, "rb");
 	
 	//we assume trigger_end is already set	
 	//skip to trigger end
@@ -564,3 +567,5 @@ int Scenario::skiptoscenarioend(const char *path)
 	
 	return bytes_read;
 }
+
+

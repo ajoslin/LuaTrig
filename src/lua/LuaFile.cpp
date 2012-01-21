@@ -7,31 +7,12 @@
 
 /* the SWIG wrappered library */
 extern "C" int luaopen_Scenario(lua_State* L);
-extern "C" int luaopen_LCondition(lua_State* L);
-extern "C" int luaopen_LEffect(lua_State *L);
 
 LuaFile *LuaFile::currentLuaFile = NULL;
 
-LuaFile::LuaFile(const char *_path, int len)
+LuaFile::LuaFile(const char *path)
 {
-	path = new char[len+1];
-	for (int i=0; i<len; i++)
-	path[i] = _path[i];
-	path[len]='\0';
-}
-
-void LuaFile::write_units(std::vector<AOKUNIT *> units, const char *path)
-{
-	FILE *out = fopen(path, "w");
-
-	fprintf(out, "local units={\n");
-	for (int i=0; i<units.size(); i++)
-	{
-		fprintf(out, "\t[%d] = {loc={%d,%d}, id=%d},\n", i, units[i]->loc.x, units[i]->loc.y, units[i]->id);
-	}
-	fprintf(out, "}");
-
-	fclose(out);
+	this->path.assign(path);
 }
 
 bool LuaFile::read()
@@ -42,14 +23,12 @@ bool LuaFile::read()
 	// load the libs
 	luaL_openlibs(L);
 	luaopen_Scenario(L);
-	luaopen_LCondition(L);
-	luaopen_LEffect(L);
 
 	//clear triggers before reading them again
 	triggers.clear();
 	
 	//Read, and record error if it exists
-	int has_errors=luaL_dofile(L, path);
+	int has_errors=luaL_dofile(L, path.c_str());
 
 	if (has_errors!=0)
 	{
@@ -79,8 +58,8 @@ void LuaFile::write(const char *new_path)
 	FILE *out = fopen(new_path, "w");
 	
 	//write effect/cond variables at the top
-	const char * locals = "--Declare variables for use in script\nlocal trigger\nlocal effect\nlocal cond\n\n";
-	fwrite(locals, 1, strlen(locals), out);
+	const char * header = "--Declare variables for use in script\nlocal trigger\nlocal effect\nlocal cond\n\n";
+	fwrite(header, 1, strlen(header), out);
 
 	for (int i=0; i<triggers.size(); i++)
 		writeTrigger(out, i);
@@ -92,28 +71,28 @@ void LuaFile::writeLuaString(FILE *out, const char *str)
 {
 	std::string fix(str);
 	int i;
-
+	//fix backslashes
 	i=fix.find("\\", 0);
 	while (i!=std::string::npos)
 	{
 		fix.replace(i, 1, "/");
 		i=fix.find("\\", i+1);
 	}
-
+	//fix "
 	i=fix.find("\"", 0);
 	while (i!=std::string::npos)
 	{
 		fix.replace(i, 1, "\\\"");
 		i=fix.find("\"", i+2);
 	}
-
+	//fix newlines
 	i=fix.find("\n", 0);
 	while (i!=std::string::npos)
 	{
 		fix.replace(i, 1, "\\n");
 		i=fix.find("\n", i+2);
 	}
-
+	//fix \r
 	i=fix.find("\r", 0);
 	while (i!=std::string::npos)
 	{
@@ -152,8 +131,6 @@ void LuaFile::writeTrigger(FILE *out, int id)
 	if (t->obj || t->obj_order)
 		fprintf(out, "\t%s:desc_order(%d)\n", trigvar, t->obj_order);
 	
-	printf("cond count: %d\n", t->conds.size());
-	
 	//Conditions
 	const char *condvar = "cond";
 	for (int i=0; i<t->conds.size(); i++)
@@ -165,45 +142,45 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		//declaration
 		fprintf(out, "\t%s = %s:Condition%s()\n", condvar, trigvar, c->getName());
 		//amount
-		if (c->amount!=-1 && c->valid_property(CONDITIONP_Amount))
-			fprintf(out, "\t\t%s:amount(%d)\n", condvar, c->amount);
+		if (c->getAmount()!=-1)
+			fprintf(out, "\t\t%s:amount(%d)\n", condvar, c->getAmount());
 		//resource type
-		if (c->resource_type!=-1 && c->valid_property(CONDITIONP_Resource)) 
+		if (c->getResource()!=-1)
 			fprintf(out, "\t\t%s:resource(\"%s\") --aka resource(%d)\n",
-				condvar, genieResources->nameFromId(c->resource_type), c->resource_type);
+				condvar, genieResources->nameFromId(c->getResource()), c->getResource());
 		//unit object
-		if (c->uid_object!=-1 && c->valid_property(CONDITIONP_UIDObject))
-			fprintf(out, "\t\t%s:unit_object(%d)\n", condvar, c->uid_object);
+		if (c->getUidObject()!=-1)
+			fprintf(out, "\t\t%s:unit_object(%d)\n", condvar, c->getUidObject());
 		//unit location
-		if (c->uid_location!=-1 && c->valid_property(CONDITIONP_UIDLocation))
-			fprintf(out, "\t\t%s:unit_location(%d)\n", condvar, c->uid_location);
+		if (c->getUidLocation()!=-1)
+			fprintf(out, "\t\t%s:unit_location(%d)\n", condvar, c->getUidLocation());
 		//unit const
-		if (c->unit_const!=-1 && c->valid_property(CONDITIONP_UnitConst))
-			fprintf(out, "\t\t%s:unit_const(%d)\n", condvar, c->unit_const);
+		if (c->getUnitConst()!=-1)
+			fprintf(out, "\t\t%s:unit_const(%d)\n", condvar, c->getUnitConst());
 		//player
-		if (c->player!=-1 && c->valid_property(CONDITIONP_Player))
-			fprintf(out, "\t\t%s:player(%d)\n", condvar, c->player);
+		if (c->getPlayer()!=-1)
+			fprintf(out, "\t\t%s:player(%d)\n", condvar, c->getPlayer());
 		//technology
-		if (c->technology!=-1 && c->valid_property(CONDITIONP_Technology))
-			fprintf(out, "\t\t%s:technology(%d)\n", condvar, c->technology);
+		if (c->getTechnology()!=-1)
+			fprintf(out, "\t\t%s:tech(%d)\n", condvar, c->getTechnology());
 		//timer
-		if (c->timer!=-1 && c->valid_property(CONDITIONP_Timer))
-			fprintf(out, "\t\t%s:timer(%d)\n", condvar, c->timer);
+		if (c->getTimer()!=-1)
+			fprintf(out, "\t\t%s:time(%d)\n", condvar, c->getTimer());
 		//area
-		if (c->area.ur.x!=-1 && c->area.ll.x!=-1 && c->valid_property(CONDITIONP_Area))  
-			fprintf(out, "\t\t%s:area(%d,%d, %d,%d) --(lowerleft, upperright)\n", 
-				condvar, c->area.ll.x, c->area.ll.y, c->area.ur.x, c->area.ur.y);
+		if (c->getArea().ur.x!=-1 && c->getArea().ll.x!=-1)
+			fprintf(out, "\t\t%s:area(%d,%d, %d,%d)\n", 
+				condvar, c->getArea().ll.x, c->getArea().ll.y, c->getArea().ur.x, c->getArea().ur.y);
 		//unit group
-		if (c->unit_group!=-1 && c->valid_property(CONDITIONP_UnitGroup))
-			fprintf(out, "\t\t%s:unit_group(\"%s\") --aka unit_group(%d)\n",
-				 condvar, genieUnitGroups->nameFromId(c->unit_group), c->unit_group); 
+		if (c->getUnitGroup()!=-1)
+			fprintf(out, "\t\t%s:unit_group(\"%s\")\n",
+				 condvar, genieUnitGroups->nameFromId(c->getUnitGroup()), c->getUnitGroup()); 
 		//unit type
-		if (c->unit_type!=-1 && c->valid_property(CONDITIONP_UnitType))
-			fprintf(out, "\t\t%s:unit_type(\"%s\") --aka unit_type(%d)\n",
-				condvar, genieUnitTypes->nameFromId(c->unit_type), c->unit_type);
+		if (c->getUnitType()!=-1)
+			fprintf(out, "\t\t%s:unit_type(\"%s\")\n",
+				condvar, genieUnitTypes->nameFromId(c->getUnitType()), c->getUnitType());
 		//ai signal
-		if (c->ai_signal!=-1 && c->valid_property(CONDITIONP_AISignal))
-			fprintf(out, "\t\t%s:ai_signal(%d)\n", condvar, c->ai_signal);
+		if (c->getAiSignal()!=-1)
+			fprintf(out, "\t\t%s:ai_signal(%d)\n", condvar, c->getAiSignal());
 	}
 
 	//Effects
@@ -217,82 +194,82 @@ void LuaFile::writeTrigger(FILE *out, int id)
 		//declaration
 		fprintf(out, "\t%s = %s:Effect%s()\n", effectvar, trigvar, e->getName());
 		//ai goal
-		if (e->ai_goal!=-1 && e->valid_property(EFFECTP_AIGoal))
-			fprintf(out, "\t\t%s:ai_goal(%d)\n", effectvar, e->ai_goal);
+		if (e->getAiGoal()!=-1)
+			fprintf(out, "\t\t%s:ai_goal(%d)\n", effectvar, e->getAiGoal());
 		//amount
-		if (e->amount!=-1 && e->valid_property(EFFECTP_Amount))
-			fprintf(out, "\t\t%s:amount(%d)\n", effectvar, e->amount);
+		if (e->getAmount()!=-1)
+			fprintf(out, "\t\t%s:amount(%d)\n", effectvar, e->getAmount());
 		//resource
-		if (e->resource!=-1 && e->valid_property(EFFECTP_Resource))
-			fprintf(out, "\t\t%s:resource(\"%s\") --aka resource(%d)\n",
-				effectvar, genieResources->nameFromId(e->resource), e->resource);
+		if (e->getResource()!=-1)
+			fprintf(out, "\t\t%s:resource(\"%s\")\n",
+				effectvar, genieResources->nameFromId(e->getResource()), e->getResource());
 		//diplomacy
-		if (e->diplomacy!=-1 && e->valid_property(EFFECTP_Diplomacy))
-			fprintf(out, "\t\t%s:diplomacy(\"%s\") --aka diplomacy(%d)\n",
-				effectvar, genieDiplomacies->nameFromId(e->diplomacy), e->diplomacy);
+		if (e->getDiplomacy()!=-1)
+			fprintf(out, "\t\t%s:diplomacy(\"%s\")\n",
+				effectvar, genieDiplomacies->nameFromId(e->getDiplomacy()), e->getDiplomacy());
 		//unit location
-		if (e->uid_location!=-1 && e->valid_property(EFFECTP_UIDLocation))
-			fprintf(out, "\t\t%s:unit_location(%d)\n", effectvar, e->uid_location);
+		if (e->getUidLocation()!=-1)
+			fprintf(out, "\t\t%s:unit_location(%d)\n", effectvar, e->getUidLocation());
 		//unit const
-		if (e->unit_const!=-1 && e->valid_property(EFFECTP_UnitConst))
-			fprintf(out, "\t\t%s:unit_const(%d)\n", effectvar, e->unit_const);
+		if (e->getUnitConst()!=-1)
+			fprintf(out, "\t\t%s:unit_const(%d)\n", effectvar, e->getUnitConst());
 		//selected unit(s)
-		if (e->num_selected!=-1 && e->valid_property(EFFECTP_UIDs))
+		if (e->getUids().size()>0)
 		{
 			fprintf(out, "\t\t%s:units(", effectvar);
-			for (int i=0; i<e->num_selected; i++)
+			for (int i=0; i<e->getUids().size(); i++)
 			{
-				fprintf(out, "%d", e->uids[i]);
-				if (i<e->num_selected-1) //add comma on all except last
+				fprintf(out, "%d", e->getUids()[i]);
+				if (i<e->getUids().size()-1) //add comma on all except last
 					fprintf(out, ", ");
 			}
 			fprintf(out, ")\n"); 
 		}
 		//player_source
-		if (e->player_source!=-1 && e->valid_property(EFFECTP_PlayerSource))
-			fprintf(out, "\t\t%s:player_source(%d)\n", effectvar, e->player_source);
+		if (e->getPlayerSource()!=-1)
+			fprintf(out, "\t\t%s:p_source(%d)\n", effectvar, e->getPlayerSource());
 		//player_target
-		if (e->player_target!=-1 && e->valid_property(EFFECTP_PlayerTarget))
-			fprintf(out, "\t\t%s:player_target(%d)\n", effectvar, e->player_target);
+		if (e->getPlayerTarget()!=-1)
+			fprintf(out, "\t\t%s:p_target(%d)\n", effectvar, e->getPlayerTarget());
 		//technology
-		if (e->technology!=-1 && e->valid_property(EFFECTP_Technology))
-			fprintf(out, "\t\t%s:technology(%d)\n", effectvar, e->technology);
+		if (e->getTechnology()!=-1)
+			fprintf(out, "\t\t%s:tech(%d)\n", effectvar, e->getTechnology());
 		//display time
-		if (e->display_time!=-1 && e->valid_property(EFFECTP_DisplayTime))
-			fprintf(out, "\t\t%s:time(%d)\n", effectvar, e->display_time);
+		if (e->getDisplayTime()!=-1)
+			fprintf(out, "\t\t%s:time(%d)\n", effectvar, e->getDisplayTime());
 		//trigger index
-		if (e->trigger_index>=0 && e->valid_property(EFFECTP_TriggerIndex))
-			fprintf(out, "\t\t%s:trigger(%d)\n", effectvar, e->trigger_index);
+		if (e->getTriggerIndex()>=0)
+			fprintf(out, "\t\t%s:trigger(%d)\n", effectvar, e->getTriggerIndex());
 		//location
-		if (e->location.x!=-1 && e->valid_property(EFFECTP_Location))
-			fprintf(out, "\t\t%s:location(%d,%d)\n", effectvar, e->location.x, e->location.y);
+		if (e->getLocation().x!=-1)
+			fprintf(out, "\t\t%s:location(%d,%d)\n", effectvar, e->getLocation().x, e->getLocation().y);
 		//area
-		if (e->area.ur.x!=-1 && e->area.ll.x!=-1 && e->valid_property(EFFECTP_Area))
-			fprintf(out, "\t\t%s:area(%d,%d, %d,%d) --(lowerleft, upperright)\n", 
-				effectvar, e->area.ll.x, e->area.ll.y, e->area.ur.x, e->area.ur.y); 
+		if (e->getArea().ur.x!=-1 && e->getArea().ll.x!=-1)
+			fprintf(out, "\t\t%s:area(%d,%d, %d,%d)\n", 
+				effectvar, e->getArea().ll.x, e->getArea().ll.y, e->getArea().ur.x, e->getArea().ur.y); 
 		//unit group
-		if (e->unit_group!=-1 && e->valid_property(EFFECTP_UnitGroup))
-			fprintf(out, "\t\t%s:unit_group(\"%s\") --aka unit_group(%d)\n",
-				 effectvar, genieUnitGroups->nameFromId(e->unit_group), e->unit_group); 
+		if (e->getUnitGroup()!=-1)
+			fprintf(out, "\t\t%s:unit_group(\"%s\")\n",
+				 effectvar, genieUnitGroups->nameFromId(e->getUnitGroup()), e->getUnitGroup()); 
 		//unit type
-		if (e->unit_type!=-1 && e->valid_property(EFFECTP_UnitType))
-			fprintf(out, "\t\t%s:unit_type(\"%s\") --aka unit_type(%d)\n",
-				effectvar, genieUnitTypes->nameFromId(e->unit_type), e->unit_type); 
+		if (e->getUnitType()!=-1)
+			fprintf(out, "\t\t%s:unit_type(\"%s\")\n",
+				effectvar, genieUnitTypes->nameFromId(e->getUnitType()), e->getUnitType()); 
 		//panel
-		if (e->panel!=-1 && e->valid_property(EFFECTP_Panel))
-			fprintf(out, "\t\t%s:panel(%d)\n", effectvar, e->panel);
+		if (e->getPanel()!=-1)
+			fprintf(out, "\t\t%s:panel(%d)\n", effectvar, e->getPanel());
 		//text
-		if (e->text.length()>1 && e->valid_property(EFFECTP_Text))
+		if (e->getText().length()>1)
 		{
 			fprintf(out, "\t\t%s:text(", effectvar);
-			writeLuaString(out, e->text.c_str());
+			writeLuaString(out, e->getText().c_str());
 			fprintf(out, ")\n");
 		}
 		//sound
-		if (e->sound.length()>1 && e->valid_property(EFFECTP_Sound))
+		if (e->getSound().length()>1)
 		{
 			fprintf(out, "\t\t%s:sound(", effectvar);
-			writeLuaString(out, e->sound.c_str());
+			writeLuaString(out, e->getSound().c_str());
 			fprintf(out, ")\n");	
 		}
 	}
@@ -305,3 +282,5 @@ LuaFile *LuaFile::current()
 {
 	return LuaFile::currentLuaFile;
 }
+
+

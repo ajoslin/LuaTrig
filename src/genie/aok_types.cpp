@@ -130,3 +130,4 @@ GeniePairGroup *genieResources = new GeniePairGroup(res_array, RESOURCES_LEN);
 GeniePairGroup *genieDiplomacies = new GeniePairGroup(diplo_array, DIPLO_LEN);
 GeniePairGroup *genieUnitTypes = new GeniePairGroup(utype_array, UTYPES_LEN);
 GeniePairGroup *genieUnitGroups = new GeniePairGroup(ugroup_array, UGROUPS_LEN);
+

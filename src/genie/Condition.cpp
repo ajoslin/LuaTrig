@@ -1,4 +1,5 @@
 #include "Condition.h"
+#include "ConditionTypes.h"
 
 Condition::Condition(long t)
 {
@@ -7,13 +8,59 @@ Condition::Condition(long t)
 	check_value = 0x10;
 }
 
+Condition *Condition::createType(long type)
+{
+	switch(type)
+	{
+	case CONDITION_BringObjectToArea:
+		return new Condition_BringObjectToArea();
+	case CONDITION_BringObjectToObject:
+		return new Condition_BringObjectToObject();
+	case CONDITION_OwnObjects:
+		return new Condition_OwnObjects();
+	case CONDITION_OwnFewerObjects:
+		return new Condition_OwnFewerObjects();
+	case CONDITION_ObjectsInArea:
+		return new Condition_ObjectsInArea();
+	case CONDITION_DestroyObject:
+		return new Condition_DestroyObject();
+	case CONDITION_CaptureObject:
+		return new Condition_CaptureObject();
+	case CONDITION_AccumulateAttribute:
+		return new Condition_AccumulateAttribute();
+	case CONDITION_ResearchTechnology:
+		return new Condition_ResearchTechnology();
+	case CONDITION_Timer:
+		return new Condition_Timer();
+	case CONDITION_ObjectSelected:
+		return new Condition_ObjectSelected();
+	case CONDITION_AISignal:
+		return new Condition_AISignal();
+	case CONDITION_PlayerDefeated:
+		return new Condition_PlayerDefeated();
+	case CONDITION_ObjectHasTarget:
+		return new Condition_ObjectHasTarget();
+	case CONDITION_ObjectVisible:
+		return new Condition_ObjectVisible();
+	case CONDITION_ObjectNotVisible:
+		return new Condition_ObjectNotVisible();
+	case CONDITION_ResearchingTechnology:
+		return new Condition_ResearchingTechnology();
+	case CONDITION_UnitsGarrisoned:
+		return new Condition_UnitsGarrisoned();
+	case CONDITION_DifficultyLevel:
+		return new Condition_DifficultyLevel();
+	default:
+		return new Condition_None();
+	}
+}
+
 const char * Condition::getName() {
 	return (type < NUM_CONDS) ? types[type] : "Unknown!";
 }
 
 void Condition::read(FILE *scx)
 {
-	fread(&type, sizeof(long), 1, scx);
 	fread(&check_value, sizeof(long), 1, scx);
 	readAmount(scx);
 	readResource(scx);
@@ -171,3 +218,4 @@ const char *Condition::propertyTypes[] =
 	"UnitConst",
 	"AISignal",
 };
+

@@ -6,8 +6,9 @@
 
 /* Functions */
 
-void readstr(FILE *in, std::string str)
+const char * readstr(FILE *in)
 {
+	std::string str;
 	long len;
 	fread(&len, sizeof(long), 1, in);
 
@@ -18,6 +19,7 @@ void readstr(FILE *in, std::string str)
 		str[i]=c;
 	}
 	str[len]='\0';
+	return str.c_str();
 }
 
 extern "C"
@@ -116,4 +118,4 @@ int inflate_file(Bytef *in, int length, FILE *out)
 	return code;
 }
 
-}	//end C
+}	//end Cz

@@ -3,21 +3,16 @@
 
 #include "wx/wx.h"
 #include "wx/filepicker.h"
-#include "wx/timer.h"
-#include "LTPage_FileBase.h"
+#include "LTPage_File.h"
 
 class LTFrame; //fwd here so we don't have to include
 class LuaFile;
 
-class LTPage_Script : public LTPage_FileBase
+class LTPage_Script : public LTPage_File
 {
 private:
-	LuaFile *luaFile;
-
 	wxBoxSizer *pickBaseSizer;
 	wxBoxSizer *pickTargetSizer;
-
-	wxButton *openFileButton;
 
 	wxStaticText *pickBaseText;
 	wxButton *pickBaseButton;
@@ -28,33 +23,26 @@ private:
 	wxCheckBox *pickTargetCheckBox;
 
 	wxButton *writeButton;
-	wxStaticText *successText;
-	wxTimer *timer;
 
-	wxFileName *baseScenario;
-	wxFileName *targetScenario;
-	wxFileName *dummyScenFile;
+	wxFileName baseScenario;
+	wxFileName targetScenario;
 
-	void updatePickBaseComboBox();
+	void setBaseScenario(wxFileName fname);
+	void setTargetScenario(wxFileName fname);
+	void checkCanWrite();
 
 public:
-	LTPage_Script(LTFrame *frame, wxNotebook *parent, wxFileName *fname);
+	LTPage_Script(wxWindow *parent);
 
 	void onOpenFileButtonPressed(wxCommandEvent &event);
 	void onPickBaseButtonPressed(wxCommandEvent &event);
 	void onPickTargetButtonPressed(wxCommandEvent &event);
 	void onPickTargetCheckBoxChanged(wxCommandEvent &event);
 	void onWriteButtonPressed(wxCommandEvent &event);
-	void onTimer(wxTimerEvent &event);
 
-	void setBaseScenario(wxFileName *fname);
-	void setTargetScenario(wxFileName *fname);
-	void checkCanWrite();
-
-	virtual void write(wxFileName *fname);
-	virtual void read();
-
-
+	void write(wxFileName fname);
+	void open(wxFileName fname);
+	void read();
 };
 
 #endif

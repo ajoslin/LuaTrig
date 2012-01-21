@@ -1,11 +1,8 @@
-#include "ECTypes.h"
-#include <math>
-
 #define LOCATION_CPP(class) \
 void class::location(int x, int y) \
 { \
-	loc.x=x; \	
-	loc.y=y;
+	loc.x=x; \
+	loc.y=y; \
 } \
 void class::readLocation(FILE *in) \
 { \
@@ -15,10 +12,10 @@ void class::readLocation(FILE *in) \
 }
 
 #define AREA_CPP(class) \
-void class::area(int x1, int y1, int x2, int y2) \x
+void class::area(int x1, int y1, int x2, int y2) \
 { \
-	/*lowerleft area has to be less than upperright, or it bugs in aoe2*/ \
-	if sqrt(pow(x1,2)+pow(y1,2)) < sqrt(pow(x2,2),pow(y2,2)) \
+	/*lowerleft area has to be >= than upperright, or it bugs in aoe2*/ \
+	if ( sqrt(pow(x1,2)+pow(y1,2))>=sqrt(pow(x2,2)+pow(y2,2)) ) \
 	{ \
 		ar.ll.x=x1; \
 		ar.ll.y=y1; \
@@ -42,12 +39,12 @@ void class::readArea(FILE *in) \
 	fread(&ar.ur.x, 4, 1, in); \
 }
  
-#define UNITS_CPP_INTLIST int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m, int o, int p, int q, int r, int s, int t, int u, int v
+#define UNITS_CPP_INTLIST int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m, int n, int o, int p, int q, int r, int s, int t, int u, int v
 
 #define SETUNIT(var) if (var!=-1) uids.push_back(var)
 
 #define UIDS_CPP(class) \
-void class::units(UITS_CPP_INTLIST) \
+void class::units(UNITS_CPP_INTLIST) \
 { \
 	SETUNIT(a); \
 	SETUNIT(b); \
@@ -72,45 +69,51 @@ void class::units(UITS_CPP_INTLIST) \
 	SETUNIT(u); \
 	SETUNIT(v); \
 } \
-void class::readUids(FILE *in) \
+void class::readUids(FILE *in, long len) \
 { \
-	long len; \
-	fread(&len, 4, 1, in); \
-	uids.resize(len); \
-	for (int i=0; i<len; i++) \
-		fread(&uids[i], 4, 1, in); \
+	if (len>0) \
+	{ \
+		uids.resize(len); \
+		for (int i=0; i<len; i++) { \
+			fread(&uids[i], 4, 1, in); \
+		} \
+	} \
 } 
 
 #define DIPLO_CPP(class) \
 void class::diplomacy(const char *s) \
 { \
-	if (genieDiplomacies.has(s)); \
-		diplomacy(genieDiplomacies.idFromName(s)); \
+	if (genieDiplomacies->has(s)) \
+		diplomacy(genieDiplomacies->idFromName(s)); \
 	else \
 		diplomacy(-1); \
 }
 
 #define RESOURCE_CPP(class) \
-void class::resource(conat char *s) \
+void class::resource(const char *s) \
 { \
-	if (genieResources.has(s)); \
-		diplomacy(genieResources.idFromName(s)); \
+	if (genieResources->has(s)) \
+		resource(genieResources->idFromName(s)); \
 	else \
-		diplomacy(-1); \
+		resource(-1); \
 }
 
 #define UGROUP_CPP(class) \
+void class::unit_group(const char *s) \
 { \
-	if (genieUnitGroups.has(s)); \
-		diplo(genieUnitGroups.idFromName(s)); \
+	if (genieUnitGroups->has(s)) \
+		unit_group(genieUnitGroups->idFromName(s)); \
 	else \
-		diplo(-1); \
+		unit_group(-1); \
 }
 
 #define UTYPE_CPP(class) \
+void class::unit_type(const char *s) \
 { \
-	if (genieUnitTypes.has(s)); \
-		diplo(genieUnitTypes.idFromName(s)); \
+	if (genieUnitTypes->has(s)) \
+		unit_type(genieUnitTypes->idFromName(s)); \
 	else \
-		diplo(-1); \
+		unit_type(-1); \
 }
+
+

@@ -1,6 +1,7 @@
 /* MODEL */
 
 #include "Trigger.h"
+#include "util_file.h"
 
 Trigger::Trigger()
 {
@@ -17,39 +18,58 @@ void Trigger::read(FILE *scx)
 	fread(&obj_order, sizeof(long), 1, scx);
 	
 	//skip zeroes data (4 bytes)
-	for (int i=0; i<4; i++) fgetc(scx);
+	fskip(scx, 4);
 
-	readstr(scx, description);
-	readstr(scx, name);
+	description=readstr(scx);
+	name=readstr(scx);
 	
 	//Effects
 	long effect_count;
 	fread(&effect_count, sizeof(long), 1, scx);
 
-	effects.clear();
+	//printf("\tReading Effects: effect_count=%d\n", effect_count);
+
+	std::vector<Effect *> new_effects;
+	long nextECType;
 	for (int i=0; i<effect_count; i++)
 	{
-		Effect *e=new Effect;
+		//effect type
+		fread(&nextECType, 4, 1, scx);
+
+		//printf("\t--[Effect %d]: Type %d, \"%s\"\n", i, nextECType, Effect::types[nextECType]);
+		
+		Effect *e=Effect::createType(nextECType);
 		e->read(scx);
-		effects.push_back(e);
+		new_effects.push_back(e);
 	}
+	effects = new_effects;
+
 	//skip effect_count longs representing effect order
 	//this order doesn't matter, is only display order and not execution order
-	for (int i=0; i<4*effect_count; i++) fgetc(scx);
+	fskip(scx, 4*effect_count);
 	
 	//Conditions
 	long condition_count;
 	fread(&condition_count, sizeof(long), 1, scx);
+
+	//printf("\tReading Conditions: cond_count=%d\n", condition_count);
 	
-	conds.clear();
+	std::vector<Condition *> new_conds;
 	for (int i=0; i<condition_count; i++)
 	{
-		Condition *c=new Condition;
+		//cond type
+		fread(&nextECType, 4, 1, scx);
+
+		//printf("\t--[Cond %d]: Type %d, \"%s\"\n", i, nextECType, Condition::types[nextECType]);
+
+		Condition *c=Condition::createType(nextECType);
 		c->read(scx);
-		conds.push_back(c);
+		new_conds.push_back(c);
 	}
+	conds = new_conds;
+
 	//skip condition order, condition_count longs
-	for (int i=0; i<4*condition_count; i++) fgetc(scx);
+	fskip(scx, 4*condition_count);
 }
 
 void Trigger::write(FILE *scx)
@@ -92,3 +112,4 @@ void Trigger::write(FILE *scx)
 	for (int i = 0; i < len; i++)
 		fwrite(&i, 4, 1, scx);
 }
+

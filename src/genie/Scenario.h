@@ -1,13 +1,14 @@
 #ifndef SCENARIO_H_
 #define SCENARIO_H_
 
-#include <vector>
 #include "Trigger.h"
+#include <string>
+#include <vector>
 
 class Scenario
 {
 private:
-	char *path;
+	std::string path;
 
 	int skiptotriggers(const char *path);
 	int skiptoscenarioend(const char *path);
@@ -19,17 +20,21 @@ private:
 	unsigned long headerlength;
 
 public:	
-	Scenario(const char *path, int len);
+	Scenario(const char *path);
 	~Scenario();
 
 	bool open();
-	bool read(bool save_triggers = false);
+	bool read(bool save_triggers = true);
 	bool write(const char *new_path);
+
+	std::string getPath() { return path; };
 
 	void cleanup();
 
 	std::vector<Trigger *> triggers;
-	std::vector<AOKUNIT *> units;
 };
 
 #endif
+
+
+

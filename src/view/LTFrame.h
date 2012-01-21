@@ -3,28 +3,25 @@
 
 #include "wx/wx.h"
 #include "wx/notebook.h"
-#include "wx/fileconf.h"
 #include "wx/filepicker.h"
 #include "wx/filename.h"
 #include "wx/image.h"
 #include "wx/toolbar.h"
 #include "wx/tbarbase.h"
 #include "wx/imaglist.h"
-#include "wx/dynarray.h"
 #include <vector>
 
-class LTPage_FileBase; //forward these so we don't have to include
+class LTPage_File; //forward these so we don't have to include
 class LTDialog_Settings;
 class LTDialog_About;
-class LTDialog_TriggerGen;
 
-enum InterfaceChoices
+enum ToolbarChoices
 {
-	ICHOICE_About,
-	ICHOICE_Settings,
-	ICHOICE_OpenScenario,
-	ICHOICE_OpenScript,
-	ICHOICE_TriggerGen
+	TOOLBAR_About,
+	TOOLBAR_Settings,
+	TOOLBAR_OpenScenario,
+	TOOLBAR_OpenScript,
+	TOOLBAR_Console
 };
 
 enum FileType
@@ -36,54 +33,46 @@ enum FileType
 class LTFrame : public wxFrame
 {
 private:
-	//Misc variables
-	wxString scenarioFile;
-	wxString scriptFile;
-	wxString scenarioDir;
-	wxString scriptDir;
+	LTFrame(wxString title);
 
-	//wxWidgets
-	wxNotebook *tabBarMain;
-	wxImageList *tabBarImageList;
+	wxString currentScenarioDir;
+	wxString currentScriptDir;
+
 	wxToolBar *toolBar;
+
+	//wx things
+	wxNotebook *openFilesBook;
+	wxImageList *openFilesImageList;
+	
 	LTDialog_About *aboutDialog;
 	LTDialog_Settings *settingsDialog;
 	wxFileDialog *openScenarioDialog;
 	wxFileDialog *openScriptDialog;
-	LTDialog_TriggerGen *triggerGenDialog;
-
-public:
-	LTFrame(const wxString& title);
-
-	wxFileConfig *config;
 
 	//wx Events
-	void onExit(wxCloseEvent& event); 
-	void onAbout(wxCommandEvent& event);
-	void onSettings(wxCommandEvent& event);
-	void onOpenDialogScenario(wxCommandEvent& event);
-	void onOpenDialogScript(wxCommandEvent& event);
-	void onTriggerGen(wxCommandEvent& event);
+	void onToolbarExit(wxCloseEvent& event); 
+	void onToolbarSettings(wxCommandEvent& event);
+	void onToolbarOpenScenario(wxCommandEvent& event);
+	void onToolbarOpenScript(wxCommandEvent& event);
+	void onToolbarAbout(wxCommandEvent& event);
 
-	//Functions
-	int fileIndex(wxFileName *fname);
-	void openScenario(wxFileName *fname, bool select = true);
-	void openScript(wxFileName *fname, bool select = true);
+	static LTFrame *__instance;
 
-	//returns true if successful close
-	bool closeFile(wxFileName *fname);
+public:
+	//gets type from filename extension (eg .scx=FTYPE_Scenario)
+	int typeFromFileName(wxFileName fname);
+	
+	//others
+	void openFile(wxFileName fname, int type=-1, bool select=true);
+	void closeFile(wxFileName fname);
+	int indexOfFile(wxFileName fname);
 
-	//brings up dialog
-	void onError(wxString err);
+	LTPage_File * getFileBookPage(int i);
+	int getFileBookPageCount();
 
-	//Getters/setters
-	void setScenarioDir(wxString path);
-	wxString getScenarioDir() { return scenarioDir; };
-	void setScriptDir(wxString path);
-	wxString getScriptDir() { return scriptDir; };
-
-	std::vector<LTPage_FileBase *> openFiles;
+	static LTFrame *instance(wxString title = wxEmptyString);
 };
 
 #endif
+
 

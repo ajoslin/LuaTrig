@@ -1,12 +1,11 @@
 #include "LTDialog_Settings.h"
 #include "wx/stdpaths.h"
-#include "LTFrame.h"
 #include "../defines.h"
+#include "LuaTrigMain.h"
 
-LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
+LTDialog_Settings::LTDialog_Settings(wxWindow *parent)
   : wxDialog(parent, -1, wxT(STR_STGS_TITLE), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxNO_DEFAULT | wxSTAY_ON_TOP)
 {
-	this->frame = parent;
 
 	mainSizer = new wxBoxSizer(wxVERTICAL);
 	defaultBtnSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -20,9 +19,9 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 	instructionsText = new wxStaticText(this, wxID_ANY, wxT(STR_CFG_INSTRUCT));
 
 	scenarioText = new wxStaticText(this, wxID_ANY, wxT(STR_STGS_SCN_TITLE));
-	scenarioDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScenarioDir(), wxT(STR_DIR_SELECT), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
+	scenarioDirPicker = new wxDirPickerCtrl(this, wxID_ANY, wxEmptyString, wxT(STR_DIR_SELECT), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
 	scriptText = new wxStaticText(this, wxID_ANY, wxT(STR_STGS_LUA_TITLE));
-	scriptDirPicker = new wxDirPickerCtrl(this, wxID_ANY, frame->getScriptDir(), wxT(STR_DIR_SELECT), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
+	scriptDirPicker = new wxDirPickerCtrl(this, wxID_ANY, wxEmptyString, wxT(STR_DIR_SELECT), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL | wxDIRP_DIR_MUST_EXIST);
 
 	gridSizer->Add(scenarioText, 1, wxEXPAND);
 	gridSizer->Add(scenarioDirPicker, 1, wxEXPAND);
@@ -35,7 +34,7 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 	okBtnSizer->Add(okButton, wxEXPAND);
 	okBtnSizer->Add(cancelButton, wxEXPAND);
 
-	mainSizer->AddSpacer(10);
+	mainSizer->AddSpacer(15);
 	mainSizer->Add(instructionsText);
 	mainSizer->AddSpacer(10);
 	mainSizer->Add(defaultBtnSizer, 0, wxALIGN_CENTER);
@@ -52,6 +51,12 @@ LTDialog_Settings::LTDialog_Settings(LTFrame *parent)
 	mainSizer->SetMinSize(wxSize(500, 1)); //only care about width
 	SetSizerAndFit(mainSizer);
 	Center();
+}
+
+void LTDialog_Settings::loadDirs()
+{
+	scenarioDirPicker->SetPath(LuaTrigMain::configRead(wxT(STR_CFG_SCNDIR)));
+	scriptDirPicker->SetPath(LuaTrigMain::configRead(wxT(STR_CFG_LUADIR)));
 }
 
 void LTDialog_Settings::onDefaults(wxCommandEvent& event)
@@ -78,10 +83,12 @@ void LTDialog_Settings::onDefaults(wxCommandEvent& event)
 
 void LTDialog_Settings::onDone(wxCommandEvent& event)
 {
+	//if cancel, revert any changes
 	if (event.GetId()==wxID_OK)
 	{
-		frame->setScenarioDir(scenarioDirPicker->GetPath());
-		frame->setScriptDir(scriptDirPicker->GetPath());
+		LuaTrigMain::configWrite(wxT(STR_CFG_SCNDIR), scenarioDirPicker->GetPath());
+		LuaTrigMain::configWrite(wxT(STR_CFG_LUADIR), scriptDirPicker->GetPath());
 	}
 	EndModal(event.GetId());
 }
+

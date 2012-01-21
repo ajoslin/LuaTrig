@@ -40,17 +40,6 @@ public:
 	}
 };
 
-class AOKUNIT
-{
-	public:
-		AOKPT loc;
-		long id;
-	AOKUNIT(long i, long x, long y)
-	: id(i), loc(x,y)
-	{
-	}
-};
-
 class GeniePair 
 {
 public:
@@ -90,4 +79,17 @@ extern GeniePairGroup *genieUnitTypes;
 extern GeniePair ugroup_array[UGROUPS_LEN];
 extern GeniePairGroup *genieUnitGroups;
 
+//basically a struct so we can have a long with a default -1 value
+class eclong {
+private:
+	long value;
+public:
+	void set(long v) { value=v; }
+	long get() { return value; }
+	eclong() : value(-1) {}
+};
+
 #endif
+
+
+

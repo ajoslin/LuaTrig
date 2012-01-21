@@ -50,4 +50,4 @@ Operating Systems
 
 * LuaTrig will only compile on Windows with the included makefile.
 
-* It could compile on linux with some tweaking, but it would take a little bit of messing around.
+* It could compile on linux with some tweaking, but it would take a little bit of messing around.z

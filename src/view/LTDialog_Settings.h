@@ -5,13 +5,9 @@
 #include "wx/fileconf.h"
 #include "wx/filepicker.h"
 
-class LTFrame; //fwd declaration so no need to include ltframe
-
 class LTDialog_Settings : public wxDialog
 {
 private:
-	LTFrame *frame;
-
 	wxBoxSizer *mainSizer;
 	wxBoxSizer *defaultBtnSizer;
 	wxFlexGridSizer *gridSizer;
@@ -28,9 +24,10 @@ private:
 	wxButton *okButton;
 	wxButton *cancelButton;
 
-
 public:
-	LTDialog_Settings(LTFrame *parent);
+	LTDialog_Settings(wxWindow *parent);
+
+	void loadDirs();
 
 	void onDefaults(wxCommandEvent& event);
 	void onDone(wxCommandEvent &event);

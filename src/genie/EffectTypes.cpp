@@ -1,5 +1,8 @@
 #include "EffectTypes.h"
 #include "ECTypesCpp.h"
+#include "aok_types.h"
+#include <stdio.h>
+#include <math.h>
 
 //almost all of the classes are fully defined in the .h file, but a few have some functions in cpp too.
 //we use macros to define these functions
@@ -35,6 +38,8 @@ UGROUP_CPP(Effect_RemoveObject);
 UTYPE_CPP(Effect_RemoveObject);
 UIDS_CPP(Effect_RemoveObject);
 
+LOCATION_CPP(Effect_ChangeView);
+
 LOCATION_CPP(Effect_Unload);
 AREA_CPP(Effect_Unload);
 UGROUP_CPP(Effect_Unload);
@@ -48,6 +53,12 @@ UIDS_CPP(Effect_ChangeOwnership);
 
 LOCATION_CPP(Effect_Patrol);
 UIDS_CPP(Effect_Patrol);
+
+LOCATION_CPP(Effect_FreezeUnit);
+AREA_CPP(Effect_FreezeUnit);
+UGROUP_CPP(Effect_FreezeUnit);
+UTYPE_CPP(Effect_FreezeUnit);
+UIDS_CPP(Effect_FreezeUnit);
 
 AREA_CPP(Effect_DamageObject);
 UGROUP_CPP(Effect_DamageObject);
@@ -73,3 +84,5 @@ AREA_CPP(Effect_StopUnit);
 UGROUP_CPP(Effect_StopUnit);
 UTYPE_CPP(Effect_StopUnit);
 UIDS_CPP(Effect_StopUnit);
+
+

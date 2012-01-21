@@ -85,21 +85,24 @@ public:
 
 	//readers: return null values by default. also overridden by inherited condition types.
 	//these are not virtual because inherited classes simply override and don't want the above functionality
-	void readAmount(FILE *in) { fskip(in, 4); };
-	void readResource(FILE *in) { fskip(in, 4); };
-	void readUidObject(FILE *in) { fskip(in, 4); };
-	void readUidLocation(FILE *in) { fskip(in, 4); };
-	void readPlayer(FILE *in) { fskip(in, 4); };
-	void readTechnology(FILE *in) { fskip(in, 4); };
-	void readTimer(FILE *in) { fskip(in, 4); };
-	void readArea(FILE *in) { fskip(in, 16); };
-	void readUnitGroup(FILE *in) { fskip(in, 4); };
-	void readUnitType(FILE *in) { fskip(in, 4); };
-	void readUnitConst(FILE *in) { fskip(in, 4); };
-	void readAiSignal(FILE *in) { fskip(in, 4); };
+	virtual void readAmount(FILE *in) { fskip(in, 4); };
+	virtual void readResource(FILE *in) { fskip(in, 4); };
+	virtual void readUidObject(FILE *in) { fskip(in, 4); };
+	virtual void readUidLocation(FILE *in) { fskip(in, 4); };
+	virtual void readPlayer(FILE *in) { fskip(in, 4); };
+	virtual void readTechnology(FILE *in) { fskip(in, 4); };
+	virtual void readTimer(FILE *in) { fskip(in, 4); };
+	virtual void readArea(FILE *in) { fskip(in, 16); };
+	virtual void readUnitGroup(FILE *in) { fskip(in, 4); };
+	virtual void readUnitType(FILE *in) { fskip(in, 4); };
+	virtual void readUnitConst(FILE *in) { fskip(in, 4); };
+	virtual void readAiSignal(FILE *in) { fskip(in, 4); };
 
 	static const char* types[NUM_CONDS];
 	static const char* propertyTypes[NUM_COND_PARAMS];
 };
 
 #endif
+
+
+

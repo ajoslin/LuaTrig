@@ -117,34 +117,36 @@ public:
 	virtual long getUnitType() { return -1; };
 	virtual long getUnitConst() { return -1; };
 	virtual std::string getSound() { return std::string(); };
-	virtual std::string getText() { return std::string(); };
+	virtual std::string getText() { return std::string(); printf("running empty getText()\n"); };
 
 	//readers: skip scx values by default. inherited classes override these
 	//these are not virtual because inherited classes simply override and don't want the above functionality
-	void readAmount(FILE *in) { fskip(in, 4); };
-	void readLocation(FILE *in) { fskip(in, 8); };
-	void readArea(FILE *in) { fskip(in, 16); };
-	void readAiGoal(FILE *in) { fskip(in, 4); };
-	void readDiplomacy(FILE *in) { fskip(in, 4); };
-	void readDisplayTime(FILE *in) { fskip(in, 4); };
-	void readNumSelected(FILE *in) { fskip(in, 4); };
-	void readPanel(FILE *in) { fskip(in, 4); };
-	void readPlayerSource(FILE *in) { fskip(in, 4); };
-	void readPlayerTarget(FILE *in) { fskip(in, 4); };
-	void readResource(FILE *in) { fskip(in, 4); };
-	void readTechnology(FILE *in) { fskip(in, 4); };
-	void readTriggerIndex(FILE *in) { fskip(in, 4); };
-	void readType(FILE *in) { fskip(in, 4); };
-	void readUids(FILE *in); //defined in cpp because it's too long
-	void readUidLocation(FILE *in) { fskip(in, 4); };
-	void readUnitGroup(FILE *in) { fskip(in, 4); };
-	void readUnitType(FILE *in) { fskip(in, 4); };
-	void readUnitConst(FILE *in) { fskip(in, 4); };
-	void readSound(FILE *in) { readstr(in, std::string()); };
-	void readText(FILE *in) { readstr(in, std::string()); };
+	virtual void readAmount(FILE *in) { fskip(in, 4); };
+	virtual void readLocation(FILE *in) { fskip(in, 8); };
+	virtual void readArea(FILE *in) { fskip(in, 16); };
+	virtual void readAiGoal(FILE *in) { fskip(in, 4); };
+	virtual void readDiplomacy(FILE *in) { fskip(in, 4); };
+	virtual void readDisplayTime(FILE *in) { fskip(in, 4); };
+	virtual void readPanel(FILE *in) { fskip(in, 4); };
+	virtual void readPlayerSource(FILE *in) { fskip(in, 4); };
+	virtual void readPlayerTarget(FILE *in) { fskip(in, 4); };
+	virtual void readResource(FILE *in) { fskip(in, 4); };
+	virtual void readTechnology(FILE *in) { fskip(in, 4); };
+	virtual void readTriggerIndex(FILE *in) { fskip(in, 4); };
+	virtual void readType(FILE *in) { fskip(in, 4); };
+	virtual void readUids(FILE *in, long len) { fskip(in, 4*len); };
+	virtual void readUidLocation(FILE *in) { fskip(in, 4); };
+	virtual void readUnitGroup(FILE *in) { fskip(in, 4); };
+	virtual void readUnitType(FILE *in) { fskip(in, 4); };
+	virtual void readUnitConst(FILE *in) { fskip(in, 4); };
+	virtual void readSound(FILE *in) { readstr(in); };
+	virtual void readText(FILE *in) { readstr(in); };
 
 	static const char *types[NUM_EFFECTS];
 	static const char *propertyTypes[NUM_EFFECT_PARAMS];
 };
 
 #endif
+
+
+

@@ -13,11 +13,11 @@
 	These files (zlibfile.h and zlibfile.cpp) may be freely distributed as long as the above notice remains intact.
 **/
 
-int readstr(FILE *in, std::string str);
+extern const char * readstr(FILE *in);
 
-extern "C" int fskip(FILE *f, int bytes);
+extern "C" void fskip(FILE *f, int bytes);
 
-//Note from andy: all three of these functions are written by DiGiT
+//Note from andy: all three of these below functions are written by DiGiT
 
 extern "C" int fsize(const char *path);
 
@@ -45,3 +45,6 @@ extern "C" int inflate_file(Bytef *in, int length, FILE *out);
 
 
 #endif
+
+
+
