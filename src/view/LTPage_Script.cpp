@@ -51,7 +51,8 @@ LTPage_Script::LTPage_Script(wxWindow *parent)
 
 void LTPage_Script::onOpenFileButtonPressed(wxCommandEvent& event)
 {
-	system(wxT("\"")+wxString(currentFile->getPath())+wxT("\""));
+	wxString call=wxT("\"")+wxString::FromUTF8(currentFile->getPath())+wxT("\"");
+	system(call.mb_str().data());
 }
 
 void LTPage_Script::onPickBaseButtonPressed(wxCommandEvent &event)

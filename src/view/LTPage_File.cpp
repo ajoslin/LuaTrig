@@ -52,7 +52,7 @@ void LTPage_File::onOpenFile(wxFileName fname)
 
 void LTPage_File::onCloseFile()
 {
-	wxFileName fname(wxString(currentFile->getPath()));
+	wxFileName fname(wxString::FromUTF8(currentFile->getPath()));
 	LTFrame::instance()->closeFile(fname);
 }
 
@@ -70,6 +70,6 @@ void LTPage_File::setLabelError(wxString err)
 
 wxFileName LTPage_File::getCurrentFileName()
 {
-	wxFileName fn(wxString(currentFile->getPath()));
+	wxFileName fn(wxString::FromUTF8(currentFile->getPath()));
 	return fn;
 }

@@ -1,0 +1,7 @@
+*.sublime-project
+*.sublime-workspace
+*.cxx
+*.res
+*.o
+*.P
+*.d
