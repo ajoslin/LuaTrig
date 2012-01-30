@@ -175,9 +175,9 @@ void LTPage_Script::write(wxFileName fname)
 	wxBeginBusyCursor();
 
 	ScenarioFileController * newScn = new ScenarioFileController();
-	newScn->setPath(fname.GetFullPath().mb_str().data());
+	newScn->setPath(baseScenario.GetFullPath().mb_str().data());
 	newScn->copyTriggers(currentFile);
-	newScn->write();
+	newScn->write(fname.GetFullPath().mb_str().data());
 	delete newScn;
 
 	onOpenFile(fname);

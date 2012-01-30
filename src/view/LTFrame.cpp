@@ -87,6 +87,7 @@ void LTFrame::onToolbarSettings(wxCommandEvent& event)
 void LTFrame::onToolbarOpenScenario(wxCommandEvent& event)
 {
 	openScenarioDialog->SetDirectory(currentScenarioDir);
+	printf("%s\n", currentScenarioDir.mb_str().data());
 	int id=openScenarioDialog->ShowModal();
 	
 	if (id==wxID_OK)
